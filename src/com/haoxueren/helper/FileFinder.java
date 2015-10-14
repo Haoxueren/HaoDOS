@@ -2,7 +2,7 @@ package com.haoxueren.helper;
 
 import java.io.File;
 
-/** 用来递归查找文件的帮助类； */
+/** 用来递归查找文件的帮助类；12222 */   
 public class FileFinder
 {
 	private FileFinderListener listener;
