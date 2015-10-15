@@ -4,20 +4,11 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import com.haoxueren.utils.FileUtils;
 
 public class WordCheck
 {
-	private Scanner scanner;
-
-	/** 通过构造方法注入scanner对象； */
-	public WordCheck(Scanner scanner)
-	{
-		this.scanner = scanner;
-	}
-
 	/**
 	 * @method 输入文件名，打开指定目录下的包含该文件名的所有文件；
 	 * @param wordsPath
@@ -48,19 +39,12 @@ public class WordCheck
 				return;
 			}
 		}
-		// 如果从来没有进去过，就提示文件不存在！
-		System.out.println("该单词不存在！是否添加(Y/N)?");
-		String command = scanner.nextLine();
-		if ("Y".equalsIgnoreCase(command))
-		{
-			// 在单词图解目录下创建该文件；
-			File file = new File(MyConstants.WORDS_PATH, word + ".png");
-			file.createNewFile();
-			System.out.println("单词 " + word + "已添加成功 ！");
-			// 以编辑方式打开文件；
-			desktop.edit(file);
-			return;
-		}
-		System.out.println("单词" + word + "操作已取消！");
+		// 在单词图解目录下创建该文件；
+		File file = new File(MyConstants.WORDS_PATH, word + ".png");
+		file.createNewFile();
+		System.out.println(word + "已添加成功 ！");
+		// 打开文件；
+		desktop.open(file);
+		desktop.edit(file);
 	}
 }

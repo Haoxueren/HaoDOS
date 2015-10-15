@@ -21,6 +21,11 @@ public class CommandHelper
 		this.command = command;
 	}
 
+	public void setCommand(String command)
+	{
+		this.command = command;
+	}
+
 	/**
 	 * 检测用户输入的指令是否为搜索指令；
 	 * 
@@ -138,5 +143,4 @@ public class CommandHelper
 		Process process = Runtime.getRuntime().exec(dos);
 		return process;
 	}
-
 }

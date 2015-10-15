@@ -1,4 +1,4 @@
-package com.haoxueren.mydos;
+package com.haoxueren.utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,12 +8,12 @@ import java.util.Scanner;
 import com.haoxueren.helper.CommandHelper;
 
 /** 操作文件的帮助类； */
-public class FileHelper2
+public class FileHelperBak
 {
 	/** 要操作的目录； */
 	private String directory;
 
-	public FileHelper2(String directory)
+	public FileHelperBak(String directory)
 	{
 		this.directory = directory;
 	}

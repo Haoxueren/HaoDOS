@@ -1,11 +1,10 @@
-package com.haoxueren.mydos;
+package com.haoxueren.utils;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.haoxueren.utils.PinYinUtils;
 
 /**
  * @author ∫√—ß»À
