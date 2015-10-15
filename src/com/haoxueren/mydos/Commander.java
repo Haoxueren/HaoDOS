@@ -15,8 +15,10 @@ import com.haoxueren.utils.PinYinUtils;
 
 public class Commander implements FileHelperListener, ProcessHelperListener
 {
+	private File directory;
 	private String command;
 	private List<File> fileList;
+	private FileHelper fileHelper;
 	private ProcessHelper processHelper;
 	private CommandHelper commandHelper;
 
@@ -24,8 +26,8 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 	{
 		processHelper = new ProcessHelper(this);
 		commandHelper = new CommandHelper();
-		FileHelper fileHelper = new FileHelper(this);
-		File directory = new File(MyConstants.PATH_SHORTCUTS);
+		fileHelper = new FileHelper(this);
+		directory = new File(MyConstants.PATH_SHORTCUTS);
 		fileHelper.getFiles(directory);
 	}
 
@@ -40,8 +42,10 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 		try
 		{
 			commandHelper.setCommand(command);
-
-			if (command.equals("QUIT") || command.equals("EXIT"))
+			if (command.equals("INIT"))
+			{
+				fileHelper.getFiles(directory);
+			} else if (command.equals("EXIT"))
 			{
 				return true;
 			} else if (command.matches("\\s*"))
@@ -134,6 +138,7 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 	@Override
 	public void onFileFindOver(ArrayList<File> list)
 	{
+		System.out.println("数据初始化成功...");
 		fileList = list;
 	}
 
