@@ -32,7 +32,7 @@ public class FileHelper implements FileFinderListener
 	}
 
 	@Override
-	public void onFileFindOut(File file)
+	public void onFileFindOut(File directory, File file)
 	{
 		list.add(file);
 	}
@@ -51,7 +51,8 @@ public class FileHelper implements FileFinderListener
 		for (File file : files)
 		{
 			// 如果不是桌面上的文件，返回；
-			if (!file.getAbsolutePath().startsWith(desktop.getAbsolutePath()))
+			if (!file.getAbsolutePath().startsWith(desktop.getAbsolutePath())
+					&& !file.getAbsolutePath().startsWith("C:\\Users\\Public\\Desktop"))
 			{
 				continue;
 			}

@@ -14,7 +14,7 @@ public class MainActivity
 		while (true)
 		{
 			System.out.print(MyConstants.HEADER);
-			String command = scanner.nextLine();
+			String command = scanner.nextLine().trim();
 			boolean taskEnd = commander.runTask(command);
 			if (taskEnd)
 			{
