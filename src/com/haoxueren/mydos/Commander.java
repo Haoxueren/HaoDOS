@@ -48,6 +48,9 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 			} else if (command.equals("EXIT"))
 			{
 				return true;
+			} else if (command.equals("MOVE"))
+			{
+				fileHelper.moveLnkFile("Haoxueren.lnk");
 			} else if (command.matches("\\s*"))
 			{
 			} else if (commandHelper.matchSearchCommand())
