@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.filechooser.FileSystemView;
+
 import com.haoxueren.helper.CommandHelper;
 import com.haoxueren.helper.FileHelper;
 import com.haoxueren.helper.FileHelper.FileHelperListener;
@@ -27,7 +29,7 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 		processHelper = new ProcessHelper(this);
 		commandHelper = new CommandHelper();
 		fileHelper = new FileHelper(this);
-		directory = new File(MyConstants.PATH_SHORTCUTS);
+		directory = new File(MyConstants.PATH_LNK);
 		fileHelper.getFiles(directory);
 	}
 
@@ -50,7 +52,8 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 				return true;
 			} else if (command.equals("MOVE"))
 			{
-				fileHelper.moveLnkFile("Haoxueren.lnk");
+				moveLnkFile("Haoxueren.lnk");
+				fileHelper.getFiles(directory);
 			} else if (command.matches("\\s*"))
 			{
 			} else if (commandHelper.matchSearchCommand())
@@ -105,6 +108,7 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 		return filterLlist;
 	}
 
+	/** 根据文件名打开文件； */
 	private void openFileByName(List<File> fileList, String filename)
 	{
 		try
@@ -112,7 +116,6 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 			List<File> files = filterFile(fileList, filename);
 			if (files.isEmpty())
 			{
-
 				String keyWords = filename.replaceAll("\\s+", "%20");
 				new CommandHelper().search(keyWords);
 				return;
@@ -145,9 +148,49 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 		fileList = list;
 	}
 
+	/** 读取执行DOS命令所返回的信息； */
 	@Override
 	public void onReadLine(String line)
 	{
 		System.out.println(line);
+	}
+
+	// 获取到桌面的路径；
+	public void moveLnkFile(String entrance) throws IOException
+	{
+		FileSystemView fileView = FileSystemView.getFileSystemView();
+		File desktop = fileView.getHomeDirectory();
+		File[] files = desktop.listFiles();
+		for (File file : files)
+		{
+			// 如果不是桌面上的文件，返回；
+			if (!file.getAbsolutePath().startsWith(desktop.getAbsolutePath())
+					&& !file.getAbsolutePath().startsWith("C:\\Users\\Public\\Desktop"))
+			{
+				continue;
+			}
+			// 保留程序入口文件；
+			if (file.getName().equals(entrance))
+			{
+				continue;
+			}
+			// 如果是快捷方式，移动到快捷方式文件夹；
+			if (fileHelper.endWith(file.getName(), ".lnk", ".url"))
+			{
+				System.out.println("正在移动快捷方式：" + file.getName());
+				File directory = new File(MyConstants.PATH_LNK);
+				fileHelper.createFile(directory);
+				File dest = new File(directory, file.getName());
+				file.renameTo(dest);
+			} else
+			{
+				// 其它情况，移动到桌面文件目录；
+				System.out.println("正在移动桌面文件：" + file.getName());
+				File directory = new File("D:\\来自桌面的文件");
+				fileHelper.createFile(directory);
+				File destFile = new File(directory, file.getName());
+				file.renameTo(destFile);
+			}
+		}
 	}
 }

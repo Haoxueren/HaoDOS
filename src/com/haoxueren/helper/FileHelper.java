@@ -42,47 +42,6 @@ public class FileHelper implements FileFinderListener
 		void onFileFindOver(ArrayList<File> list);
 	}
 
-	// 获取到桌面的路径；
-	public void moveLnkFile(String entrance) throws IOException
-	{
-		FileSystemView fileView = FileSystemView.getFileSystemView();
-		File desktop = fileView.getHomeDirectory();
-		File[] files = desktop.listFiles();
-		for (File file : files)
-		{
-			// 如果不是桌面上的文件，返回；
-			if (!file.getAbsolutePath().startsWith(desktop.getAbsolutePath())
-					&& !file.getAbsolutePath().startsWith("C:\\Users\\Public\\Desktop"))
-			{
-				continue;
-			}
-			// 保留程序入口文件；
-			if (file.getName().equals(entrance))
-			{
-				continue;
-			}
-			// 如果是快捷方式，移动到快捷方式文件夹；
-			if (endWith(file.getName(), ".lnk", ".url"))
-			{
-				System.out.println("正在移动快捷方式：" + file.getName());
-				File dest = new File(MyConstants.PATH_SHORTCUTS, file.getName());
-				file.renameTo(dest);
-			} else
-			{
-				// 其它情况，移动到桌面文件目录；
-				System.out.println("正在移动桌面文件：" + file.getName());
-				File directory = new File("D:\\来自桌面文件");
-				if (!directory.exists())
-				{
-					// 如果目录不存在，创建该目录；
-					directory.createNewFile();
-				}
-				File destFile = new File(directory, file.getName());
-				file.renameTo(destFile);
-			}
-		}
-	}
-
 	/** 判断文件名是指定的后缀名 */
 	public boolean endWith(String filename, String... suffixs)
 	{
@@ -95,4 +54,14 @@ public class FileHelper implements FileFinderListener
 		}
 		return false;
 	}
+
+	/** 如果文件不存在，就创建文件； */
+	public void createFile(File file) throws IOException
+	{
+		if (!file.exists())
+		{
+			file.createNewFile();
+		}
+	}
+
 }
