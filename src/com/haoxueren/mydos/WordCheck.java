@@ -16,7 +16,8 @@ public class WordCheck
 	 */
 	public void add(String word) throws IOException, MyException
 	{
-		if (word.trim().length() <= 1)
+		String wordTrim = word.trim();
+		if (wordTrim.length() <= 1)
 		{
 			throw new MyException("亲，内容太少了吧！");
 		}
@@ -42,7 +43,7 @@ public class WordCheck
 		// 在单词图解目录下创建该文件；
 		File file = new File(MyConstants.WORDS_PATH, word + ".png");
 		file.createNewFile();
-		System.out.println(word + "已添加成功 ！");
+		System.out.println(wordTrim + "已添加成功 ！");
 		// 打开文件；
 		desktop.open(file);
 		desktop.edit(file);

@@ -9,18 +9,19 @@ import java.util.List;
 import javax.swing.filechooser.FileSystemView;
 
 import com.haoxueren.helper.CommandHelper;
-import com.haoxueren.helper.FileHelper;
-import com.haoxueren.helper.FileHelper.FileHelperListener;
+import com.haoxueren.helper.FileHelper_;
+import com.haoxueren.helper.FileHelper_.FileHelperListener;
 import com.haoxueren.helper.ProcessHelper;
 import com.haoxueren.helper.ProcessHelper.ProcessHelperListener;
 import com.haoxueren.utils.PinYinUtils;
 
+/**指挥官：负责执行具体的命令；*/
 public class Commander implements FileHelperListener, ProcessHelperListener
 {
 	private File directory;
 	private String command;
 	private List<File> fileList;
-	private FileHelper fileHelper;
+	private FileHelper_ fileHelper;
 	private ProcessHelper processHelper;
 	private CommandHelper commandHelper;
 
@@ -28,7 +29,7 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 	{
 		processHelper = new ProcessHelper(this);
 		commandHelper = new CommandHelper();
-		fileHelper = new FileHelper(this);
+		fileHelper = new FileHelper_(this);
 		directory = new File(MyConstants.PATH_LNK);
 		fileHelper.getFiles(directory);
 	}
@@ -44,14 +45,17 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 		try
 		{
 			commandHelper.setCommand(command);
-			if (command.equals("INIT"))
+			if (command.equals("$INIT"))
 			{
+				// 初始化数据；
 				fileHelper.getFiles(directory);
-			} else if (command.equals("EXIT"))
+			} else if (command.equals("$EXIT"))
 			{
+				// 退出程序；
 				return true;
-			} else if (command.equals("MOVE"))
+			} else if (command.equals("$MOVE"))
 			{
+				// 整理桌面文件；
 				moveLnkFile("Haoxueren.lnk");
 				fileHelper.getFiles(directory);
 			} else if (command.matches("\\s*"))
