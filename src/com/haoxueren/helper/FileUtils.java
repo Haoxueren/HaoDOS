@@ -4,20 +4,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.filechooser.FileSystemView;
-
 import com.haoxueren.helper.FileFinder.FileFinderListener;
-import com.haoxueren.mydos.MyConstants;
 
 /** 查找出指定目录下所有文件； */
-public class FileHelper_ implements FileFinderListener
+public class FileUtils implements FileFinderListener
 {
 	/** 用来保存所有文件集合； */
 	private ArrayList<File> list;
 	/** 返回符合条件的文件夹的集合； */
 	private FileHelperListener listener;
 
-	public FileHelper_(FileHelperListener listener)
+	public FileUtils(FileHelperListener listener)
 	{
 		this.listener = listener;
 	}
@@ -53,15 +50,6 @@ public class FileHelper_ implements FileFinderListener
 			}
 		}
 		return false;
-	}
-
-	/** 如果文件不存在，就创建文件； */
-	public void createFile(File file) throws IOException
-	{
-		if (!file.exists())
-		{
-			file.createNewFile();
-		}
 	}
 
 }

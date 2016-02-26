@@ -5,12 +5,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
+import com.haoxueren.config.Keys;
+import com.haoxueren.config.Values;
+import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.word.WordHelper;
 
 /**
  * 程序入口；
  */
-public class DosHelperUi
+public class DosWindow
 {
 	/** 任务类型； */
 	private static String TASK_TYPE;
@@ -19,9 +22,10 @@ public class DosHelperUi
 	{
 		Commander commander = new Commander();
 		Scanner scanner = new Scanner(System.in);
+		String titleMotto = ConfigHelper.getConfig(Keys.TITLE_MOTTO, Values.TITLE_MOTTO);
 		while (true)
 		{
-			System.out.print("\n" + MyConstants.HEADER + ">\n");
+			System.out.print("\n" + titleMotto + ">\n");
 			// 接收用户录入的指令；
 			String command = scanner.nextLine().trim();
 			// 执行退出指令；
@@ -29,7 +33,7 @@ public class DosHelperUi
 			{
 				scanner.close();
 				scanner = null;
-				System.out.println("程序已正常退出！");
+				System.out.println("程序已安全退出！");
 				break;
 			}
 			// 记录当前的任务类型；
@@ -50,12 +54,17 @@ public class DosHelperUi
 			{
 				try
 				{
-					File wordFile = WordHelper.getRandomWordPath();
+					File wordFile = WordHelper.getRandomWordFile();
+					if (wordFile == null)
+					{
+						System.err.println("单词目录为空！");
+						continue;
+					}
 					Desktop.getDesktop().open(wordFile);
 					WordHelper.getWordName(wordFile);
 				} catch (IOException e)
 				{
-					System.out.println(e.getMessage());
+					System.err.println(e.getMessage());
 				}
 				continue;
 			}

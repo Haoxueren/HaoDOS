@@ -8,20 +8,24 @@ import java.util.List;
 
 import javax.swing.filechooser.FileSystemView;
 
+import com.haoxueren.config.ConfigHelper;
+import com.haoxueren.config.Keys;
+import com.haoxueren.config.Values;
 import com.haoxueren.helper.CommandHelper;
-import com.haoxueren.helper.FileHelper_;
-import com.haoxueren.helper.FileHelper_.FileHelperListener;
+import com.haoxueren.helper.FileHelper;
+import com.haoxueren.helper.FileUtils;
+import com.haoxueren.helper.FileUtils.FileHelperListener;
 import com.haoxueren.helper.ProcessHelper;
 import com.haoxueren.helper.ProcessHelper.ProcessHelperListener;
 import com.haoxueren.utils.PinYinUtils;
 
-/**指挥官：负责执行具体的命令；*/
+/** 指挥官：负责执行具体的命令； */
 public class Commander implements FileHelperListener, ProcessHelperListener
 {
 	private File directory;
 	private String command;
 	private List<File> fileList;
-	private FileHelper_ fileHelper;
+	private FileUtils fileHelper;
 	private ProcessHelper processHelper;
 	private CommandHelper commandHelper;
 
@@ -29,8 +33,9 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 	{
 		processHelper = new ProcessHelper(this);
 		commandHelper = new CommandHelper();
-		fileHelper = new FileHelper_(this);
-		directory = new File(MyConstants.PATH_LNK);
+		fileHelper = new FileUtils(this);
+		directory = new File(ConfigHelper.getConfig(Keys.SHORTCUTS, Values.SHORTCUTS));
+		FileHelper.MakeDirectory(directory);
 		fileHelper.getFiles(directory);
 	}
 
@@ -45,15 +50,15 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 		try
 		{
 			commandHelper.setCommand(command);
-			if (command.equals("$INIT"))
+			if (command.equalsIgnoreCase("$INIT"))
 			{
 				// 初始化数据；
 				fileHelper.getFiles(directory);
-			} else if (command.equals("$EXIT"))
+			} else if (command.equalsIgnoreCase("$EXIT"))
 			{
 				// 退出程序；
 				return true;
-			} else if (command.equals("$MOVE"))
+			} else if (command.equalsIgnoreCase("$MOVE"))
 			{
 				// 整理桌面文件；
 				moveLnkFile("Haoxueren.lnk");
@@ -165,6 +170,11 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 		FileSystemView fileView = FileSystemView.getFileSystemView();
 		File desktop = fileView.getHomeDirectory();
 		File[] files = desktop.listFiles();
+		File tempDir = new File(Values.TEMP_DIR);
+		FileHelper.MakeDirectory(tempDir);
+		String shortcuts = ConfigHelper.getConfig(Keys.SHORTCUTS, Values.SHORTCUTS);
+		File shortcutsDir = new File(shortcuts);
+		shortcutsDir.mkdirs();
 		for (File file : files)
 		{
 			// 如果不是桌面上的文件，返回；
@@ -174,7 +184,7 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 				continue;
 			}
 			// 保留程序入口文件；
-			if (file.getName().equals(entrance))
+			if (file.getName().equalsIgnoreCase(entrance))
 			{
 				continue;
 			}
@@ -182,17 +192,13 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 			if (fileHelper.endWith(file.getName(), ".lnk", ".url"))
 			{
 				System.out.println("正在移动快捷方式：" + file.getName());
-				File directory = new File(MyConstants.PATH_LNK);
-				fileHelper.createFile(directory);
-				File dest = new File(directory, file.getName());
+				File dest = new File(tempDir, file.getName());
 				file.renameTo(dest);
 			} else
 			{
 				// 其它情况，移动到桌面文件目录；
 				System.out.println("正在移动桌面文件：" + file.getName());
-				File directory = new File("D:\\来自桌面的文件");
-				fileHelper.createFile(directory);
-				File destFile = new File(directory, file.getName());
+				File destFile = new File(tempDir, file.getName());
 				file.renameTo(destFile);
 			}
 		}

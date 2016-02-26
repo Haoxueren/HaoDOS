@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.haoxueren.config.Values;
+import com.haoxueren.config.ConfigHelper;
+import com.haoxueren.config.Keys;
 import com.haoxueren.utils.FileUtils;
 
 public class WordCheck
@@ -22,7 +25,7 @@ public class WordCheck
 			throw new MyException("亲，内容太少了吧！");
 		}
 		// 封装要查询的目录；
-		File dir = new File(MyConstants.WORDS_PATH);
+		File dir = new File(ConfigHelper.getConfig(Keys.WORDS_PATH, Values.WORDS_PATH));
 		// 创建Desktop对象；
 		Desktop desktop = Desktop.getDesktop();
 		// 获取该目录下所有文件的集合（支持多级目录）；
@@ -41,7 +44,7 @@ public class WordCheck
 			}
 		}
 		// 在单词图解目录下创建该文件；
-		File file = new File(MyConstants.WORDS_PATH, word + ".png");
+		File file = new File(ConfigHelper.getConfig(Keys.WORDS_PATH, Values.WORDS_PATH), word + ".png");
 		file.createNewFile();
 		System.out.println(wordTrim + "已添加成功 ！");
 		// 打开文件；
