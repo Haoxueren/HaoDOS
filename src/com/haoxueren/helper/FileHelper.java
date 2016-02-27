@@ -34,9 +34,13 @@ public class FileHelper
 	}
 
 	/** ´´½¨Ä¿Â¼£» */
-	public static boolean MakeDirectory(File directory)
+	public static boolean mkdirs(File directory)
 	{
-		return directory.mkdirs();
+		if (!directory.exists())
+		{
+			return directory.mkdirs();
+		}
+		return false;
 	}
 
 }

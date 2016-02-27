@@ -27,9 +27,14 @@ public class DosWindow
 		{
 			System.out.print("\n" + titleMotto + ">\n");
 			// 接收用户录入的指令；
-			String command = scanner.nextLine().trim();
+			String order = scanner.nextLine().trim();
+			if (order.equalsIgnoreCase("$HELP"))
+			{
+				commander.printHelpInfo();
+				continue;
+			}
 			// 执行退出指令；
-			if (command.equalsIgnoreCase("$EXIT"))
+			if (order.equalsIgnoreCase("$EXIT"))
 			{
 				scanner.close();
 				scanner = null;
@@ -37,13 +42,13 @@ public class DosWindow
 				break;
 			}
 			// 记录当前的任务类型；
-			if (command.equalsIgnoreCase("$WORD"))
+			if (order.equalsIgnoreCase("$WORD"))
 			{
 				TASK_TYPE = "$WORD";
 				System.out.println("欢迎进入随机单词系统！");
 				continue;
 			}
-			if (command.equalsIgnoreCase("$COMMON"))
+			if (order.equalsIgnoreCase("$COMMON"))
 			{
 				TASK_TYPE = "$COMMON";
 				System.out.println("欢迎进入通用指令系统！");
@@ -69,7 +74,7 @@ public class DosWindow
 				continue;
 			}
 			// 执行通用指令；
-			commander.runTask(command);
+			commander.runTask(order);
 		}
 	}
 

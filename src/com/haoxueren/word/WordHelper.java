@@ -1,6 +1,9 @@
 package com.haoxueren.word;
 
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -11,6 +14,7 @@ import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.config.Keys;
 import com.haoxueren.helper.FileHelper;
 import com.haoxueren.helper.RandomHelper;
+import com.haoxueren.utils.FileUtils;
 
 public class WordHelper
 {
@@ -69,6 +73,48 @@ public class WordHelper
 	{
 		String name = word.getName();
 		return name.substring(0, name.length() - 4);
+	}
+
+	/**
+	 * @method 输入文件名，打开指定目录下的包含该文件名的所有文件；
+	 * @param wordsPath
+	 *            要操作的目录路径，本程序支持多级目录；
+	 */
+	public static void addWord(String word) throws IOException
+	{
+		String wordTrim = word.trim();
+		if (wordTrim.length() <= 1)
+		{
+			throw new IllegalArgumentException("亲，内容太少了吧！");
+		}
+		// 封装要查询的目录；
+		String word_dir = ConfigHelper.getConfig(Keys.WORDS_PATH, Values.WORDS_PATH);
+		File dir = new File(word_dir);
+		FileHelper.mkdirs(dir);
+		// 创建Desktop对象；
+		Desktop desktop = Desktop.getDesktop();
+		// 获取该目录下所有文件的集合（支持多级目录）；
+		ArrayList<File> files = FileUtils.getDirsFiles(new ArrayList<File>(), dir);
+
+		// 遍历集合，查询符合条件的数据；
+		for (File file : files)
+		{
+			// 判断文件名是否包含输入的内容，不区分大小写；
+			if (file.getName().toLowerCase().contains(word.toLowerCase()))
+			{
+				// 如果包含，打开对应的文件；
+				desktop.edit(file);
+				System.out.println("文件 " + file.getName().split("\\.")[0] + " 已打开！");
+				return;
+			}
+		}
+		// 在单词图解目录下创建该文件；
+		File file = new File(word_dir, word + ".png");
+		ImageHelper.createImage(file);
+		System.out.println(wordTrim + "已添加成功 ！");
+		// 打开文件；
+		desktop.open(file);
+		desktop.edit(file);
 	}
 
 }

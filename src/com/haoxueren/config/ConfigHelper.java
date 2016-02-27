@@ -45,7 +45,6 @@ public class ConfigHelper
 					writer.close();
 				}
 				reader.close();
-				System.out.println(key + " = " + value);
 				return value;
 			} else
 			{
@@ -59,7 +58,7 @@ public class ConfigHelper
 			}
 		} catch (Exception e)
 		{
-			System.out.println(e.getMessage());
+			System.err.println("“Ï≥£–≈œ¢£∫" + e.getMessage());
 			return null;
 		}
 	}

@@ -18,6 +18,8 @@ import com.haoxueren.helper.FileUtils.FileHelperListener;
 import com.haoxueren.helper.ProcessHelper;
 import com.haoxueren.helper.ProcessHelper.ProcessHelperListener;
 import com.haoxueren.utils.PinYinUtils;
+import com.haoxueren.word.WordHelper;
+import com.haoxueren.word.WordHelper;
 
 /** 指挥官：负责执行具体的命令； */
 public class Commander implements FileHelperListener, ProcessHelperListener
@@ -35,8 +37,16 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 		commandHelper = new CommandHelper();
 		fileHelper = new FileUtils(this);
 		directory = new File(ConfigHelper.getConfig(Keys.SHORTCUTS, Values.SHORTCUTS));
-		FileHelper.MakeDirectory(directory);
+		FileHelper.mkdirs(directory);
 		fileHelper.getFiles(directory);
+	}
+
+	public void printHelpInfo()
+	{
+		System.out.println("$exit：退出系统");
+		System.out.println("$help：查看帮助信息");
+		System.out.println("$word：进入随机抽取单词系统");
+		System.out.println("$common：进入通用指令系统");
 	}
 
 	public boolean runTask(String command)
@@ -78,8 +88,7 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 				commandHelper.openUrl(command);
 			} else if (commandHelper.matchAddWordCommand() || commandHelper.matchEditWordCommand())
 			{
-				WordCheck wordCheck = new WordCheck();
-				wordCheck.add(commandHelper.getEnglishWord().toLowerCase());
+				WordHelper.addWord(commandHelper.getEnglishWord().toLowerCase());
 			} else if (commandHelper.matchDosCommand())
 			{
 				Process process = commandHelper.executeDos();
@@ -92,6 +101,7 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 			return false;
 		} catch (Exception e)
 		{
+			System.err.println("异常：" + e.getMessage());
 			return true;
 		}
 	}
@@ -171,7 +181,7 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 		File desktop = fileView.getHomeDirectory();
 		File[] files = desktop.listFiles();
 		File tempDir = new File(Values.TEMP_DIR);
-		FileHelper.MakeDirectory(tempDir);
+		FileHelper.mkdirs(tempDir);
 		String shortcuts = ConfigHelper.getConfig(Keys.SHORTCUTS, Values.SHORTCUTS);
 		File shortcutsDir = new File(shortcuts);
 		shortcutsDir.mkdirs();
