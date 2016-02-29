@@ -1,6 +1,10 @@
 package com.haoxueren.mydos;
 
 import java.awt.Desktop;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,21 +15,22 @@ import javax.swing.filechooser.FileSystemView;
 import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.config.Keys;
 import com.haoxueren.config.Values;
+import com.haoxueren.helper.ClipBoardHelper;
 import com.haoxueren.helper.CommandHelper;
 import com.haoxueren.helper.FileHelper;
 import com.haoxueren.helper.FileUtils;
+import com.haoxueren.helper.TextHelper;
 import com.haoxueren.helper.FileUtils.FileHelperListener;
 import com.haoxueren.helper.ProcessHelper;
 import com.haoxueren.helper.ProcessHelper.ProcessHelperListener;
 import com.haoxueren.utils.PinYinUtils;
-import com.haoxueren.word.WordHelper;
 import com.haoxueren.word.WordHelper;
 
 /** 指挥官：负责执行具体的命令； */
 public class Commander implements FileHelperListener, ProcessHelperListener
 {
 	private File directory;
-	private String command;
+	private String order;
 	private List<File> fileList;
 	private FileUtils fileHelper;
 	private ProcessHelper processHelper;
@@ -49,31 +54,43 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 		System.out.println("$common：进入通用指令系统");
 	}
 
-	public boolean runTask(String command)
+	public void runTask(String order)
 	{
-		this.command = command;
-		return startWorking(fileList);
+		this.order = order.trim();
+		startWorking(fileList);
 	}
 
-	public boolean startWorking(List<File> fileList)
+	public void startWorking(List<File> fileList)
 	{
 		try
 		{
-			commandHelper.setCommand(command);
-			if (command.equalsIgnoreCase("$INIT"))
+			commandHelper.setCommand(order);
+			// 将剪贴版的单词添加到单词图解；
+			if (order.equalsIgnoreCase("add copy"))
+			{
+				String word = ClipBoardHelper.getClipboardText();
+				if (TextHelper.isEmpty(word))
+				{
+					System.err.println("剪切板为空！");
+				} else
+				{
+					WordHelper.addWord(word.toLowerCase());
+				}
+				return;
+			}
+
+			if (order.equalsIgnoreCase("$INIT"))
 			{
 				// 初始化数据；
 				fileHelper.getFiles(directory);
-			} else if (command.equalsIgnoreCase("$EXIT"))
-			{
-				// 退出程序；
-				return true;
-			} else if (command.equalsIgnoreCase("$MOVE"))
+				return;
+			}
+			if (order.equalsIgnoreCase("$MOVE"))
 			{
 				// 整理桌面文件；
-				moveLnkFile("Haoxueren.lnk");
+				moveLnkFileExcept("Haoxueren.lnk");
 				fileHelper.getFiles(directory);
-			} else if (command.matches("\\s*"))
+			} else if (order.matches("\\s*"))
 			{
 			} else if (commandHelper.matchSearchCommand())
 			{
@@ -85,7 +102,7 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 				commandHelper.translate(word);
 			} else if (commandHelper.matchUrlCommand())
 			{
-				commandHelper.openUrl(command);
+				commandHelper.openUrl(order);
 			} else if (commandHelper.matchAddWordCommand() || commandHelper.matchEditWordCommand())
 			{
 				WordHelper.addWord(commandHelper.getEnglishWord().toLowerCase());
@@ -95,14 +112,12 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 				processHelper.readProcess(process);
 			} else
 			{
-				String filename = command;
+				String filename = order;
 				openFileByName(fileList, filename);
 			}
-			return false;
 		} catch (Exception e)
 		{
 			System.err.println("异常：" + e.getMessage());
-			return true;
 		}
 	}
 
@@ -163,8 +178,8 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 	@Override
 	public void onFileFindOver(ArrayList<File> list)
 	{
-		System.out.println("数据初始化成功...");
 		fileList = list;
+		System.out.println("数据初始化成功...");
 	}
 
 	/** 读取执行DOS命令所返回的信息； */
@@ -175,12 +190,12 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 	}
 
 	// 获取到桌面的路径；
-	public void moveLnkFile(String entrance) throws IOException
+	public void moveLnkFileExcept(String entrance) throws IOException
 	{
 		FileSystemView fileView = FileSystemView.getFileSystemView();
 		File desktop = fileView.getHomeDirectory();
 		File[] files = desktop.listFiles();
-		File tempDir = new File(Values.TEMP_DIR);
+		File tempDir = new File(ConfigHelper.getConfig("temp_dir", Values.TEMP_DIR));
 		FileHelper.mkdirs(tempDir);
 		String shortcuts = ConfigHelper.getConfig(Keys.SHORTCUTS, Values.SHORTCUTS);
 		File shortcutsDir = new File(shortcuts);
@@ -213,4 +228,5 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 			}
 		}
 	}
+
 }

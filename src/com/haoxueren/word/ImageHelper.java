@@ -25,7 +25,7 @@ public class ImageHelper
 			// 确定图片的大小；
 			int width = 960, height = 540;
 			// 创建图片对象；
-			BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+			BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 			// 获取Graphics2D对象；
 			Graphics2D graphics2d = (Graphics2D) bufferedImage.getGraphics();
 			// 设置图片背景；

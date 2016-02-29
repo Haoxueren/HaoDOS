@@ -10,7 +10,7 @@ import org.junit.Test;
  */
 public class CommandHelper
 {
-	private String command;
+	private String order;
 
 	public CommandHelper()
 	{
@@ -18,43 +18,43 @@ public class CommandHelper
 
 	public CommandHelper(String command)
 	{
-		this.command = command;
+		this.order = command;
 	}
 
 	public void setCommand(String command)
 	{
-		this.command = command;
+		this.order = command;
 	}
 
 	/**
 	 * 检测用户输入的指令是否为搜索指令；
 	 * 
-	 * @param command
+	 * @param order
 	 *            格式：{S/s 1次或多次}{空白字符 1次或多次}{任意字符1次或多次}
 	 */
 	public boolean matchSearchCommand()
 	{
 		String regexSearchCommand = "[S|s]+\\s+.+";
-		return command.matches(regexSearchCommand);
+		return order.matches(regexSearchCommand);
 	}
 
 	/** 检测用户录入的指令是否为新增单词指令； */
 	public boolean matchAddWordCommand()
 	{
 		String regexAddWord = "(ADD|add)\\s+.+";
-		return command.matches(regexAddWord);
+		return order.matches(regexAddWord);
 	}
 
 	/** 检测用户录入的指令是否为打开单词指令； */
 	public boolean matchEditWordCommand()
 	{
 		String regexOpenWord = "(OPEN|open|EDIT|edit)\\s+.+";
-		return command.matches(regexOpenWord);
+		return order.matches(regexOpenWord);
 	}
 
 	public String getEnglishWord()
 	{
-		return command.replaceAll("(ADD|add|OPEN|open|EDIT|edit)\\s+", "");
+		return order.replaceAll("(ADD|add|OPEN|open|EDIT|edit)\\s+", "");
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class CommandHelper
 	public String getSearchWords()
 	{
 		// 去除内容的搜索命令标识前缀；
-		String keyWords = command.replaceAll("[S|s]+\\s+", "");
+		String keyWords = order.replaceAll("[S|s]+\\s+", "");
 		// 处理用户要搜索内容中的空格(%20)；
 		keyWords = keyWords.replaceAll("\\s+", "%20");
 		return keyWords;
@@ -74,13 +74,13 @@ public class CommandHelper
 	/**
 	 * 检测用户输入的指令是否为翻译指令；
 	 * 
-	 * @param command
+	 * @param order
 	 *            格式：{FY/fy 1次或多次}{空白字符 1次或多次}{任意字符1次或多次}
 	 */
 	public boolean matchTranslateCommand()
 	{
 		String regexTranslate = "(FY|fy)\\s+.+";
-		return command.matches(regexTranslate);
+		return order.matches(regexTranslate);
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class CommandHelper
 	 */
 	public String getTranslateWord()
 	{
-		return command.replaceAll("(FY|fy)\\s+", "");
+		return order.replaceAll("(FY|fy)\\s+", "");
 	}
 
 	/**
@@ -120,7 +120,7 @@ public class CommandHelper
 	public boolean matchUrlCommand()
 	{
 		String regexUrl = "(http://|HTTP://|www\\.|WWW\\.).+";
-		return command.matches(regexUrl);
+		return order.matches(regexUrl);
 	}
 
 	/** 打开指定的网址； */
@@ -133,13 +133,13 @@ public class CommandHelper
 	public boolean matchDosCommand()
 	{
 		String regex_dos = "(dos|DOS)\\s+.+";
-		return command.matches(regex_dos);
+		return order.matches(regex_dos);
 	}
 
 	/** 执行用户录入的DOS请求； */
 	public Process executeDos() throws IOException
 	{
-		String dos = command.replaceAll("(dos|DOS)\\s+", "");
+		String dos = order.replaceAll("(dos|DOS)\\s+", "");
 		Process process = Runtime.getRuntime().exec(dos);
 		return process;
 	}

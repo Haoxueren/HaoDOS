@@ -8,6 +8,8 @@ import java.util.Scanner;
 import com.haoxueren.config.Keys;
 import com.haoxueren.config.Values;
 import com.haoxueren.config.ConfigHelper;
+import com.haoxueren.helper.FileHelper;
+import com.haoxueren.helper.TextHelper;
 import com.haoxueren.word.WordHelper;
 
 /**
@@ -55,7 +57,7 @@ public class DosWindow
 				continue;
 			}
 			// 执行随机单词指令；
-			if ("$WORD".equalsIgnoreCase(TASK_TYPE))
+			if ("$WORD".equalsIgnoreCase(TASK_TYPE) && TextHelper.isEmpty(order))
 			{
 				try
 				{
@@ -67,6 +69,19 @@ public class DosWindow
 					}
 					Desktop.getDesktop().open(wordFile);
 					WordHelper.getWordName(wordFile);
+				} catch (IOException e)
+				{
+					System.err.println(e.getMessage());
+				}
+				continue;
+			}
+			// 打开程序的配置文件；
+			if ("$CONFIG".equalsIgnoreCase(order))
+			{
+				try
+				{
+					File file = new File(System.getProperty("user.dir"), "configure.properties");
+					Desktop.getDesktop().open(file);
 				} catch (IOException e)
 				{
 					System.err.println(e.getMessage());
