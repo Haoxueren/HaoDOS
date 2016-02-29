@@ -213,18 +213,25 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 			{
 				continue;
 			}
+			// 清理桌面文件；
+			File destFile = null;
 			// 如果是快捷方式，移动到快捷方式文件夹；
 			if (fileHelper.endWith(file.getName(), ".lnk", ".url"))
 			{
 				System.out.println("正在移动快捷方式：" + file.getName());
-				File dest = new File(tempDir, file.getName());
-				file.renameTo(dest);
+				destFile = new File(ConfigHelper.getConfig(Keys.SHORTCUTS, Values.SHORTCUTS), file.getName());
 			} else
 			{
 				// 其它情况，移动到桌面文件目录；
 				System.out.println("正在移动桌面文件：" + file.getName());
-				File destFile = new File(tempDir, file.getName());
+				destFile = new File(tempDir, file.getName());
+			}
+			if (!destFile.exists())
+			{
 				file.renameTo(destFile);
+			} else
+			{
+				System.err.println("文件" + destFile.getName() + "已存在！");
 			}
 		}
 	}
