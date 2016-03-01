@@ -1,4 +1,4 @@
-package com.haoxueren.helper;
+package com.haoxueren.word;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;

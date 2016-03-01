@@ -15,7 +15,6 @@ import javax.swing.filechooser.FileSystemView;
 import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.config.Keys;
 import com.haoxueren.config.Values;
-import com.haoxueren.helper.ClipBoardHelper;
 import com.haoxueren.helper.CommandHelper;
 import com.haoxueren.helper.FileHelper;
 import com.haoxueren.helper.FileUtils;
@@ -24,6 +23,7 @@ import com.haoxueren.helper.FileUtils.FileHelperListener;
 import com.haoxueren.helper.ProcessHelper;
 import com.haoxueren.helper.ProcessHelper.ProcessHelperListener;
 import com.haoxueren.utils.PinYinUtils;
+import com.haoxueren.word.ClipBoardHelper;
 import com.haoxueren.word.WordHelper;
 
 /** 指挥官：负责执行具体的命令； */

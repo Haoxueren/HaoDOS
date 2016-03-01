@@ -7,14 +7,11 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.junit.Test;
-
-import com.haoxueren.config.Values;
 import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.config.Keys;
+import com.haoxueren.config.Values;
 import com.haoxueren.helper.FileHelper;
-import com.haoxueren.helper.RandomHelper;
-import com.haoxueren.utils.FileUtils;
+import com.haoxueren.helper.FileUtils;
 
 public class WordHelper
 {

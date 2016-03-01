@@ -52,4 +52,34 @@ public class FileUtils implements FileFinderListener
 		return false;
 	}
 
+	/**
+	 * 方法描述：getDirsFiles 这是一个获取指定目录下所有文件的集合；
+	 * 
+	 * @param dir
+	 *            这是指定的目录，支持多级目录；
+	 * @return 包含该目录下所有文件的ArrayList<File>集合；
+	 */
+	public static ArrayList<File> getDirsFiles(ArrayList<File> fileList, File dir)
+	{
+		File[] files = dir.listFiles();
+		// 如果数组不为空，就对数组进行操作；
+		if (files != null)
+		{
+			for (File file : files)
+			{
+				// 规律：如果文件是目录，就递归；
+				if (file.isDirectory())
+				{
+					getDirsFiles(fileList, file);
+				} else
+				{
+					// 出口：添加指定后缀名的文件到集合；
+					fileList.add(file);
+				}
+			}
+		}
+		// 返回得到的文件集合；
+		return fileList;
+	}
+
 }
