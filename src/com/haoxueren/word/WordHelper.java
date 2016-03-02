@@ -57,11 +57,11 @@ public class WordHelper
 		{
 			return null;
 		}
-		int start = sum - (sum * (++index) / loop);
+		int start = sum - (sum * (++index % loop) / loop);
 		int random = RandomHelper.getRandomInt(start, sum);
 		Object time = objects[random];
 		File file = map.get(time);
-		System.out.println("[" + start + "~" + sum + "]¡ú" + index + "¡¢" + getWordName(file));
+		System.out.print("[" + start + "~" + sum + "]¡ú" + index + "¡¢" + getWordName(file));
 		return file;
 	}
 
