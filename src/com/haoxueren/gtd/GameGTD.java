@@ -22,44 +22,47 @@ import com.haoxueren.helper.TextHelper;
 
 /** 基于游戏原理设计的GTD系统； */
 @SuppressWarnings("unchecked")
-public class GameGTD
+public class GameGtd
 {
 	@Test
 	public void test() throws Exception
 	{
 		// String input = "$TODO 读书 #今天#学习#思想";
-		listTask("TODO", "今天", "思想", "学习");
+		// listTask("TODO", "今天", "思想", "学习");
+		// addTask("$TODO 写日报#工作#学习");
 	}
 
 	/**
 	 * 添加一条待办事项；<br>
-	 * 指令格式：$TODO TASK#TAG1#TAG2#TAG3...<br>
+	 * 指令格式：$GTD TODO TASK#TAG1#TAG2#TAG3...<br>
 	 */
-	public void addTask(String input) throws Exception
+	public static void addTask(String statusText, String eventText, String... tagArray) throws Exception
 	{
 		File xmlFile = new File(Values.DATABASE, "gtd.xml");
 		// 获取XML文档根节点；
 		Document document = getDocument(xmlFile);
 		Element root = document.getRootElement();
-		// 处理用户录入的信息；
-		String[] array = input.split("[#|\\s]+");
 		// 添加任务节点；
 		Element task = root.addElement("task");
+		task.addAttribute("id", root.elements().size() + "");
 		// 添加任务创建时间；
-		Element createTime = task.addElement("create");
+		Element createTime = task.addElement("createTime");
 		createTime.addText(new Date().toLocaleString());
 		// 添加任务当前状态；
 		Element status = task.addElement("status");
-		status.setText(array[0].trim().substring(1));
+		status.setText(statusText);
 		// 添加任务内容；
 		Element event = task.addElement("event");
-		event.setText(array[1].trim());
+		event.setText(eventText);
 		// 添加任务标签；
 		Element tags = task.addElement("tags");
-		for (int i = 2; i < array.length; i++)
+		for (String tagText : tagArray)
 		{
-			Element tag = tags.addElement("tag");
-			tag.setText(array[i]);
+			if (TextHelper.notEmpty(tagText))
+			{
+				Element tag = tags.addElement("tag");
+				tag.setText(tagText);
+			}
 		}
 		// 将Document保存到本地XML；
 		storeXml(document, xmlFile);
@@ -70,7 +73,7 @@ public class GameGTD
 	 * 任务状态：ALL,TODO,DOING DONE<br>
 	 * 指令格式：$LIST TODO #TAG1#TAG2#TAG3...
 	 */
-	public void listTask(String status, String... tags) throws Exception
+	public static void listTask(String status, String... tags) throws Exception
 	{
 		File xmlFile = new File(Values.DATABASE, "gtd.xml");
 		Document document = getDocument(xmlFile);
@@ -86,6 +89,7 @@ public class GameGTD
 			if (statusFlag && tagsFlag)
 			{
 				newTasks.add(task);
+				System.out.println(task.elementText("event"));
 			}
 		}
 	}
@@ -93,7 +97,7 @@ public class GameGTD
 	/*********************** 【以下是封装方法区】 ***********************/
 
 	/** 判断任务的状态是否满足条件； */
-	private boolean checkStatus(Element task, String status)
+	private static boolean checkStatus(Element task, String status)
 	{
 		if (TextHelper.isEmpty(status))
 		{
@@ -112,7 +116,7 @@ public class GameGTD
 	}
 
 	/** 检查任务的标签是否满足条件； */
-	private boolean checkTags(Element task, String... tags)
+	private static boolean checkTags(Element task, String... tags)
 	{
 		// 如果没有筛选标签，返回true；
 		if (tags == null || tags.length == 0)
@@ -148,7 +152,7 @@ public class GameGTD
 	 * 如果本地XML不存在，就在内在创建一个Document对象；<br>
 	 * Document对象默认的根节点为"GTD"。<br>
 	 */
-	private Document getDocument(File xmlFile) throws DocumentException
+	private static Document getDocument(File xmlFile) throws DocumentException
 	{
 		if (!xmlFile.exists())
 		{
@@ -174,7 +178,7 @@ public class GameGTD
 	 * 将Document序列化到本地XML文件中；<br>
 	 * XML文件默认为GBK编码；<br>
 	 */
-	private void storeXml(Document document, File xmlFile) throws IOException
+	private static void storeXml(Document document, File xmlFile) throws IOException
 	{
 		OutputFormat format = OutputFormat.createPrettyPrint();
 		format.setEncoding("GBK");

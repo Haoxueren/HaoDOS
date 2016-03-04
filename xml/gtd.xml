@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="GBK"?>
+
+<GTD> 
+  <task id="1"> 
+    <createTime>2016-3-4 17:40:31</createTime>  
+    <status>todo</status>  
+    <event>洗澡 更改</event>  
+    <tags/> 
+  </task>  
+  <task id="2"> 
+    <createTime>2016-3-4 17:43:00</createTime>  
+    <status>todo</status>  
+    <event>理发</event>  
+    <tags> 
+      <tag>life</tag>  
+      <tag>look</tag> 
+    </tags> 
+  </task>  
+  <task id="3"> 
+    <createTime>2016-3-4 17:45:22</createTime>  
+    <status>doing</status>  
+    <event>gamegtd</event>  
+    <tags> 
+      <tag>编程</tag> 
+    </tags> 
+  </task>  
+  <task id="4">
+    <createTime>2016-3-4 17:47:30</createTime>
+    <status>todo</status>
+    <event>测试tag</event>
+    <tags>
+      <tag>标签1</tag>
+    </tags>
+  </task>
+</GTD>

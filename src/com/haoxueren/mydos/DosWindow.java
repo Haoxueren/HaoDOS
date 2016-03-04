@@ -11,6 +11,8 @@ import java.util.Scanner;
 import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.config.Keys;
 import com.haoxueren.config.Values;
+import com.haoxueren.gtd.GameGtd;
+import com.haoxueren.gtd.GtdHelper;
 import com.haoxueren.helper.TextHelper;
 import com.haoxueren.mail.MailHelper;
 import com.haoxueren.word.WordHelper;
@@ -25,7 +27,7 @@ public class DosWindow
 	/** 任务类型； */
 	private static String TASK_TYPE;
 
-	public static void main(String[] args)
+	public static void main(String[] args) throws Exception
 	{
 		// 用来存储邮件信息的集合；
 		Properties emailInfo = new Properties();
@@ -43,14 +45,14 @@ public class DosWindow
 				System.out.print("\n" + titleMotto + ">\n");
 			}
 			// 接收用户录入的指令；
-			String order = scanner.nextLine().trim();
-			if (order.equalsIgnoreCase("$HELP"))
+			String input = scanner.nextLine().trim();
+			if (input.equalsIgnoreCase("$HELP"))
 			{
 				commander.printHelpInfo();
 				continue;
 			}
 			// 执行退出指令；
-			if (order.equalsIgnoreCase("$EXIT"))
+			if (input.equalsIgnoreCase("$EXIT"))
 			{
 				scanner.close();
 				scanner = null;
@@ -58,14 +60,14 @@ public class DosWindow
 				break;
 			}
 			// 进入通用指令系统；
-			if (order.equalsIgnoreCase("$COMMON"))
+			if (input.equalsIgnoreCase("$COMMON"))
 			{
 				TASK_TYPE = "$COMMON";
 				System.out.println("欢迎进入通用指令系统！");
 				continue;
 			}
 			// 进入随机单词系统；
-			if (order.equalsIgnoreCase("$WORD"))
+			if (input.equalsIgnoreCase("$WORD"))
 			{
 				// 记录当前的任务类型；
 				TASK_TYPE = "$WORD";
@@ -73,8 +75,15 @@ public class DosWindow
 				continue;
 			}
 
+			// 处理GameGTD系统指令；
+			if (input.matches("^(gtd|GTD){1}\\s+.+"))
+			{
+				GtdHelper.execute(input);
+				continue;
+			}
+
 			// 开始：随机单词；
-			if ("$WORD".equalsIgnoreCase(TASK_TYPE) && TextHelper.isEmpty(order))
+			if ("$WORD".equalsIgnoreCase(TASK_TYPE) && TextHelper.isEmpty(input))
 			{
 				try
 				{
@@ -96,7 +105,7 @@ public class DosWindow
 
 			// 开始：发送邮件；
 
-			if (order.equalsIgnoreCase(SEND_MAIL))
+			if (input.equalsIgnoreCase(SEND_MAIL))
 			{
 				TASK_TYPE = SEND_MAIL;
 				System.out.println("请输入收件人：");
@@ -105,20 +114,20 @@ public class DosWindow
 
 			if (SEND_MAIL.equalsIgnoreCase(TASK_TYPE))
 			{
-				if (TextHelper.isEmpty(order))
+				if (TextHelper.isEmpty(input))
 				{
 					System.out.println("您没有输入任何内容。");
 					continue;
 				}
 				if (emailInfo.size() == 0)
 				{
-					emailInfo.put("receivers", order);
+					emailInfo.put("receivers", input);
 					System.out.println("请输入邮件标题：");
 					continue;
 				}
 				if (emailInfo.size() == 1)
 				{
-					emailInfo.put("subject", order);
+					emailInfo.put("subject", input);
 					System.out.println("请输入邮件正文：");
 					continue;
 				}
@@ -126,7 +135,7 @@ public class DosWindow
 				{
 					try
 					{
-						emailInfo.put("content", order);
+						emailInfo.put("content", input);
 						File file = new File(System.getProperty("user.dir"), emailInfo.getProperty("subject") + "_"
 								+ System.currentTimeMillis() + ".txt");
 						Writer writer = new PrintWriter(file);
@@ -142,7 +151,7 @@ public class DosWindow
 					}
 					continue;
 				}
-				if (order.equalsIgnoreCase("Y"))
+				if (input.equalsIgnoreCase("Y"))
 				{
 					System.out.println("正在发送邮件...");
 					try
@@ -156,7 +165,7 @@ public class DosWindow
 						e.printStackTrace();
 					}
 					continue;
-				} else if (order.equalsIgnoreCase("N"))
+				} else if (input.equalsIgnoreCase("N"))
 				{
 					System.out.println("邮件未发送");
 				} else
@@ -169,7 +178,7 @@ public class DosWindow
 			// 结束：发送邮件；
 
 			// 打开程序的配置文件；
-			if ("$CONFIG".equalsIgnoreCase(order))
+			if ("$CONFIG".equalsIgnoreCase(input))
 			{
 				try
 				{
@@ -182,7 +191,7 @@ public class DosWindow
 				continue;
 			}
 			// 执行通用指令；
-			commander.runTask(order);
+			commander.runTask(input);
 		}
 	}
 }

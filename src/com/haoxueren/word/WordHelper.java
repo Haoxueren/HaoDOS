@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.junit.Test;
+
 import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.config.Keys;
 import com.haoxueren.config.Values;
@@ -57,11 +59,13 @@ public class WordHelper
 		{
 			return null;
 		}
-		int start = sum - (sum * (++index % loop) / loop);
+		int start = (int) (sum * (1 - (++index * 1.0f / loop)));
 		int random = RandomHelper.getRandomInt(start, sum);
 		Object time = objects[random];
 		File file = map.get(time);
 		System.out.print("[" + start + "~" + sum + "]→" + index + "、" + getWordName(file));
+		// 循环一圈后，初始化index；
+		index = index == loop ? 0 : index;
 		return file;
 	}
 
