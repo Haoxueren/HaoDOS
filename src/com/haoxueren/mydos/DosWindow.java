@@ -1,8 +1,11 @@
-package com.haoxueren.mydos;
+ï»¿package com.haoxueren.mydos;
 
 import java.awt.Desktop;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Properties;
@@ -11,26 +14,28 @@ import java.util.Scanner;
 import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.config.Keys;
 import com.haoxueren.config.Values;
+import com.haoxueren.dict.DictHelper;
 import com.haoxueren.gtd.GameGtd;
 import com.haoxueren.gtd.GtdHelper;
+import com.haoxueren.helper.FileHelper;
+import com.haoxueren.helper.FileUtils;
 import com.haoxueren.helper.TextHelper;
 import com.haoxueren.mail.MailHelper;
-import com.haoxueren.word.DictHelper;
 import com.haoxueren.word.WordHelper;
 
 /**
- * ³ÌĞòÈë¿Ú£»
+ * ç¨‹åºå…¥å£ï¼›
  */
 public class DosWindow
 {
-	// ½øÈë·¢ËÍÓÊ¼şĞµµÄÖ¸Áî£»
+	// è¿›å…¥å‘é€é‚®ä»¶æ¢°çš„æŒ‡ä»¤ï¼›
 	private static final String SEND_MAIL = "$mail";
-	/** ÈÎÎñÀàĞÍ£» */
+	/** ä»»åŠ¡ç±»å‹ï¼› */
 	private static String TASK_TYPE;
 
 	public static void main(String[] args) throws Exception
 	{
-		// ÓÃÀ´´æ´¢ÓÊ¼şĞÅÏ¢µÄ¼¯ºÏ£»
+		// ç”¨æ¥å­˜å‚¨é‚®ä»¶ä¿¡æ¯çš„é›†åˆï¼›
 		Properties emailInfo = new Properties();
 
 		Commander commander = new Commander();
@@ -45,7 +50,7 @@ public class DosWindow
 			{
 				System.out.print("\n" + titleMotto + ">\n");
 			}
-			// ½ÓÊÕÓÃ»§Â¼ÈëµÄÖ¸Áî£»
+			// æ¥æ”¶ç”¨æˆ·å½•å…¥çš„æŒ‡ä»¤ï¼›
 			String input = scanner.nextLine().trim();
 			input = input.toUpperCase();
 			if (input.equalsIgnoreCase("$HELP"))
@@ -53,38 +58,38 @@ public class DosWindow
 				commander.printHelpInfo();
 				continue;
 			}
-			// Ö´ĞĞÍË³öÖ¸Áî£»
+			// æ‰§è¡Œé€€å‡ºæŒ‡ä»¤ï¼›
 			if (input.equalsIgnoreCase("$EXIT"))
 			{
 				scanner.close();
 				scanner = null;
-				System.out.println("³ÌĞòÒÑ°²È«ÍË³ö£¡");
+				System.out.println("ç¨‹åºå·²å®‰å…¨é€€å‡ºï¼");
 				break;
 			}
-			// ½øÈëÍ¨ÓÃÖ¸ÁîÏµÍ³£»
+			// è¿›å…¥é€šç”¨æŒ‡ä»¤ç³»ç»Ÿï¼›
 			if (input.equalsIgnoreCase("$COMMON"))
 			{
 				TASK_TYPE = "$COMMON";
-				System.out.println("»¶Ó­½øÈëÍ¨ÓÃÖ¸ÁîÏµÍ³£¡");
+				System.out.println("æ¬¢è¿è¿›å…¥é€šç”¨æŒ‡ä»¤ç³»ç»Ÿï¼");
 				continue;
 			}
-			// ½øÈëËæ»úµ¥´ÊÏµÍ³£»
+			// è¿›å…¥éšæœºå•è¯ç³»ç»Ÿï¼›
 			if (input.equalsIgnoreCase("$WORD"))
 			{
-				// ¼ÇÂ¼µ±Ç°µÄÈÎÎñÀàĞÍ£»
+				// è®°å½•å½“å‰çš„ä»»åŠ¡ç±»å‹ï¼›
 				TASK_TYPE = "$WORD";
-				System.out.println("»¶Ó­½øÈëËæ»úµ¥´ÊÏµÍ³£¡");
+				System.out.println("æ¬¢è¿è¿›å…¥éšæœºå•è¯ç³»ç»Ÿï¼");
 				continue;
 			}
 
-			// ´¦ÀíGameGTDÏµÍ³Ö¸Áî£»
+			// å¤„ç†GameGTDç³»ç»ŸæŒ‡ä»¤ï¼›
 			if (input.matches("^(gtd|GTD){1}\\s+.+"))
 			{
 				GtdHelper.execute(input);
 				continue;
 			}
 
-			// ¿ªÊ¼£ºËæ»úµ¥´Ê£»
+			// å¼€å§‹ï¼šéšæœºå•è¯ï¼›
 			if ("$WORD".equalsIgnoreCase(TASK_TYPE) && TextHelper.isEmpty(input))
 			{
 				try
@@ -92,7 +97,7 @@ public class DosWindow
 					File wordFile = WordHelper.getRandomWordFile();
 					if (wordFile == null)
 					{
-						System.err.println("µ¥´ÊÄ¿Â¼Îª¿Õ£¡");
+						System.err.println("å•è¯ç›®å½•ä¸ºç©ºï¼");
 						continue;
 					}
 					Desktop.getDesktop().open(wordFile);
@@ -103,23 +108,29 @@ public class DosWindow
 				}
 				continue;
 			}
-			// ½áÊø£ºËæ»úµ¥´Ê£»
+			// ç»“æŸï¼šéšæœºå•è¯ï¼›
 
-			// ¿ªÊ¼£ºµ¥´Ê·­Òë¹¦ÄÜ£»
+			// å¼€å§‹ï¼šå•è¯ç¿»è¯‘åŠŸèƒ½ï¼›
 			if (input.startsWith("DICT "))
 			{
-				String word = input.replaceFirst("DICT ", "");
-				DictHelper.translate(word.trim());
+				try
+				{
+					String word = input.replaceFirst("DICT ", "");
+					DictHelper.translate(word.trim());
+				} catch (Exception e)
+				{
+					System.err.println(e.getMessage());
+				}
 				continue;
 			}
-			// ½áÊø£ºµ¥´Ê·­Òë¹¦ÄÜ£»
+			// ç»“æŸï¼šå•è¯ç¿»è¯‘åŠŸèƒ½ï¼›
 
-			// ¿ªÊ¼£º·¢ËÍÓÊ¼ş£»
+			// å¼€å§‹ï¼šå‘é€é‚®ä»¶ï¼›
 
 			if (input.equalsIgnoreCase(SEND_MAIL))
 			{
 				TASK_TYPE = SEND_MAIL;
-				System.out.println("ÇëÊäÈëÊÕ¼şÈË£º");
+				System.out.println("è¯·è¾“å…¥æ”¶ä»¶äººï¼š");
 				continue;
 			}
 
@@ -127,19 +138,19 @@ public class DosWindow
 			{
 				if (TextHelper.isEmpty(input))
 				{
-					System.out.println("ÄúÃ»ÓĞÊäÈëÈÎºÎÄÚÈİ¡£");
+					System.out.println("æ‚¨æ²¡æœ‰è¾“å…¥ä»»ä½•å†…å®¹ã€‚");
 					continue;
 				}
 				if (emailInfo.size() == 0)
 				{
 					emailInfo.put("receivers", input);
-					System.out.println("ÇëÊäÈëÓÊ¼ş±êÌâ£º");
+					System.out.println("è¯·è¾“å…¥é‚®ä»¶æ ‡é¢˜ï¼š");
 					continue;
 				}
 				if (emailInfo.size() == 1)
 				{
 					emailInfo.put("subject", input);
-					System.out.println("ÇëÊäÈëÓÊ¼şÕıÎÄ£º");
+					System.out.println("è¯·è¾“å…¥é‚®ä»¶æ­£æ–‡ï¼š");
 					continue;
 				}
 				if (emailInfo.size() == 2)
@@ -152,10 +163,10 @@ public class DosWindow
 						Writer writer = new PrintWriter(file);
 						emailInfo.store(writer, "Email Draft...");
 						writer.close();
-						System.out.println("ÊÕ¼şÈË£º" + emailInfo.getProperty("receivers"));
-						System.out.println("±êÌâ£º" + emailInfo.getProperty("subject"));
-						System.out.println("ÕıÎÄ£º" + emailInfo.getProperty("content"));
-						System.out.println("\nÒÑ±£´æ²İ¸å£¬ÊÇ·ñ·¢ËÍÓÊ¼ş(Y/N)?");
+						System.out.println("æ”¶ä»¶äººï¼š" + emailInfo.getProperty("receivers"));
+						System.out.println("æ ‡é¢˜ï¼š" + emailInfo.getProperty("subject"));
+						System.out.println("æ­£æ–‡ï¼š" + emailInfo.getProperty("content"));
+						System.out.println("\nå·²ä¿å­˜è‰ç¨¿ï¼Œæ˜¯å¦å‘é€é‚®ä»¶(Y/N)?");
 					} catch (IOException e)
 					{
 						System.err.println(e.getMessage());
@@ -164,13 +175,13 @@ public class DosWindow
 				}
 				if (input.equalsIgnoreCase("Y"))
 				{
-					System.out.println("ÕıÔÚ·¢ËÍÓÊ¼ş...");
+					System.out.println("æ­£åœ¨å‘é€é‚®ä»¶...");
 					try
 					{
 						MailHelper.getInstance().from("751850011@qq.com", "ynoqhtpvxmlibbbh")
 								.to(emailInfo.getProperty("receivers")).subject(emailInfo.getProperty("subject"))
 								.content(emailInfo.getProperty("content")).send(true);
-						System.out.println("ÓÊ¼ş·¢ËÍ³É¹¦...");
+						System.out.println("é‚®ä»¶å‘é€æˆåŠŸ...");
 					} catch (Exception e)
 					{
 						e.printStackTrace();
@@ -178,17 +189,17 @@ public class DosWindow
 					continue;
 				} else if (input.equalsIgnoreCase("N"))
 				{
-					System.out.println("ÓÊ¼şÎ´·¢ËÍ");
+					System.out.println("é‚®ä»¶æœªå‘é€");
 				} else
 				{
-					System.out.println("Ö¸Áî²»ÕıÈ·£¬ÇëÖØĞÂÊäÈë£º");
+					System.out.println("æŒ‡ä»¤ä¸æ­£ç¡®ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š");
 					continue;
 				}
 			}
 
-			// ½áÊø£º·¢ËÍÓÊ¼ş£»
+			// ç»“æŸï¼šå‘é€é‚®ä»¶ï¼›
 
-			// ´ò¿ª³ÌĞòµÄÅäÖÃÎÄ¼ş£»
+			// æ‰“å¼€ç¨‹åºçš„é…ç½®æ–‡ä»¶ï¼›
 			if ("$CONFIG".equalsIgnoreCase(input))
 			{
 				try
@@ -201,14 +212,14 @@ public class DosWindow
 				}
 				continue;
 			}
-			// ´ò¿ªMS-DOS´°¿Ú£»
+			// æ‰“å¼€MS-DOSçª—å£ï¼›
 			if (input.startsWith("RUN CMD"))
 			{
 				Desktop.getDesktop().open(new File("C:/Windows/system32/cmd.exe"));
 				continue;
 			}
 
-			// Ö´ĞĞÍ¨ÓÃÖ¸Áî£»
+			// æ‰§è¡Œé€šç”¨æŒ‡ä»¤ï¼›
 			commander.runTask(input);
 		}
 	}
