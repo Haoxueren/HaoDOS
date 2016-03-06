@@ -24,33 +24,21 @@ import com.haoxueren.helper.TextHelper;
 @SuppressWarnings("unchecked")
 public class GameGtd
 {
-	@Test
-	public void test() throws Exception
-	{
-		// String input = "$TODO 读书 #今天#学习#思想";
-		// listTask("TODO", "今天", "思想", "学习");
-		// addTask("$TODO 写日报#工作#学习");
-	}
-
 	/**
 	 * 添加一条待办事项；<br>
-	 * 指令格式：$GTD TODO TASK#TAG1#TAG2#TAG3...<br>
 	 */
 	public static void addTask(String statusText, String eventText, String... tagArray) throws Exception
 	{
-		File xmlFile = new File(Values.DATABASE, "gtd.xml");
 		// 获取XML文档根节点；
+		File xmlFile = new File(Values.DATABASE, "gtd.xml");
 		Document document = getDocument(xmlFile);
 		Element root = document.getRootElement();
 		// 添加任务节点；
 		Element task = root.addElement("task");
 		task.addAttribute("id", root.elements().size() + "");
-		// 添加任务创建时间；
-		Element createTime = task.addElement("createTime");
-		createTime.addText(new Date().toLocaleString());
 		// 添加任务当前状态；
 		Element status = task.addElement("status");
-		status.setText(statusText);
+		status.setText(statusText.toUpperCase());
 		// 添加任务内容；
 		Element event = task.addElement("event");
 		event.setText(eventText);
@@ -64,14 +52,68 @@ public class GameGtd
 				tag.setText(tagText);
 			}
 		}
+		// 添加任务创建时间；
+		Element createTime = task.addElement("TodoTime");
+		createTime.addText(new Date().toLocaleString());
 		// 将Document保存到本地XML；
 		storeXml(document, xmlFile);
+		System.out.println("ADD SUCCESS：" + statusText + "：" + eventText + " TAGS：" + Arrays.toString(tagArray));
+	}
+
+	/** 修改任务内容或状态； */
+	public static void updateTask(String id, String status, String event) throws Exception
+	{
+		File xmlFile = new File(Values.DATABASE, "gtd.xml");
+		Document document = getDocument(xmlFile);
+		Element rootElement = document.getRootElement();
+		List<Element> tasks = rootElement.elements("task");
+		for (Element task : tasks)
+		{
+			if (id.equals(task.attributeValue("id")))
+			{
+				// 更新任务内容；
+				if (TextHelper.notEmpty(event))
+				{
+					task.element("event").setText(event);
+				}
+				// 更新任务状态；
+				String localeTime = new Date().toLocaleString();
+				if ("TODO".equalsIgnoreCase(status))
+				{
+					task.element("status").setText("TODO");
+					getChildElement(task, "TodoTime").setText(localeTime);
+				} else if ("DOING".equalsIgnoreCase(status))
+				{
+					task.element("status").setText("DOING");
+					task.addElement("DoingTime").setText(localeTime);
+					getChildElement(task, "DoingTime").setText(localeTime);
+				} else if ("DONE".equalsIgnoreCase(status))
+				{
+					task.element("status").setText("DONE");
+					getChildElement(task, "DoneTime").setText(localeTime);
+				}
+			}
+		}
+		// 将Document保存到本地XML；
+		storeXml(document, xmlFile);
+		System.out.println("UPDATE SUCCESS：ID=" + id + " STATUS=" + status + " EVENT=" + event);
+	}
+
+	/** 获取对应名称的子节点，如果子节点不存在，就创建； */
+	private static Element getChildElement(Element task, String child)
+	{
+		Element element = task.element(child);
+		if (element == null)
+		{
+			return task.addElement(child);
+		} else
+		{
+			return element;
+		}
 	}
 
 	/**
 	 * 根据任务状态和标签查询任务；<br>
-	 * 任务状态：ALL,TODO,DOING DONE<br>
-	 * 指令格式：$LIST TODO #TAG1#TAG2#TAG3...
 	 */
 	public static void listTask(String status, String... tags) throws Exception
 	{
@@ -89,7 +131,7 @@ public class GameGtd
 			if (statusFlag && tagsFlag)
 			{
 				newTasks.add(task);
-				System.out.println(task.elementText("event"));
+				System.out.println(task.attributeValue("id") + "、" + task.elementText("event"));
 			}
 		}
 	}
@@ -107,7 +149,7 @@ public class GameGtd
 		if (TextHelper.notEmpty(status))
 		{
 			String taskStatus = task.element("status").getText();
-			if (status.equals(taskStatus))
+			if (status.equalsIgnoreCase(taskStatus))
 			{
 				return true;
 			}
@@ -128,7 +170,7 @@ public class GameGtd
 		String[] taskTags = new String[tagList.size()];
 		for (int i = 0; i < tagList.size(); i++)
 		{
-			taskTags[i] = tagList.get(i).getText();
+			taskTags[i] = tagList.get(i).getText().toUpperCase();
 		}
 		// 如果任务标签小于筛选标签，肯定不满足条件；
 		if (taskTags.length < tags.length)

@@ -1,8 +1,12 @@
 package com.haoxueren.helper;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Scanner;
 
-import org.junit.Test;
+import com.haoxueren.dos.MsdosHelper;
 
 /**
  * 2015年10月9日20:40:21<br>
@@ -137,10 +141,21 @@ public class CommandHelper
 	}
 
 	/** 执行用户录入的DOS请求； */
-	public Process executeDos() throws IOException
+	public void executeDos() throws Exception
 	{
 		String dos = order.replaceAll("(dos|DOS)\\s+", "");
-		Process process = Runtime.getRuntime().exec(dos);
-		return process;
+		Process process = Runtime.getRuntime().exec("cmd.exe /c " + dos);
+		InputStream inputStream = process.getInputStream();
+		InputStreamReader in = new InputStreamReader(inputStream);
+		BufferedReader reader = new BufferedReader(in);
+		String line = null;
+		while ((line = reader.readLine()) != null)
+		{
+			System.out.println(line);
+		}
+		process.waitFor();
+		inputStream.close();
+		reader.close();
+		process.destroy();
 	}
 }

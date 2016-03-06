@@ -15,6 +15,7 @@ import com.haoxueren.gtd.GameGtd;
 import com.haoxueren.gtd.GtdHelper;
 import com.haoxueren.helper.TextHelper;
 import com.haoxueren.mail.MailHelper;
+import com.haoxueren.word.DictHelper;
 import com.haoxueren.word.WordHelper;
 
 /**
@@ -46,6 +47,7 @@ public class DosWindow
 			}
 			// 接收用户录入的指令；
 			String input = scanner.nextLine().trim();
+			input = input.toUpperCase();
 			if (input.equalsIgnoreCase("$HELP"))
 			{
 				commander.printHelpInfo();
@@ -102,6 +104,15 @@ public class DosWindow
 				continue;
 			}
 			// 结束：随机单词；
+
+			// 开始：单词翻译功能；
+			if (input.startsWith("DICT "))
+			{
+				String word = input.replaceFirst("DICT ", "");
+				DictHelper.translate(word.trim());
+				continue;
+			}
+			// 结束：单词翻译功能；
 
 			// 开始：发送邮件；
 
@@ -190,6 +201,13 @@ public class DosWindow
 				}
 				continue;
 			}
+			// 打开MS-DOS窗口；
+			if (input.startsWith("RUN CMD"))
+			{
+				Desktop.getDesktop().open(new File("C:/Windows/system32/cmd.exe"));
+				continue;
+			}
+
 			// 执行通用指令；
 			commander.runTask(input);
 		}

@@ -1,10 +1,6 @@
 package com.haoxueren.mydos;
 
 import java.awt.Desktop;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,30 +11,27 @@ import javax.swing.filechooser.FileSystemView;
 import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.config.Keys;
 import com.haoxueren.config.Values;
+import com.haoxueren.dos.MsdosHelper;
 import com.haoxueren.helper.CommandHelper;
 import com.haoxueren.helper.FileHelper;
 import com.haoxueren.helper.FileUtils;
-import com.haoxueren.helper.TextHelper;
 import com.haoxueren.helper.FileUtils.FileHelperListener;
-import com.haoxueren.helper.ProcessHelper;
-import com.haoxueren.helper.ProcessHelper.ProcessHelperListener;
+import com.haoxueren.helper.TextHelper;
 import com.haoxueren.utils.PinYinUtils;
 import com.haoxueren.word.ClipBoardHelper;
 import com.haoxueren.word.WordHelper;
 
 /** 指挥官：负责执行具体的命令； */
-public class Commander implements FileHelperListener, ProcessHelperListener
+public class Commander implements FileHelperListener
 {
 	private File directory;
 	private String order;
 	private List<File> fileList;
 	private FileUtils fileHelper;
-	private ProcessHelper processHelper;
 	private CommandHelper commandHelper;
 
 	public Commander()
 	{
-		processHelper = new ProcessHelper(this);
 		commandHelper = new CommandHelper();
 		fileHelper = new FileUtils(this);
 		directory = new File(ConfigHelper.getConfig(Keys.SHORTCUTS, Values.SHORTCUTS));
@@ -81,13 +74,11 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 
 			if (order.equalsIgnoreCase("$INIT"))
 			{
-				// 初始化数据；
 				fileHelper.getFiles(directory);
 				return;
 			}
 			if (order.equalsIgnoreCase("$MOVE"))
 			{
-				// 整理桌面文件；
 				moveLnkFileExcept("Haoxueren.lnk");
 				fileHelper.getFiles(directory);
 			} else if (order.matches("\\s*"))
@@ -108,8 +99,11 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 				WordHelper.addWord(commandHelper.getEnglishWord().toLowerCase());
 			} else if (commandHelper.matchDosCommand())
 			{
-				Process process = commandHelper.executeDos();
-				processHelper.readProcess(process);
+				String dos = order.replaceAll("(dos|DOS)", "").trim();
+				Process process = Runtime.getRuntime().exec("cmd.exe /c " + dos);
+				MsdosHelper msdosHelper = new MsdosHelper(process);
+				msdosHelper.output();
+				msdosHelper.input("\n");
 			} else
 			{
 				String filename = order;
@@ -117,7 +111,7 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 			}
 		} catch (Exception e)
 		{
-			System.err.println("异常：" + e.getMessage());
+			System.out.println("数据初始化成功...");
 		}
 	}
 
@@ -142,7 +136,6 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 		return filterLlist;
 	}
 
-	/** 根据文件名打开文件； */
 	private void openFileByName(List<File> fileList, String filename)
 	{
 		try
@@ -182,13 +175,6 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 		System.out.println("数据初始化成功...");
 	}
 
-	/** 读取执行DOS命令所返回的信息； */
-	@Override
-	public void onReadLine(String line)
-	{
-		System.out.println(line);
-	}
-
 	// 获取到桌面的路径；
 	public void moveLnkFileExcept(String entrance) throws IOException
 	{
@@ -222,7 +208,6 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 				destFile = new File(ConfigHelper.getConfig(Keys.SHORTCUTS, Values.SHORTCUTS), file.getName());
 			} else
 			{
-				// 其它情况，移动到桌面文件目录；
 				System.out.println("正在移动桌面文件：" + file.getName());
 				destFile = new File(tempDir, file.getName());
 			}
@@ -235,5 +220,4 @@ public class Commander implements FileHelperListener, ProcessHelperListener
 			}
 		}
 	}
-
 }
