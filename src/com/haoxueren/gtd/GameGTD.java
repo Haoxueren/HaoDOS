@@ -1,15 +1,18 @@
 ﻿package com.haoxueren.gtd;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import org.dom4j.Document;
-import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
@@ -56,7 +59,7 @@ public class GameGtd
 		createTime.addText(new Date().toLocaleString());
 		// 将Document保存到本地XML；
 		storeXml(document, xmlFile);
-		System.out.println("add success：" + statusText + "：" + eventText + " TAGS：" + Arrays.toString(tagArray));
+		System.out.println("add success：" + statusText + " " + eventText + " TAGS=" + Arrays.toString(tagArray));
 	}
 
 	/** 修改任务内容或状态； */
@@ -169,20 +172,21 @@ public class GameGtd
 		}
 		// 如果有筛选标签，仅当任务标签集包括筛选标签集时，返回true；
 		List<Element> tagList = task.element("tags").elements("tag");
-		String[] taskTags = new String[tagList.size()];
+		String[] xmlTags = new String[tagList.size()];
 		for (int i = 0; i < tagList.size(); i++)
 		{
-			taskTags[i] = tagList.get(i).getText().toUpperCase();
+			xmlTags[i] = tagList.get(i).getText().toUpperCase();
 		}
 		// 如果任务标签小于筛选标签，肯定不满足条件；
-		if (taskTags.length < tags.length)
+		if (xmlTags.length < tags.length)
 		{
 			return false;
 		}
-		// 判断tagArray是否包含tags；
+		// 判断xmlTags是否全部包含tags；
 		for (String tag : tags)
 		{
-			int index = Arrays.binarySearch(taskTags, tag);
+			Arrays.sort(xmlTags);// 使用二分查找必须先对数组进行排序；
+			int index = Arrays.binarySearch(xmlTags, tag.toUpperCase());
 			if (index < 0)
 			{
 				return false;
@@ -196,7 +200,7 @@ public class GameGtd
 	 * 如果本地XML不存在，就在内在创建一个Document对象；<br>
 	 * Document对象默认的根节点为"GTD"。<br>
 	 */
-	private static Document getDocument(File xmlFile) throws DocumentException
+	private static Document getDocument(File xmlFile) throws Exception
 	{
 		if (!xmlFile.exists())
 		{
@@ -214,20 +218,25 @@ public class GameGtd
 		{
 			// 如果本地XML文件已存在，直接解析；
 			SAXReader saxReader = new SAXReader();
-			return saxReader.read(xmlFile);
+			// 以GBK编码读取XML文件；
+			InputStreamReader reader = new InputStreamReader(new FileInputStream(xmlFile), "UTF-8");
+			return saxReader.read(reader);
 		}
 	}
 
 	/**
 	 * 将Document序列化到本地XML文件中；<br>
-	 * XML文件默认为GBK编码；<br>
+	 * 默认为GBK编码；<br>
 	 */
 	private static void storeXml(Document document, File xmlFile) throws IOException
 	{
 		OutputFormat format = OutputFormat.createPrettyPrint();
-		format.setEncoding("GBK");
-		FileWriter fileWriter = new FileWriter(xmlFile);
-		XMLWriter writer = new XMLWriter(fileWriter, format);
+		// 内容编码设置为UTF-8；
+		format.setEncoding("UTF-8");
+		OutputStream outputStream = new FileOutputStream(xmlFile);
+		// 文件保存的编码也设置为UTF-8编码；
+		OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, "UTF-8");
+		XMLWriter writer = new XMLWriter(outputStreamWriter, format);
 		writer.write(document);
 		writer.close();
 	}

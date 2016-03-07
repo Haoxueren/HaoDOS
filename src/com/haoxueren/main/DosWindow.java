@@ -37,7 +37,6 @@ public class DosWindow
 	{
 		// 用来存储邮件信息的集合；
 		Properties emailInfo = new Properties();
-
 		Commander commander = new Commander();
 		Scanner scanner = new Scanner(System.in);
 		String titleMotto = ConfigHelper.getConfig(Keys.TITLE_MOTTO, Values.TITLE_MOTTO);
@@ -52,6 +51,7 @@ public class DosWindow
 			}
 			// 接收用户录入的指令；
 			String input = scanner.nextLine().trim();
+			// 将GBK编码转换为UTF-8编码；
 			input = input.toUpperCase();
 			if (input.equalsIgnoreCase("$HELP"))
 			{
