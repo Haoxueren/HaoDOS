@@ -1,13 +1,13 @@
-package com.haoxueren.word;
+ï»¿package com.haoxueren.word;
 
 import java.util.Random;
 
 /**
- * Ëæ»úÊıµÄ°ïÖúÀà£»
+ * éšæœºæ•°çš„å¸®åŠ©ç±»ï¼›
  */
 public class RandomHelper
 {
-	/** »ñÈ¡Ò»¸östart~end¼äµÄËæ»úÕûÊı£» */
+	/** è·å–ä¸€ä¸ªstart~endé—´çš„éšæœºæ•´æ•°ï¼› */
 	public static int getRandomInt(int start, int end)
 	{
 		int num = end - start;

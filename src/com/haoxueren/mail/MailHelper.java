@@ -1,10 +1,8 @@
-package com.haoxueren.mail;
+ï»¿package com.haoxueren.mail;
 
 import java.util.Properties;
 
-import javax.mail.Authenticator;
 import javax.mail.Message;
-import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -12,32 +10,32 @@ import javax.mail.internet.MimeMessage;
 
 import com.sun.mail.util.MailSSLSocketFactory;
 
-/** JavaMailµÄ°ïÖúÀà£» */
+/** JavaMailçš„å¸®åŠ©ç±»ï¼› */
 public class MailHelper
 {
 	public static void main(String[] args) throws Exception
 	{
 		MailHelper.getInstance().smtp("smtp.exmail.qq.com").from("haomingliang@letou360.com", "060e0f01")
-				.to("751850011@qq.com").subject("@letou360.com").content("ÕıÎÄ").send(true);
+				.to("751850011@qq.com").subject("@letou360.com").content("æ­£æ–‡").send(true);
 
 	}
 
 	private String smtp, email, password, receivers, subject, content;
 
-	/** »ñÈ¡µ±Ç°Àà¶ÔÏó£» */
+	/** è·å–å½“å‰ç±»å¯¹è±¡ï¼› */
 	public static MailHelper getInstance()
 	{
 		return new MailHelper();
 	}
 
-	/** SMTP HOST£» */
+	/** SMTP HOSTï¼› */
 	public MailHelper smtp(String smtp)
 	{
 		this.smtp = smtp;
 		return this;
 	}
 
-	/** ·¢¼şÈËĞÅÏ¢£» */
+	/** å‘ä»¶äººä¿¡æ¯ï¼› */
 	public MailHelper from(String email, String password)
 	{
 		this.email = email;
@@ -45,28 +43,28 @@ public class MailHelper
 		return this;
 	}
 
-	/** Èç¹ûÓĞ¶à¸öÊÕ¼şÈË£¬ÖĞ¼äÓÃÓ¢ÎÄ¶ººÅ·Ö¸ô£» */
+	/** å¦‚æœæœ‰å¤šä¸ªæ”¶ä»¶äººï¼Œä¸­é—´ç”¨è‹±æ–‡é€—å·åˆ†éš”ï¼› */
 	public MailHelper to(String receivers)
 	{
 		this.receivers = receivers;
 		return this;
 	}
 
-	/** ÓÊ¼şÖ÷Ìâ£» */
+	/** é‚®ä»¶ä¸»é¢˜ï¼› */
 	public MailHelper subject(String subject)
 	{
 		this.subject = subject;
 		return this;
 	}
 
-	/** ÓÊ¼şÕıÎÄ£» */
+	/** é‚®ä»¶æ­£æ–‡ï¼› */
 	public MailHelper content(String content)
 	{
 		this.content = content;
 		return this;
 	}
 
-	/** ÊÇ·ñ´òÓ¡·¢ËÍÈÕÖ¾£» */
+	/** æ˜¯å¦æ‰“å°å‘é€æ—¥å¿—ï¼› */
 	public void send(boolean debug) throws Exception
 	{
 		int at = email.indexOf("@");
@@ -76,51 +74,51 @@ public class MailHelper
 	}
 
 	/**
-	 * ·¢ËÍÓÊ¼ş£»
+	 * å‘é€é‚®ä»¶ï¼›
 	 * 
 	 * @param receiver
-	 *            ÓÊ¼ş½ÓÊÕÈË£¬Èç¹ûÓĞ¶à¸ö½ÓÊÕÕß£¬ÖĞ¼äÓÃ¶ººÅ¸ô¿ª£»
+	 *            é‚®ä»¶æ¥æ”¶äººï¼Œå¦‚æœæœ‰å¤šä¸ªæ¥æ”¶è€…ï¼Œä¸­é—´ç”¨é€—å·éš”å¼€ï¼›
 	 * @param subject
-	 *            ÓÊ¼ş±êÌâ£»
+	 *            é‚®ä»¶æ ‡é¢˜ï¼›
 	 * @param content
-	 *            ÓÊ¼şÕıÎÄ£»
+	 *            é‚®ä»¶æ­£æ–‡ï¼›
 	 * @param fromEmail
 	 * @param username
 	 */
 	public void sendEmail(String smtpHost, String fromEmail, String username, String password, String receivers,
 			String subject, String content, boolean debug) throws Exception
 	{
-		// ÅäÖÃÓÊ¼ş·şÎñÆ÷µÄ²ÎÊı£»
+		// é…ç½®é‚®ä»¶æœåŠ¡å™¨çš„å‚æ•°ï¼›
 		Properties properties = new Properties();
 		properties.put("mail.host", smtpHost);
 		properties.put("mail.transport.protocol", "smtp");
 		properties.put("mail.smtp.auth", "true");
-		// ·¢ËÍÓÊ¼şÊ±²ÉÓÃSSL¼ÓÃÜ£»
+		// å‘é€é‚®ä»¶æ—¶é‡‡ç”¨SSLåŠ å¯†ï¼›
 		MailSSLSocketFactory sslFactory = new MailSSLSocketFactory();
 		sslFactory.setTrustAllHosts(true);
 		properties.put("mail.smtp.ssl.enable", "true");
 		properties.put("mail.smtp.ssl.socketFactory", sslFactory);
-		// ´´½¨ÊÕ·¢ÓÊ¼şµÄSession£»
+		// åˆ›å»ºæ”¶å‘é‚®ä»¶çš„Sessionï¼›
 		Session session = Session.getInstance(properties);
-		// ´ò¿ªÈÕÖ¾£º´òÓ¡ÓÊ¼ş·¢ËÍ¹ı³ÌµÄ×´Ì¬ÈÕÖ¾£»
+		// æ‰“å¼€æ—¥å¿—ï¼šæ‰“å°é‚®ä»¶å‘é€è¿‡ç¨‹çš„çŠ¶æ€æ—¥å¿—ï¼›
 		session.setDebug(debug);
-		// »ñÈ¡Transport¶ÔÏó²¢Á¬½ÓÓÊ¼ş·şÎñÆ÷£»
+		// è·å–Transportå¯¹è±¡å¹¶è¿æ¥é‚®ä»¶æœåŠ¡å™¨ï¼›
 		Transport transport = session.getTransport();
 		transport.connect(smtpHost, username, password);
-		// ´´½¨ÓÊ¼ş¶ÔÏó
+		// åˆ›å»ºé‚®ä»¶å¯¹è±¡
 		MimeMessage message = new MimeMessage(session);
-		// Éè¶¨·¢¼şÈË£»
+		// è®¾å®šå‘ä»¶äººï¼›
 		message.setFrom(new InternetAddress(fromEmail));
-		// Éè¶¨ÊÕ¼şÈË(Ö§³Ö¶à¸öÊÕ¼şÈË£¬ÖĞ¼äÓÃÓ¢ÎÄ¶ººÅ¸ô¿ª)£»
+		// è®¾å®šæ”¶ä»¶äºº(æ”¯æŒå¤šä¸ªæ”¶ä»¶äººï¼Œä¸­é—´ç”¨è‹±æ–‡é€—å·éš”å¼€)ï¼›
 		InternetAddress[] addresses = InternetAddress.parse(receivers);
 		message.setRecipients(Message.RecipientType.TO, addresses);
-		// Éè¶¨ÓÊ¼ş±êÌâ£»
+		// è®¾å®šé‚®ä»¶æ ‡é¢˜ï¼›
 		message.setSubject(subject);
-		// Éè¶¨ÓÊ¼şÕıÎÄ£»
+		// è®¾å®šé‚®ä»¶æ­£æ–‡ï¼›
 		message.setContent(content, "text/html;charset=UTF-8");
-		// ·¢ËÍÓÊ¼ş£»
+		// å‘é€é‚®ä»¶ï¼›
 		transport.sendMessage(message, message.getAllRecipients());
-		// ¹Ø±ÕÁ¬½Ó£»
+		// å…³é—­è¿æ¥ï¼›
 		transport.close();
 	}
 

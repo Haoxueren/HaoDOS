@@ -1,15 +1,15 @@
-package com.haoxueren.config;
+ï»¿package com.haoxueren.config;
 
 public interface Values
 {
-	// Êı¾İ¿âÂ·¾¶£»
+	// æ•°æ®åº“è·¯å¾„ï¼›
 	String DATABASE = System.getProperty("user.dir") + "\\xml";
-	// ±£´æÁÙÊ±ÎÄ¼şµÄÄ¿Â¼£»
+	// ä¿å­˜ä¸´æ—¶æ–‡ä»¶çš„ç›®å½•ï¼›
 	String TEMP_DIR = System.getProperty("user.dir") + "\\temp_dir";
-	// ÃüÁîĞĞÄ¬ÈÏÕ¹Ê¾µÄÃûÑÔ¾¯¾ä£»
+	// å‘½ä»¤è¡Œé»˜è®¤å±•ç¤ºçš„åè¨€è­¦å¥ï¼›
 	String TITLE_MOTTO = System.getProperty("user.name", "Haoxueren");
-	// ±£´æ¿ì½İ·½Ê½µÄÄ¿Â¼£»
+	// ä¿å­˜å¿«æ·æ–¹å¼çš„ç›®å½•ï¼›
 	String SHORTCUTS = System.getProperty("user.dir") + "\\shortcuts";
-	// ±£´æµ¥´ÊÍ¼½âµÄÄ¿Â¼£»
+	// ä¿å­˜å•è¯å›¾è§£çš„ç›®å½•ï¼›
 	String WORDS_PATH = System.getProperty("user.dir") + "\\words_set";
 }

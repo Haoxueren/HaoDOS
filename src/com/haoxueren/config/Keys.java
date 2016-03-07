@@ -1,4 +1,4 @@
-package com.haoxueren.config;
+﻿package com.haoxueren.config;
 
 public interface Keys
 {

@@ -1,4 +1,4 @@
-package com.haoxueren.word;
+ï»¿package com.haoxueren.word;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
-
-import org.junit.Test;
 
 import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.config.Keys;
@@ -18,7 +16,7 @@ import com.haoxueren.helper.FileUtils;
 public class WordHelper
 {
 	private static String wrodsPath;
-	/** ÒÑ³éÈ¡µ¥´ÊµÄ¸öÊı£» */
+	/** å·²æŠ½å–å•è¯çš„ä¸ªæ•°ï¼› */
 	private static int index, loop = 29;
 
 	static
@@ -26,7 +24,7 @@ public class WordHelper
 		wrodsPath = ConfigHelper.getConfig(Keys.WORDS_PATH, Values.WORDS_PATH);
 	}
 
-	/** ³õÊ¼»¯´æ´¢ÎÄ¼şĞÅÏ¢µÄ¼¯ºÏ£» */
+	/** åˆå§‹åŒ–å­˜å‚¨æ–‡ä»¶ä¿¡æ¯çš„é›†åˆï¼› */
 	private static Map<Long, File> initFileMap()
 	{
 		Map<Long, File> fileInfoMap = new TreeMap<>();
@@ -38,17 +36,17 @@ public class WordHelper
 		File[] files = directory.listFiles();
 		for (File file : files)
 		{
-			// »ñÈ¡ÎÄ¼şµÄ×îºóĞŞ¸ÄÊ±¼ä£»
+			// è·å–æ–‡ä»¶çš„æœ€åä¿®æ”¹æ—¶é—´ï¼›
 			long lastModified = file.lastModified();
-			// ½«ÎÄ¼şĞÅÏ¢±£´æÔÚfileInfoMapÖĞ£»
+			// å°†æ–‡ä»¶ä¿¡æ¯ä¿å­˜åœ¨fileInfoMapä¸­ï¼›
 			fileInfoMap.put(lastModified, file);
 		}
 		return fileInfoMap;
 	}
 
 	/**
-	 * Ëã·¨£ºÎªÖª±Ê¼Ç2016.02.25£» ÒªÇó£ºindex<=loop<=sum£»<br>
-	 * °´¾Í½üÔ­Ôò(lastModifyTime)Ëæ»ú»ñÈ¡µ¥´Ê£»<br>
+	 * ç®—æ³•ï¼šä¸ºçŸ¥ç¬”è®°2016.02.25ï¼› è¦æ±‚ï¼šindex<=loop<=sumï¼›<br>
+	 * æŒ‰å°±è¿‘åŸåˆ™(lastModifyTime)éšæœºè·å–å•è¯ï¼›<br>
 	 */
 	public static File getRandomWordFile()
 	{
@@ -63,13 +61,13 @@ public class WordHelper
 		int random = RandomHelper.getRandomInt(start, sum);
 		Object time = objects[random];
 		File file = map.get(time);
-		System.out.print("[" + start + "~" + sum + "]¡ú" + index + "¡¢" + getWordName(file));
-		// Ñ­»·Ò»È¦ºó£¬³õÊ¼»¯index£»
+		System.out.println(index + "ã€" + getWordName(file));
+		// å¾ªç¯ä¸€åœˆåï¼Œåˆå§‹åŒ–indexï¼›
 		index = index == loop ? 0 : index;
 		return file;
 	}
 
-	/** ¸ù¾İÎÄ¼ş»ñÈ¡µ¥´ÊÃû£» */
+	/** æ ¹æ®æ–‡ä»¶è·å–å•è¯åï¼› */
 	public static String getWordName(File word)
 	{
 		String name = word.getName();
@@ -77,43 +75,43 @@ public class WordHelper
 	}
 
 	/**
-	 * @method ÊäÈëÎÄ¼şÃû£¬´ò¿ªÖ¸¶¨Ä¿Â¼ÏÂµÄ°üº¬¸ÃÎÄ¼şÃûµÄËùÓĞÎÄ¼ş£»
+	 * @method è¾“å…¥æ–‡ä»¶åï¼Œæ‰“å¼€æŒ‡å®šç›®å½•ä¸‹çš„åŒ…å«è¯¥æ–‡ä»¶åçš„æ‰€æœ‰æ–‡ä»¶ï¼›
 	 * @param wordsPath
-	 *            Òª²Ù×÷µÄÄ¿Â¼Â·¾¶£¬±¾³ÌĞòÖ§³Ö¶à¼¶Ä¿Â¼£»
+	 *            è¦æ“ä½œçš„ç›®å½•è·¯å¾„ï¼Œæœ¬ç¨‹åºæ”¯æŒå¤šçº§ç›®å½•ï¼›
 	 */
 	public static void addWord(String word) throws IOException
 	{
 		String wordTrim = word.trim();
 		if (wordTrim.length() <= 1)
 		{
-			throw new IllegalArgumentException("Ç×£¬ÄÚÈİÌ«ÉÙÁË°É£¡");
+			throw new IllegalArgumentException("äº²ï¼Œå†…å®¹å¤ªå°‘äº†å§ï¼");
 		}
-		// ·â×°Òª²éÑ¯µÄÄ¿Â¼£»
+		// å°è£…è¦æŸ¥è¯¢çš„ç›®å½•ï¼›
 		String word_dir = ConfigHelper.getConfig(Keys.WORDS_PATH, Values.WORDS_PATH);
 		File dir = new File(word_dir);
 		FileHelper.mkdirs(dir);
-		// ´´½¨Desktop¶ÔÏó£»
+		// åˆ›å»ºDesktopå¯¹è±¡ï¼›
 		Desktop desktop = Desktop.getDesktop();
-		// »ñÈ¡¸ÃÄ¿Â¼ÏÂËùÓĞÎÄ¼şµÄ¼¯ºÏ£¨Ö§³Ö¶à¼¶Ä¿Â¼£©£»
+		// è·å–è¯¥ç›®å½•ä¸‹æ‰€æœ‰æ–‡ä»¶çš„é›†åˆï¼ˆæ”¯æŒå¤šçº§ç›®å½•ï¼‰ï¼›
 		ArrayList<File> files = FileUtils.getDirsFiles(new ArrayList<File>(), dir);
 
-		// ±éÀú¼¯ºÏ£¬²éÑ¯·ûºÏÌõ¼şµÄÊı¾İ£»
+		// éå†é›†åˆï¼ŒæŸ¥è¯¢ç¬¦åˆæ¡ä»¶çš„æ•°æ®ï¼›
 		for (File file : files)
 		{
-			// ÅĞ¶ÏÎÄ¼şÃûÊÇ·ñ°üº¬ÊäÈëµÄÄÚÈİ£¬²»Çø·Ö´óĞ¡Ğ´£»
+			// åˆ¤æ–­æ–‡ä»¶åæ˜¯å¦åŒ…å«è¾“å…¥çš„å†…å®¹ï¼Œä¸åŒºåˆ†å¤§å°å†™ï¼›
 			if (file.getName().toLowerCase().contains(word.toLowerCase()))
 			{
-				// Èç¹û°üº¬£¬´ò¿ª¶ÔÓ¦µÄÎÄ¼ş£»
+				// å¦‚æœåŒ…å«ï¼Œæ‰“å¼€å¯¹åº”çš„æ–‡ä»¶ï¼›
 				desktop.edit(file);
-				System.out.println("ÎÄ¼ş " + file.getName().split("\\.")[0] + " ÒÑ´ò¿ª£¡");
+				System.out.println("æ–‡ä»¶ " + file.getName().split("\\.")[0] + " å·²æ‰“å¼€ï¼");
 				return;
 			}
 		}
-		// ÔÚµ¥´ÊÍ¼½âÄ¿Â¼ÏÂ´´½¨¸ÃÎÄ¼ş£»
+		// åœ¨å•è¯å›¾è§£ç›®å½•ä¸‹åˆ›å»ºè¯¥æ–‡ä»¶ï¼›
 		File file = new File(word_dir, word + ".png");
 		ImageHelper.createImage(file);
-		System.out.println(wordTrim + "ÒÑÌí¼Ó³É¹¦ £¡");
-		// ´ò¿ªÎÄ¼ş£»
+		System.out.println(wordTrim + "å·²æ·»åŠ æˆåŠŸ ï¼");
+		// æ‰“å¼€æ–‡ä»¶ï¼›
 		desktop.open(file);
 		desktop.edit(file);
 	}

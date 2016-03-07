@@ -1,10 +1,14 @@
-package com.haoxueren.dict;
+ï»¿package com.haoxueren.dict;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.util.Map.Entry;
@@ -25,73 +29,82 @@ public class DictHelper
 		translate("hello");
 	}
 
-	/** Ê¹ÓÃ°®´Ê°Ô·­ÒëÖ¸¶¨µÄµ¥´Ê£» */
+	/** ä½¿ç”¨çˆ±è¯éœ¸ç¿»è¯‘æŒ‡å®šçš„å•è¯ï¼› */
 	public static void translate(String word) throws Exception
 	{
 		if (TextHelper.isEmpty(word))
 		{
-			System.out.println("Òª²éÑ¯µÄµ¥´Ê²»¿ÉÎª¿Õ£¡");
+			System.out.println("è¦æŸ¥è¯¢çš„å•è¯ä¸å¯ä¸ºç©ºï¼");
 			return;
 		}
-		// ÒªÇëÇóµÄURLÂ·¾¶£»
+		File file = new File(System.getProperty("user.dir"), "dict.txt");
+		if (!file.exists())
+		{
+			file.createNewFile();
+		}
+		OutputStream out = new FileOutputStream(file);
+		OutputStreamWriter writer = new OutputStreamWriter(out, "UTF-8");
+		// è¦è¯·æ±‚çš„URLè·¯å¾„ï¼›
 		String lowerCaseWord = word.toLowerCase().trim();
-		String encode = URLEncoder.encode(lowerCaseWord, "GBK");
-		String url = "http://www.iciba.com/" + encode;
-		// »ñÈ¡¼ûÃæµÄDocument¶ÔÏó£»
+		String url = "http://www.iciba.com/" + lowerCaseWord;
+		// è·å–è§é¢çš„Documentå¯¹è±¡ï¼›
 		Document document = Jsoup.connect(url).get();
-		// ½âÎöµ¥´ÊµÄ(Ó¢/ÃÀ)·¢Òô£»
+		// è§£æå•è¯çš„(è‹±/ç¾)å‘éŸ³ï¼›
 		Elements voice = document.select("div.word-voice");
 		for (Element element : voice)
 		{
-			System.out.println(lowerCaseWord + "£º" + convert(element.text()));
+			writer.write(lowerCaseWord + "ï¼š" + element.text() + "\r\n");
 		}
-		// Èç¹ûword-voiceÃ»ÓĞÊı¾İ£¬´Óbase-speak±êÇ©»ñÈ¡£»
+		// å¦‚æœword-voiceæ²¡æœ‰æ•°æ®ï¼Œä»base-speakæ ‡ç­¾è·å–ï¼›
 		Elements speak = document.select("div.base-speak");
 		for (Element element : speak)
 		{
-			System.out.println(lowerCaseWord + "£º" + convert(element.text()));
+			writer.write(lowerCaseWord + "ï¼š" + element.text() + "\r\n");
 		}
-		// ½âÎöµ¥´ÊµÄÊÍÒå£»
+		// è§£æå•è¯çš„é‡Šä¹‰ï¼›
 		Element table = document.select("table").first();
 		Elements select = table.select("tr");
 		for (Element element : select)
 		{
-			System.out.println(element.text());
+			writer.write(element.text() + "\r\n");
+
 		}
-		// ½âÎöµ¥´ÊµÄ¸÷¸ö×´Ì¬´Ê£»
+		// è§£æå•è¯çš„å„ä¸ªçŠ¶æ€è¯ï¼›
 		Elements state = document.select("ul.word-state");
 		for (Element element : state)
 		{
-			System.out.println(element.text());
+			writer.write(element.text() + "\r\n");
 		}
-		System.out.println("-------------------------------");
+		writer.close();
+		Desktop.getDesktop().open(file);
 	}
 
-	/** ×ª»»°®´Ê°Ô²»¿ÉÊ¶±ğµÄµ¥´ÊÒô±ê£» */
-	public static String convert(String wordVoice) throws IOException
+	/** è½¬æ¢çˆ±è¯éœ¸ä¸å¯è¯†åˆ«çš„å•è¯éŸ³æ ‡ï¼› */
+	public String convert(String wordVoice) throws IOException
 	{
-		// ´ÓPropertiesÎÄ¼şÖĞ¼ÓÔØÒô±êÓ³Éä£»
+		// ä»Propertiesæ–‡ä»¶ä¸­åŠ è½½éŸ³æ ‡æ˜ å°„ï¼›
 		String path = System.getProperty("user.dir") + "/phonetic.properties";
 		File propertiesFile = new File(path);
 		if (!propertiesFile.exists())
 		{
 			propertiesFile.createNewFile();
 			PrintWriter writer = new PrintWriter(propertiesFile);
-			writer.write("# Ê×ÏÈ×¢ÊÍ£¬·ÀUTF-8 BOMÍ·Ó°Ïì£»");
+			writer.write("# é¦–å…ˆæ³¨é‡Šï¼Œé˜²UTF-8 BOMå¤´å½±å“ï¼›");
+			writer.close();
 		}
 		InputStream inputStream = new FileInputStream(propertiesFile);
 		Properties properties = new Properties();
-		// ±£³Ö±àÂëÒ»ÖÂ£»
+		// ä¿æŒç¼–ç ä¸€è‡´ï¼›
 		properties.load(new InputStreamReader(inputStream, "UTF-8"));
 		Set<Entry<Object, Object>> entrySet = properties.entrySet();
-		// Ìæ»»Òô±êÖĞµÄÌØÊâ×Ö·û£»
+		// æ›¿æ¢éŸ³æ ‡ä¸­çš„ç‰¹æ®Šå­—ç¬¦ï¼›
 		for (Entry<Object, Object> entry : entrySet)
 		{
 			String key = ((String) entry.getKey()).trim();
 			String value = ((String) entry.getValue()).trim();
 			wordVoice = wordVoice.replaceAll(key, value);
 		}
-		// ·µ»Ø´¦ÀíºóµÄÒô±ê£»
+		// è¿”å›å¤„ç†åçš„éŸ³æ ‡ï¼›
 		return wordVoice;
 	}
 }

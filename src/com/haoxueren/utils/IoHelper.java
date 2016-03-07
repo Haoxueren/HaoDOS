@@ -1,4 +1,4 @@
-package com.haoxueren.utils;
+ï»¿package com.haoxueren.utils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -8,12 +8,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * ÕâÊÇIOÁ÷ ×Ö½ÚÁ÷µÄ¹¤¾ßÀà£»
+ * è¿™æ˜¯IOæµ å­—èŠ‚æµçš„å·¥å…·ç±»ï¼›
  */
 public class IoHelper
 {
 	/**
-	 * ÕâÊÇÓÃÀ´¹Ø±ÕÊäÈëÁ÷µÄ·½·¨£»
+	 * è¿™æ˜¯ç”¨æ¥å…³é—­è¾“å…¥æµçš„æ–¹æ³•ï¼›
 	 */
 	public static void close(InputStream in)
 	{
@@ -30,7 +30,7 @@ public class IoHelper
 	}
 
 	/**
-	 * ÕâÊÇÓÃÀ´¹Ø±ÕÊä³öÁ÷µÄ·½·¨£»
+	 * è¿™æ˜¯ç”¨æ¥å…³é—­è¾“å‡ºæµçš„æ–¹æ³•ï¼›
 	 */
 	public static void close(OutputStream out)
 	{
@@ -48,11 +48,11 @@ public class IoHelper
 
 	/**
 	 * @method copy
-	 *         °ÑÊäÈëÁ÷¸´ÖÆµ½Êä³öÁ÷ÖĞ£»
+	 *         æŠŠè¾“å…¥æµå¤åˆ¶åˆ°è¾“å‡ºæµä¸­ï¼›
 	 * @param inStream
-	 *            ÊäÈëÁ÷£»
+	 *            è¾“å…¥æµï¼›
 	 * @param outStream
-	 *            Êä³öÁ÷£»
+	 *            è¾“å‡ºæµï¼›
 	 */
 	public static void copy(InputStream inStream, OutputStream outStream)
 	{
@@ -80,14 +80,14 @@ public class IoHelper
 
 	/**
 	 * @author
-	 *         Ã¿ÌìÔÄ¶Á1Ğ¡Ê±×¨ÒµÊé¼®
+	 *         æ¯å¤©é˜…è¯»1å°æ—¶ä¸“ä¸šä¹¦ç±
 	 * @method toString
-	 *         ´Ë·½·¨ÓÃÓÚ°ÑÊäÈëÁ÷ÖĞµÄÊı¾İ×ª»¯ÎªUTF-8±àÂëµÄ×Ö·û´®£»
+	 *         æ­¤æ–¹æ³•ç”¨äºæŠŠè¾“å…¥æµä¸­çš„æ•°æ®è½¬åŒ–ä¸ºUTF-8ç¼–ç çš„å­—ç¬¦ä¸²ï¼›
 	 * @param inStream
-	 *            Òª×ª»¯µÄÊäÈëÁ÷£»
+	 *            è¦è½¬åŒ–çš„è¾“å…¥æµï¼›
 	 * @return
-	 *         ¸ÃÊäÈëÁ÷ÄÚÈİµÄ×Ö·û´®¶ÔÏó£»
-	 *         ¸Ã·½·¨Î´²âÊÔ£»
+	 *         è¯¥è¾“å…¥æµå†…å®¹çš„å­—ç¬¦ä¸²å¯¹è±¡ï¼›
+	 *         è¯¥æ–¹æ³•æœªæµ‹è¯•ï¼›
 	 */
 	public static String toString(InputStream inStream)
 	{
@@ -95,16 +95,16 @@ public class IoHelper
 		try
 		{
 			bis = new BufferedInputStream(inStream);
-			// ´´½¨Ò»¸ö×Ö½ÚÊı×éÊä³öÁ÷£¬ÓÃÀ´½ÓÊÕÊäÈëÁ÷ÖĞµÄÊı¾İ£»
+			// åˆ›å»ºä¸€ä¸ªå­—èŠ‚æ•°ç»„è¾“å‡ºæµï¼Œç”¨æ¥æ¥æ”¶è¾“å…¥æµä¸­çš„æ•°æ®ï¼›
 			ByteArrayOutputStream aos = new ByteArrayOutputStream();
 			byte[] bys = new byte[1024];
 			int len = 0;
 			while ((len = bis.read(bys)) != -1)
 			{
-				// ½«ÊäÈëÁ÷µÄµÄÊı¾İĞ´Èë×Ö½ÚÊı×éÊä³öÁ÷£»
+				// å°†è¾“å…¥æµçš„çš„æ•°æ®å†™å…¥å­—èŠ‚æ•°ç»„è¾“å‡ºæµï¼›
 				aos.write(bys, 0, len);
 			}
-			// ½«×Ö½ÚÊı×éÊä³öÁ÷ÖĞµÄÊı¾İ×ª»¯ÎªUTF-8±àÂëµÄ×Ö·û´®£»
+			// å°†å­—èŠ‚æ•°ç»„è¾“å‡ºæµä¸­çš„æ•°æ®è½¬åŒ–ä¸ºUTF-8ç¼–ç çš„å­—ç¬¦ä¸²ï¼›
 			String string = aos.toString("UTF-8");
 			return string;
 		} catch (IOException e)
@@ -118,12 +118,12 @@ public class IoHelper
 
 	/**
 	 * @method toString
-	 *         ´Ë·½·¨ÓÃÓÚ°ÑÊäÈëÁ÷ÖĞµÄÊı¾İ×ª»¯ÎªÖ¸¶¨±àÂëµÄ×Ö·û´®£»
+	 *         æ­¤æ–¹æ³•ç”¨äºæŠŠè¾“å…¥æµä¸­çš„æ•°æ®è½¬åŒ–ä¸ºæŒ‡å®šç¼–ç çš„å­—ç¬¦ä¸²ï¼›
 	 * @param inStream
-	 *            Òª×ª»¯µÄÊäÈëÁ÷£»
+	 *            è¦è½¬åŒ–çš„è¾“å…¥æµï¼›
 	 * @return
-	 *         ¸ÃÊäÈëÁ÷ÄÚÈİµÄ×Ö·û´®¶ÔÏó£»
-	 *         ¸Ã·½·¨Î´²âÊÔ£»
+	 *         è¯¥è¾“å…¥æµå†…å®¹çš„å­—ç¬¦ä¸²å¯¹è±¡ï¼›
+	 *         è¯¥æ–¹æ³•æœªæµ‹è¯•ï¼›
 	 */
 	public static String toString(InputStream inStream, String charset)
 	{
@@ -131,16 +131,16 @@ public class IoHelper
 		try
 		{
 			bis = new BufferedInputStream(inStream);
-			// ´´½¨Ò»¸ö×Ö½ÚÊı×éÊä³öÁ÷£¬ÓÃÀ´½ÓÊÕÊäÈëÁ÷ÖĞµÄÊı¾İ£»
+			// åˆ›å»ºä¸€ä¸ªå­—èŠ‚æ•°ç»„è¾“å‡ºæµï¼Œç”¨æ¥æ¥æ”¶è¾“å…¥æµä¸­çš„æ•°æ®ï¼›
 			ByteArrayOutputStream aos = new ByteArrayOutputStream();
 			byte[] bys = new byte[1024];
 			int len = 0;
 			while ((len = bis.read(bys)) != -1)
 			{
-				// ½«ÊäÈëÁ÷µÄµÄÊı¾İĞ´Èë×Ö½ÚÊı×éÊä³öÁ÷£»
+				// å°†è¾“å…¥æµçš„çš„æ•°æ®å†™å…¥å­—èŠ‚æ•°ç»„è¾“å‡ºæµï¼›
 				aos.write(bys, 0, len);
 			}
-			// ½«×Ö½ÚÊı×éÊä³öÁ÷ÖĞµÄÊı¾İ×ª»¯ÎªUTF-8±àÂëµÄ×Ö·û´®£»
+			// å°†å­—èŠ‚æ•°ç»„è¾“å‡ºæµä¸­çš„æ•°æ®è½¬åŒ–ä¸ºUTF-8ç¼–ç çš„å­—ç¬¦ä¸²ï¼›
 			String string = aos.toString(charset);
 			return string;
 		} catch (IOException e)

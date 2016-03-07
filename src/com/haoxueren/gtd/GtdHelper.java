@@ -1,18 +1,13 @@
-package com.haoxueren.gtd;
+ï»¿package com.haoxueren.gtd;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.junit.Test;
-
-import com.haoxueren.helper.TextHelper;
-
 public class GtdHelper
 {
-	/** Ö´ĞĞÓÃ»§Â¼ÈëµÄGTDÖ¸Áî£» */
+	/** æ‰§è¡Œç”¨æˆ·å½•å…¥çš„GTDæŒ‡ä»¤ï¼› */
 	public static void execute(String input) throws Exception
 	{
 		GtdParser parser = new GtdParser(input);
@@ -31,19 +26,19 @@ public class GtdHelper
 		case "gtd delete task":
 			break;
 		default:
-			System.out.println("ÎŞ·¨Ê¶±ğµÄÖ¸Áî£¡");
+			System.out.println("æ— æ³•è¯†åˆ«çš„æŒ‡ä»¤ï¼");
 			break;
 		}
 
 	}
 
-	/** ½âÎöÖ¸ÁîÍ·ĞÅÏ¢£» */
+	/** è§£ææŒ‡ä»¤å¤´ä¿¡æ¯ï¼› */
 	public static void getHeader(String input)
 	{
-		input.split("(£º|:)");
+		input.split("(ï¼š|:)");
 	}
 
-	/** »ñÈ¡ÄÚÈİÖĞÆ¥ÅäÕıÔòµÄµÚÒ»¸öÆ¬¶Î£» */
+	/** è·å–å†…å®¹ä¸­åŒ¹é…æ­£åˆ™çš„ç¬¬ä¸€ä¸ªç‰‡æ®µï¼› */
 	public static String getFirstMatchedText(String input, String regex)
 	{
 		Pattern pattern = Pattern.compile(regex);
@@ -56,7 +51,7 @@ public class GtdHelper
 		return null;
 	}
 
-	/** »ñÈ¡ÄÚÈİÖĞÆ¥ÅäÕıÔòµÄËùÓĞÆ¬¶Î£» */
+	/** è·å–å†…å®¹ä¸­åŒ¹é…æ­£åˆ™çš„æ‰€æœ‰ç‰‡æ®µï¼› */
 	public static List<String> getAllMatchedText(String input, String regex)
 	{
 		List<String> list = new ArrayList<>();

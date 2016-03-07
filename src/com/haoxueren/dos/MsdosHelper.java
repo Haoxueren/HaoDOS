@@ -1,4 +1,4 @@
-package com.haoxueren.dos;
+ï»¿package com.haoxueren.dos;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-/** Window DosÃüÁîµÄ°ïÖúÀà£» */
+/** Window Doså‘½ä»¤çš„å¸®åŠ©ç±»ï¼› */
 public class MsdosHelper
 {
 	private Process process;
@@ -16,7 +16,7 @@ public class MsdosHelper
 		this.process = process;
 	}
 
-	/** Ö´ĞĞDOSÃüÁî²¢Êä³öĞÅÏ¢£» */
+	/** æ‰§è¡ŒDOSå‘½ä»¤å¹¶è¾“å‡ºä¿¡æ¯ï¼› */
 	public void output() throws Exception
 	{
 		new Thread()
@@ -25,10 +25,10 @@ public class MsdosHelper
 			{
 				try
 				{
-					// ¶ÁÈ¡DOSÃüÁî·µ»ØµÄĞÅÏ¢£»
+					// è¯»å–DOSå‘½ä»¤è¿”å›çš„ä¿¡æ¯ï¼›
 					InputStream inputStream = process.getInputStream();
 					InputStreamReader reader = new InputStreamReader(inputStream);
-					// °ÑÁ÷ÖĞµÄĞÅÏ¢Êä³öµ½¿ØÖÆÌ¨£»
+					// æŠŠæµä¸­çš„ä¿¡æ¯è¾“å‡ºåˆ°æ§åˆ¶å°ï¼›
 					char[] buffer = new char[1024];
 					int len = reader.read(buffer);
 					while (len != -1)
@@ -38,7 +38,7 @@ public class MsdosHelper
 					}
 					reader.close();
 					process.destroy();
-					System.out.println("DOS FINISHED£¡");
+					System.out.println("DOS FINISHEDï¼");
 				} catch (IOException e)
 				{
 					e.printStackTrace();
@@ -47,7 +47,7 @@ public class MsdosHelper
 		}.start();
 	}
 
-	/** ÊäÈëĞÅÏ¢µ½DOSÃüÁî£» */
+	/** è¾“å…¥ä¿¡æ¯åˆ°DOSå‘½ä»¤ï¼› */
 	public void input(String input)
 	{
 		PrintWriter writer = new PrintWriter(process.getOutputStream());

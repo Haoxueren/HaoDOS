@@ -1,4 +1,4 @@
-package com.haoxueren.config;
+ï»¿package com.haoxueren.config;
 
 import java.io.File;
 import java.io.FileReader;
@@ -12,27 +12,27 @@ import org.junit.Test;
 import com.haoxueren.helper.FileHelper;
 
 /**
- * ³ÌĞòµÄÅäÖÃÎÄ¼ş¹ÜÀíÀà£»<br>
- * Ö§³Ö´Ó±¾µØÅäÖÃÎÄ¼şÖĞ¶ÁÈ¡Êı¾İ£»<br>
+ * ç¨‹åºçš„é…ç½®æ–‡ä»¶ç®¡ç†ç±»ï¼›<br>
+ * æ”¯æŒä»æœ¬åœ°é…ç½®æ–‡ä»¶ä¸­è¯»å–æ•°æ®ï¼›<br>
  */
 public class ConfigHelper
 {
 	/**
-	 * »ñÈ¡µ¥´ÊÍ¼Æ¬ËùÔÚµÄÄ¿Â¼£»<br>
-	 * ÏÈ´Ó±¾µØ¶ÁÈ¡£¬Èç¹û±¾µØÃ»ÓĞ£¬ÔòÊ¹ÓÃÄ¬ÈÏÖµ£»<br>
-	 * ´Ó±¾µØÊôĞÔÎÄ¼şÖĞ¶ÁÈ¡ÅäÖÃÊı¾İ£»
+	 * è·å–å•è¯å›¾ç‰‡æ‰€åœ¨çš„ç›®å½•ï¼›<br>
+	 * å…ˆä»æœ¬åœ°è¯»å–ï¼Œå¦‚æœæœ¬åœ°æ²¡æœ‰ï¼Œåˆ™ä½¿ç”¨é»˜è®¤å€¼ï¼›<br>
+	 * ä»æœ¬åœ°å±æ€§æ–‡ä»¶ä¸­è¯»å–é…ç½®æ•°æ®ï¼›
 	 */
 	public static String getConfig(String key, String defaultValue)
 	{
 		try
 		{
-			// ¶ÁÈ¡±¾µØµÄÅäÖÃÎÄ¼ş£»
+			// è¯»å–æœ¬åœ°çš„é…ç½®æ–‡ä»¶ï¼›
 			File file = new File(FileHelper.getCurrentDir(), "configure.properties");
-			// Properties extends Hashtable£»
+			// Properties extends Hashtableï¼›
 			Properties properties = new Properties();
 			if (file.exists())
 			{
-				// ÎÄ¼ş´æÔÚ£º¶ÁÈ¡ÎÄ¼şÖĞµÄÊı¾İ£»
+				// æ–‡ä»¶å­˜åœ¨ï¼šè¯»å–æ–‡ä»¶ä¸­çš„æ•°æ®ï¼›
 				Reader reader = new FileReader(file);
 				properties.load(reader);
 				String value = (String) properties.get(key);
@@ -48,7 +48,7 @@ public class ConfigHelper
 				return value;
 			} else
 			{
-				// ÎÄ¼ş²»´æÔÚ£º´´½¨ÎÄ¼ş²¢Ğ´ÈëÄ¬ÈÏÊı¾İ£»
+				// æ–‡ä»¶ä¸å­˜åœ¨ï¼šåˆ›å»ºæ–‡ä»¶å¹¶å†™å…¥é»˜è®¤æ•°æ®ï¼›
 				file.createNewFile();
 				properties.put(key, defaultValue);
 				Writer writer = new PrintWriter(file);
@@ -58,7 +58,7 @@ public class ConfigHelper
 			}
 		} catch (Exception e)
 		{
-			System.err.println("Òì³£ĞÅÏ¢£º" + e.getMessage());
+			System.err.println("å¼‚å¸¸ä¿¡æ¯ï¼š" + e.getMessage());
 			return null;
 		}
 	}

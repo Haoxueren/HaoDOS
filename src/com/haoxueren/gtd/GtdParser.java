@@ -1,32 +1,31 @@
-package com.haoxueren.gtd;
+ï»¿package com.haoxueren.gtd;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** GTDÖ¸Áî½âÎöÆ÷£» */
+/** GTDæŒ‡ä»¤è§£æå™¨ï¼› */
 public class GtdParser
 {
 	private String[] array;
 
 	public GtdParser(String input)
 	{
-		array = input.toLowerCase().split("(£º|:)");
+		array = input.toLowerCase().split("(ï¼š|:)");
 	}
 
-	/** »ñÈ¡ÃüÁîÍ·ĞÅÏ¢£» */
+	/** è·å–å‘½ä»¤å¤´ä¿¡æ¯ï¼› */
 	public String getAction()
 	{
 		return array[0].trim();
 	}
 
-	/** »ñÈ¡Ö¸ÁîÖĞµÄ¼üÖµ¶ÔĞÅÏ¢£» */
+	/** è·å–æŒ‡ä»¤ä¸­çš„é”®å€¼å¯¹ä¿¡æ¯ï¼› */
 	private Map<String, String> getPairs()
 	{
 		Map<String, String> map = new HashMap<>();
 		if (array.length == 2)
 		{
-			String[] pairs = array[1].split("(£¬|,)");
+			String[] pairs = array[1].split("(ï¼Œ|,)");
 			for (String pairText : pairs)
 			{
 				String[] pair = pairText.split("=");
@@ -36,20 +35,20 @@ public class GtdParser
 		return map;
 	}
 
-	/** »ñÈ¡ÊÂ¼ş£» */
+	/** è·å–äº‹ä»¶ï¼› */
 	public String getEvent()
 	{
 		return getPairs().get("event");
 	}
 
-	/** »ñÈ¡ÈÎÎñµÄ×´Ì¬£» */
+	/** è·å–ä»»åŠ¡çš„çŠ¶æ€ï¼› */
 	public String getStatus(String defaultValue)
 	{
 		String status = getPairs().get("status");
 		return status == null ? defaultValue : status;
 	}
 
-	/** »ñÈ¡ÈÎÎñ±êÇ©£» */
+	/** è·å–ä»»åŠ¡æ ‡ç­¾ï¼› */
 	public String[] getTags()
 	{
 		String tagPair = getPairs().get("tag");
@@ -61,7 +60,7 @@ public class GtdParser
 		return tagPair.split("\\s+");
 	}
 
-	/** »ñÈ¡ÈÎÎñµÄid£» */
+	/** è·å–ä»»åŠ¡çš„idï¼› */
 	public String getId()
 	{
 		return getPairs().get("id");

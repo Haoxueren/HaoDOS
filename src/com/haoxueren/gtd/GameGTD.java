@@ -1,4 +1,4 @@
-package com.haoxueren.gtd;
+ï»¿package com.haoxueren.gtd;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -20,29 +20,29 @@ import org.junit.Test;
 import com.haoxueren.config.Values;
 import com.haoxueren.helper.TextHelper;
 
-/** »ùÓÚÓÎÏ·Ô­ÀíÉè¼ÆµÄGTDÏµÍ³£» */
+/** åŸºäºæ¸¸æˆåŸç†è®¾è®¡çš„GTDç³»ç»Ÿï¼› */
 @SuppressWarnings("unchecked")
 public class GameGtd
 {
 	/**
-	 * Ìí¼ÓÒ»Ìõ´ı°ìÊÂÏî£»<br>
+	 * æ·»åŠ ä¸€æ¡å¾…åŠäº‹é¡¹ï¼›<br>
 	 */
 	public static void addTask(String statusText, String eventText, String... tagArray) throws Exception
 	{
-		// »ñÈ¡XMLÎÄµµ¸ù½Úµã£»
+		// è·å–XMLæ–‡æ¡£æ ¹èŠ‚ç‚¹ï¼›
 		File xmlFile = new File(Values.DATABASE, "gtd.xml");
 		Document document = getDocument(xmlFile);
 		Element root = document.getRootElement();
-		// Ìí¼ÓÈÎÎñ½Úµã£»
+		// æ·»åŠ ä»»åŠ¡èŠ‚ç‚¹ï¼›
 		Element task = root.addElement("task");
 		task.addAttribute("id", root.elements().size() + "");
-		// Ìí¼ÓÈÎÎñµ±Ç°×´Ì¬£»
+		// æ·»åŠ ä»»åŠ¡å½“å‰çŠ¶æ€ï¼›
 		Element status = task.addElement("status");
 		status.setText(statusText.toUpperCase());
-		// Ìí¼ÓÈÎÎñÄÚÈİ£»
+		// æ·»åŠ ä»»åŠ¡å†…å®¹ï¼›
 		Element event = task.addElement("event");
 		event.setText(eventText);
-		// Ìí¼ÓÈÎÎñ±êÇ©£»
+		// æ·»åŠ ä»»åŠ¡æ ‡ç­¾ï¼›
 		Element tags = task.addElement("tags");
 		for (String tagText : tagArray)
 		{
@@ -52,15 +52,15 @@ public class GameGtd
 				tag.setText(tagText);
 			}
 		}
-		// Ìí¼ÓÈÎÎñ´´½¨Ê±¼ä£»
+		// æ·»åŠ ä»»åŠ¡åˆ›å»ºæ—¶é—´ï¼›
 		Element createTime = task.addElement("TodoTime");
 		createTime.addText(new Date().toLocaleString());
-		// ½«Document±£´æµ½±¾µØXML£»
+		// å°†Documentä¿å­˜åˆ°æœ¬åœ°XMLï¼›
 		storeXml(document, xmlFile);
-		System.out.println("ADD SUCCESS£º" + statusText + "£º" + eventText + " TAGS£º" + Arrays.toString(tagArray));
+		System.out.println("ADD SUCCESSï¼š" + statusText + "ï¼š" + eventText + " TAGSï¼š" + Arrays.toString(tagArray));
 	}
 
-	/** ĞŞ¸ÄÈÎÎñÄÚÈİ»ò×´Ì¬£» */
+	/** ä¿®æ”¹ä»»åŠ¡å†…å®¹æˆ–çŠ¶æ€ï¼› */
 	public static void updateTask(String id, String status, String event) throws Exception
 	{
 		File xmlFile = new File(Values.DATABASE, "gtd.xml");
@@ -71,12 +71,12 @@ public class GameGtd
 		{
 			if (id.equals(task.attributeValue("id")))
 			{
-				// ¸üĞÂÈÎÎñÄÚÈİ£»
+				// æ›´æ–°ä»»åŠ¡å†…å®¹ï¼›
 				if (TextHelper.notEmpty(event))
 				{
 					task.element("event").setText(event);
 				}
-				// ¸üĞÂÈÎÎñ×´Ì¬£»
+				// æ›´æ–°ä»»åŠ¡çŠ¶æ€ï¼›
 				String localeTime = new Date().toLocaleString();
 				if ("TODO".equalsIgnoreCase(status))
 				{
@@ -94,12 +94,12 @@ public class GameGtd
 				}
 			}
 		}
-		// ½«Document±£´æµ½±¾µØXML£»
+		// å°†Documentä¿å­˜åˆ°æœ¬åœ°XMLï¼›
 		storeXml(document, xmlFile);
-		System.out.println("UPDATE SUCCESS£ºID=" + id + " STATUS=" + status + " EVENT=" + event);
+		System.out.println("UPDATE SUCCESSï¼šID=" + id + " STATUS=" + status + " EVENT=" + event);
 	}
 
-	/** »ñÈ¡¶ÔÓ¦Ãû³ÆµÄ×Ó½Úµã£¬Èç¹û×Ó½Úµã²»´æÔÚ£¬¾Í´´½¨£» */
+	/** è·å–å¯¹åº”åç§°çš„å­èŠ‚ç‚¹ï¼Œå¦‚æœå­èŠ‚ç‚¹ä¸å­˜åœ¨ï¼Œå°±åˆ›å»ºï¼› */
 	private static Element getChildElement(Element task, String child)
 	{
 		Element element = task.element(child);
@@ -113,7 +113,7 @@ public class GameGtd
 	}
 
 	/**
-	 * ¸ù¾İÈÎÎñ×´Ì¬ºÍ±êÇ©²éÑ¯ÈÎÎñ£»<br>
+	 * æ ¹æ®ä»»åŠ¡çŠ¶æ€å’Œæ ‡ç­¾æŸ¥è¯¢ä»»åŠ¡ï¼›<br>
 	 */
 	public static void listTask(String status, String... tags) throws Exception
 	{
@@ -121,24 +121,24 @@ public class GameGtd
 		Document document = getDocument(xmlFile);
 		Element rootElement = document.getRootElement();
 		List<Element> newTasks = new ArrayList<>();
-		// »ñÈ¡ËùÓĞÈÎÎñ½Úµã£»
+		// è·å–æ‰€æœ‰ä»»åŠ¡èŠ‚ç‚¹ï¼›
 		List<Element> tasks = rootElement.elements("task");
 		for (Element task : tasks)
 		{
-			// ÅĞ¶ÏÈÎÎñµÄ×´Ì¬ÊÇ·ñ·ûºÏ²éÑ¯Ìõ¼ş£»
+			// åˆ¤æ–­ä»»åŠ¡çš„çŠ¶æ€æ˜¯å¦ç¬¦åˆæŸ¥è¯¢æ¡ä»¶ï¼›
 			boolean statusFlag = checkStatus(task, status);
 			boolean tagsFlag = checkTags(task, tags);
 			if (statusFlag && tagsFlag)
 			{
 				newTasks.add(task);
-				System.out.println(task.attributeValue("id") + "¡¢" + task.elementText("event"));
+				System.out.println(task.attributeValue("id") + "ã€" + task.elementText("event"));
 			}
 		}
 	}
 
-	/*********************** ¡¾ÒÔÏÂÊÇ·â×°·½·¨Çø¡¿ ***********************/
+	/*********************** ã€ä»¥ä¸‹æ˜¯å°è£…æ–¹æ³•åŒºã€‘ ***********************/
 
-	/** ÅĞ¶ÏÈÎÎñµÄ×´Ì¬ÊÇ·ñÂú×ãÌõ¼ş£» */
+	/** åˆ¤æ–­ä»»åŠ¡çš„çŠ¶æ€æ˜¯å¦æ»¡è¶³æ¡ä»¶ï¼› */
 	private static boolean checkStatus(Element task, String status)
 	{
 		if (TextHelper.isEmpty(status))
@@ -157,27 +157,27 @@ public class GameGtd
 		return false;
 	}
 
-	/** ¼ì²éÈÎÎñµÄ±êÇ©ÊÇ·ñÂú×ãÌõ¼ş£» */
+	/** æ£€æŸ¥ä»»åŠ¡çš„æ ‡ç­¾æ˜¯å¦æ»¡è¶³æ¡ä»¶ï¼› */
 	private static boolean checkTags(Element task, String... tags)
 	{
-		// Èç¹ûÃ»ÓĞÉ¸Ñ¡±êÇ©£¬·µ»Øtrue£»
+		// å¦‚æœæ²¡æœ‰ç­›é€‰æ ‡ç­¾ï¼Œè¿”å›trueï¼›
 		if (tags == null || tags.length == 0)
 		{
 			return true;
 		}
-		// Èç¹ûÓĞÉ¸Ñ¡±êÇ©£¬½öµ±ÈÎÎñ±êÇ©¼¯°üÀ¨É¸Ñ¡±êÇ©¼¯Ê±£¬·µ»Øtrue£»
+		// å¦‚æœæœ‰ç­›é€‰æ ‡ç­¾ï¼Œä»…å½“ä»»åŠ¡æ ‡ç­¾é›†åŒ…æ‹¬ç­›é€‰æ ‡ç­¾é›†æ—¶ï¼Œè¿”å›trueï¼›
 		List<Element> tagList = task.element("tags").elements("tag");
 		String[] taskTags = new String[tagList.size()];
 		for (int i = 0; i < tagList.size(); i++)
 		{
 			taskTags[i] = tagList.get(i).getText().toUpperCase();
 		}
-		// Èç¹ûÈÎÎñ±êÇ©Ğ¡ÓÚÉ¸Ñ¡±êÇ©£¬¿Ï¶¨²»Âú×ãÌõ¼ş£»
+		// å¦‚æœä»»åŠ¡æ ‡ç­¾å°äºç­›é€‰æ ‡ç­¾ï¼Œè‚¯å®šä¸æ»¡è¶³æ¡ä»¶ï¼›
 		if (taskTags.length < tags.length)
 		{
 			return false;
 		}
-		// ÅĞ¶ÏtagArrayÊÇ·ñ°üº¬tags£»
+		// åˆ¤æ–­tagArrayæ˜¯å¦åŒ…å«tagsï¼›
 		for (String tag : tags)
 		{
 			int index = Arrays.binarySearch(taskTags, tag);
@@ -190,35 +190,35 @@ public class GameGtd
 	}
 
 	/**
-	 * ¶ÁÈ¡±¾µØXMLÎÄ¼ş»ñÈ¡Document¶ÔÏó£»<br>
-	 * Èç¹û±¾µØXML²»´æÔÚ£¬¾ÍÔÚÄÚÔÚ´´½¨Ò»¸öDocument¶ÔÏó£»<br>
-	 * Document¶ÔÏóÄ¬ÈÏµÄ¸ù½ÚµãÎª"GTD"¡£<br>
+	 * è¯»å–æœ¬åœ°XMLæ–‡ä»¶è·å–Documentå¯¹è±¡ï¼›<br>
+	 * å¦‚æœæœ¬åœ°XMLä¸å­˜åœ¨ï¼Œå°±åœ¨å†…åœ¨åˆ›å»ºä¸€ä¸ªDocumentå¯¹è±¡ï¼›<br>
+	 * Documentå¯¹è±¡é»˜è®¤çš„æ ¹èŠ‚ç‚¹ä¸º"GTD"ã€‚<br>
 	 */
 	private static Document getDocument(File xmlFile) throws DocumentException
 	{
 		if (!xmlFile.exists())
 		{
-			// »ñÈ¡±¾µØXMLÎÄ¼ş£¬Èç¹û²»´æÔÚ£¬¾Í´´½¨£»
+			// è·å–æœ¬åœ°XMLæ–‡ä»¶ï¼Œå¦‚æœä¸å­˜åœ¨ï¼Œå°±åˆ›å»ºï¼›
 			File parentFile = xmlFile.getParentFile();
 			if (!parentFile.exists())
 			{
 				parentFile.mkdirs();
 			}
-			// ´´½¨Ò»¸öÎÄµµ¶ÔÏó£¬²¢Ìí¼Ó¸ù½ÚµãGTD£»
+			// åˆ›å»ºä¸€ä¸ªæ–‡æ¡£å¯¹è±¡ï¼Œå¹¶æ·»åŠ æ ¹èŠ‚ç‚¹GTDï¼›
 			Document document = DocumentHelper.createDocument();
 			document.addElement("GTD");
 			return document;
 		} else
 		{
-			// Èç¹û±¾µØXMLÎÄ¼şÒÑ´æÔÚ£¬Ö±½Ó½âÎö£»
+			// å¦‚æœæœ¬åœ°XMLæ–‡ä»¶å·²å­˜åœ¨ï¼Œç›´æ¥è§£æï¼›
 			SAXReader saxReader = new SAXReader();
 			return saxReader.read(xmlFile);
 		}
 	}
 
 	/**
-	 * ½«DocumentĞòÁĞ»¯µ½±¾µØXMLÎÄ¼şÖĞ£»<br>
-	 * XMLÎÄ¼şÄ¬ÈÏÎªGBK±àÂë£»<br>
+	 * å°†Documentåºåˆ—åŒ–åˆ°æœ¬åœ°XMLæ–‡ä»¶ä¸­ï¼›<br>
+	 * XMLæ–‡ä»¶é»˜è®¤ä¸ºGBKç¼–ç ï¼›<br>
 	 */
 	private static void storeXml(Document document, File xmlFile) throws IOException
 	{

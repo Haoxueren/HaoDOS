@@ -1,4 +1,4 @@
-package com.haoxueren.utils;
+ï»¿package com.haoxueren.utils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -15,11 +15,11 @@ import javax.swing.filechooser.FileSystemView;
 public class CopyUtils
 {
 	/**
-	 * ½«×ÀÃæÉÏµÄ¿ì½İ·½Ê½¸´ÖÆµ½Ö¸¶¨µÄÄ¿Â¼ÏÂ£»
+	 * å°†æ¡Œé¢ä¸Šçš„å¿«æ·æ–¹å¼å¤åˆ¶åˆ°æŒ‡å®šçš„ç›®å½•ä¸‹ï¼›
 	 */
 	public static void copyDesktop() throws IOException
 	{
-		// »ñÈ¡µ½×ÀÃæµÄÂ·¾¶£»
+		// è·å–åˆ°æ¡Œé¢çš„è·¯å¾„ï¼›
 		FileSystemView fileView = FileSystemView.getFileSystemView();
 		File desktop = fileView.getHomeDirectory();
 		File[] files = desktop.listFiles();
@@ -33,45 +33,45 @@ public class CopyUtils
 	}
 
 	/**
-	 * @method ÕâÊÇÒ»¸ö½«Ö¸¶¨ÎÄ¼ş¸´ÖÆµ½Ö¸¶¨Ä¿Â¼µÄ·½·¨£»
+	 * @method è¿™æ˜¯ä¸€ä¸ªå°†æŒ‡å®šæ–‡ä»¶å¤åˆ¶åˆ°æŒ‡å®šç›®å½•çš„æ–¹æ³•ï¼›
 	 * @param file
-	 *            Òª¸´ÖÆµÄÔ´ÎÄ¼ş£¬²»Ö§³Ö¸´ÖÆÄ¿Â¼£»
+	 *            è¦å¤åˆ¶çš„æºæ–‡ä»¶ï¼Œä¸æ”¯æŒå¤åˆ¶ç›®å½•ï¼›
 	 * @param dir
-	 *            Òª¸´ÖÆµ½µÄÄ¿Â¼£»
-	 * @return Í¨¹ı¼ì²âĞÂÎÄ¼şÊÇ·ñ´æÔÚÅĞ¶ÏÊÇ·ñ¸´ÖÆ³É¹¦£»
+	 *            è¦å¤åˆ¶åˆ°çš„ç›®å½•ï¼›
+	 * @return é€šè¿‡æ£€æµ‹æ–°æ–‡ä»¶æ˜¯å¦å­˜åœ¨åˆ¤æ–­æ˜¯å¦å¤åˆ¶æˆåŠŸï¼›
 	 */
 	public static boolean copyFile(File file, String dir) throws IOException
 	{
-		// Èç¹û´«ÈëµÄÎÄ¼şÊÇÒ»¸öÄ¿Â¼£¬Å×³öÒì³££»
+		// å¦‚æœä¼ å…¥çš„æ–‡ä»¶æ˜¯ä¸€ä¸ªç›®å½•ï¼ŒæŠ›å‡ºå¼‚å¸¸ï¼›
 		if (file.isDirectory())
 		{
-			throw new IllegalArgumentException("²»Ö§³Ö¸´ÖÆÄ¿Â¼£º" + file.getName());
+			throw new IllegalArgumentException("ä¸æ”¯æŒå¤åˆ¶ç›®å½•ï¼š" + file.getName());
 		}
-		// Èç¹ûÖ¸¶¨Ä¿Â¼²»´æÔÚ£¬¾Í´´½¨£»
+		// å¦‚æœæŒ‡å®šç›®å½•ä¸å­˜åœ¨ï¼Œå°±åˆ›å»ºï¼›
 		File targetDir = new File(dir);
 		if (!targetDir.exists())
 		{
 			targetDir.mkdirs();
 		}
-		// ·â×°ĞÂÎÄ¼şµÄÂ·¾¶£»
+		// å°è£…æ–°æ–‡ä»¶çš„è·¯å¾„ï¼›
 		File path = new File(dir, file.getName());
-		// ·â×°¶ÁÈ¡ÎÄ¼şµÄ¶ÔÏó£»
+		// å°è£…è¯»å–æ–‡ä»¶çš„å¯¹è±¡ï¼›
 		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
-		// ·â×°Ğ´ÈëÎÄ¼şµÄ¶ÔÏó£»
+		// å°è£…å†™å…¥æ–‡ä»¶çš„å¯¹è±¡ï¼›
 		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(path));
-		// Êı¾İ´«ÊäÇ°×¼±¸£»
+		// æ•°æ®ä¼ è¾“å‰å‡†å¤‡ï¼›
 		byte[] bys = new byte[1024];
 		int len = 0;
-		// ¿ªÊ¼´«ÊäÊı¾İ£»
+		// å¼€å§‹ä¼ è¾“æ•°æ®ï¼›
 		while ((len = bis.read(bys)) != -1)
 		{
 			bos.write(bys, 0, len);
 			bos.flush();
 		}
-		// ÊÍ·ÅÏµÍ³×ÊÔ´£»
+		// é‡Šæ”¾ç³»ç»Ÿèµ„æºï¼›
 		bis.close();
 		bos.close();
-		// ·µ»ØÊÇ·ñ¸´ÖÆ³É¹¦£»
+		// è¿”å›æ˜¯å¦å¤åˆ¶æˆåŠŸï¼›
 		return path.exists();
 	}
 }

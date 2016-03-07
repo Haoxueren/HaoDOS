@@ -1,4 +1,4 @@
-package com.haoxueren.word;
+ï»¿package com.haoxueren.word;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -12,26 +12,26 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
- * createImage ´´½¨Í¼Æ¬£»<br>
- * compressImage Ñ¹ËõÍ¼Æ¬£»<br>
+ * createImage åˆ›å»ºå›¾ç‰‡ï¼›<br>
+ * compressImage å‹ç¼©å›¾ç‰‡ï¼›<br>
  */
 public class ImageHelper
 {
-	/** ´´½¨Ò»¸öPNGÍ¼Æ¬£» */
+	/** åˆ›å»ºä¸€ä¸ªPNGå›¾ç‰‡ï¼› */
 	public static void createImage(File file)
 	{
 		try
 		{
-			// È·¶¨Í¼Æ¬µÄ´óĞ¡£»
+			// ç¡®å®šå›¾ç‰‡çš„å¤§å°ï¼›
 			int width = 960, height = 540;
-			// ´´½¨Í¼Æ¬¶ÔÏó£»
+			// åˆ›å»ºå›¾ç‰‡å¯¹è±¡ï¼›
 			BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-			// »ñÈ¡Graphics2D¶ÔÏó£»
+			// è·å–Graphics2Då¯¹è±¡ï¼›
 			Graphics2D graphics2d = (Graphics2D) bufferedImage.getGraphics();
-			// ÉèÖÃÍ¼Æ¬±³¾°£»
+			// è®¾ç½®å›¾ç‰‡èƒŒæ™¯ï¼›
 			graphics2d.setBackground(Color.WHITE);
 			graphics2d.clearRect(0, 0, width, height);
-			// ½«Í¼Æ¬±£´æµ½±¾µØ£»
+			// å°†å›¾ç‰‡ä¿å­˜åˆ°æœ¬åœ°ï¼›
 			ImageIO.write(bufferedImage, "png", file);
 		} catch (IOException e)
 		{
@@ -39,7 +39,7 @@ public class ImageHelper
 		}
 	}
 
-	/** Ñ¹ËõÍ¼Æ¬(BufferedImage.ImageType)£» */
+	/** å‹ç¼©å›¾ç‰‡(BufferedImage.ImageType)ï¼› */
 	public static void compressImage(File file, int imageType) throws IOException
 	{
 		Image sourceImage = ImageIO.read(file);
@@ -51,7 +51,7 @@ public class ImageHelper
 		ImageIO.write(compressedImage, "png", file);
 	}
 
-	/** »ñÈ¡Í¼ÏñµÄÎ»Éî¶È£» */
+	/** è·å–å›¾åƒçš„ä½æ·±åº¦ï¼› */
 	public static int getPixelSize(File imageFile) throws IOException
 	{
 		BufferedImage bufferedImage = ImageIO.read(imageFile);

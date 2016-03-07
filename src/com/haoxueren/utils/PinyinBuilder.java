@@ -1,4 +1,4 @@
-package com.haoxueren.utils;
+ï»¿package com.haoxueren.utils;
 
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
@@ -6,7 +6,7 @@ import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
 
 /**
- * Õâ¸öÀàÓÃÀ´¿ØÖÆÆ´ÒôµÄ¸ñÊ½£»
+ * è¿™ä¸ªç±»ç”¨æ¥æ§åˆ¶æ‹¼éŸ³çš„æ ¼å¼ï¼›
  */
 public abstract class PinyinBuilder
 {
@@ -18,7 +18,7 @@ public abstract class PinyinBuilder
 	}
 
 	/**
-	 * ³õÊ¼»¯ººÓïÆ´Òô¸ñÊ½£»
+	 * åˆå§‹åŒ–æ±‰è¯­æ‹¼éŸ³æ ¼å¼ï¼›
 	 */
 	public PinyinBuilder()
 	{
@@ -29,26 +29,26 @@ public abstract class PinyinBuilder
 	}
 
 	/**
-	 * Define the output format of character '¨¹' <br>
+	 * Define the output format of character 'Ã¼' <br>
 	 * WITH_U_AND_COLON u:<br>
 	 * WITH_V v<br>
-	 * WITH_U_UNICODE ¨¹<br>
+	 * WITH_U_UNICODE Ã¼<br>
 	 */
 	public abstract HanyuPinyinVCharType getVCharType();
 
 	/**
-	 * Çë·µ»ØÒôµ÷µÄ±íÏÖĞÎÊ½£º<br>
+	 * è¯·è¿”å›éŸ³è°ƒçš„è¡¨ç°å½¢å¼ï¼š<br>
 	 * HanyuPinyinToneType.WITH_TONE_NUMBER da3<br>
 	 * HanyuPinyinToneType.WITHOUT_TONE da<br>
-	 * HanyuPinyinToneType.WITH_TONE_MARK d¨£<br>
+	 * HanyuPinyinToneType.WITH_TONE_MARK dÇ<br>
 	 */
 	public abstract HanyuPinyinToneType getToneType();
 
 	/**
-	 * Çë·µ»ØÆ´×Ö×Ö·ûµÄ´óĞ¡Ğ´£» <br>
-	 * ²ÎÊı£º<br>
-	 * Ğ¡Ğ´£ºHanyuPinyinCaseType.LOWERCASE;<br>
-	 * ´óĞ´£ºHanyuPinyinCaseType.UPPERCASE;<br>
+	 * è¯·è¿”å›æ‹¼å­—å­—ç¬¦çš„å¤§å°å†™ï¼› <br>
+	 * å‚æ•°ï¼š<br>
+	 * å°å†™ï¼šHanyuPinyinCaseType.LOWERCASE;<br>
+	 * å¤§å†™ï¼šHanyuPinyinCaseType.UPPERCASE;<br>
 	 */
 	public abstract HanyuPinyinCaseType getCaseType();
 }

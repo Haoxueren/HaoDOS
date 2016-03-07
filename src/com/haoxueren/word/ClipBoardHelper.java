@@ -1,25 +1,23 @@
-package com.haoxueren.word;
+ï»¿package com.haoxueren.word;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
 
 public class ClipBoardHelper
 {
 
 	/**
-	 * »ñÈ¡ÏµÍ³¼ôÇĞ°åµÄÎÄ±¾ÄÚÈİ£»
+	 * è·å–ç³»ç»Ÿå‰ªåˆ‡æ¿çš„æ–‡æœ¬å†…å®¹ï¼›
 	 */
 	public static String getClipboardText() throws Exception
 	{
-		// »ñÈ¡¼ôÇĞÎö¶ÔÏó£»
+		// è·å–å‰ªåˆ‡æå¯¹è±¡ï¼›
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		// »ñÈ¡¼ôÇĞÎöÄÚÈİ£»
+		// è·å–å‰ªåˆ‡æå†…å®¹ï¼›
 		Transferable transferable = clipboard.getContents(null);
-		// ÅĞ¶Ï¼ôÇĞÎöÄÚÈİµÄÀàĞÍ£»
+		// åˆ¤æ–­å‰ªåˆ‡æå†…å®¹çš„ç±»å‹ï¼›
 		if (transferable.isDataFlavorSupported(DataFlavor.stringFlavor))
 		{
 			return (String) transferable.getTransferData(DataFlavor.stringFlavor);

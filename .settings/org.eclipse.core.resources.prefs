@@ -1,5 +1,4 @@
 eclipse.preferences.version=1
-encoding//src/com/haoxueren/mydos/Commander.java=UTF-8
+encoding//src/com/haoxueren/main/Commander.java=UTF-8
 encoding//src/com/haoxueren/utils/PinYinUtils.java=UTF-8
-encoding/<project>=GBK
 encoding/phonetic.properties=UTF-8
