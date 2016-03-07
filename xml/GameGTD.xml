@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GTD> 
+  <task id="1"> 
+    <status>TODO</status>  
+    <text>早上7点准时起床</text>  
+    <tags/>  
+    <TodoTime>2016-3-7 19:08:57</TodoTime> 
+  </task>  
+  <task id="2"> 
+    <status>TODO</status>  
+    <text>中文测试</text>  
+    <tags/>  
+    <TodoTime>2016-3-7 19:13:47</TodoTime> 
+  </task>  
+  <task id="3">
+    <status>TODO</status>
+    <text>测试</text>
+    <tags/>
+    <TodoTime>2016-3-7 19:32:12</TodoTime>
+  </task>
+</GTD>

@@ -27,7 +27,7 @@ public class MsdosHelper
 				{
 					// 读取DOS命令返回的信息；
 					InputStream inputStream = process.getInputStream();
-					InputStreamReader reader = new InputStreamReader(inputStream);
+					InputStreamReader reader = new InputStreamReader(inputStream, "UTF-8");
 					// 把流中的信息输出到控制台；
 					char[] buffer = new char[1024];
 					int len = reader.read(buffer);
@@ -38,7 +38,6 @@ public class MsdosHelper
 					}
 					reader.close();
 					process.destroy();
-					System.out.println("DOS FINISHED！");
 				} catch (IOException e)
 				{
 					e.printStackTrace();

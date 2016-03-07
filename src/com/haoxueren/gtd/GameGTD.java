@@ -19,6 +19,7 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
+import com.haoxueren.config.ConsoleHelper;
 import com.haoxueren.config.Values;
 import com.haoxueren.helper.TextHelper;
 
@@ -59,7 +60,7 @@ public class GameGtd
 		createTime.addText(new Date().toLocaleString());
 		// 将Document保存到本地XML；
 		storeXml(document, xmlFile);
-		System.out.println("add success：" + statusText + " " + eventText + " TAGS=" + Arrays.toString(tagArray));
+		System.out.println("add success：" + statusText + "；" + eventText + " TAGS=" + Arrays.toString(tagArray));
 	}
 
 	/** 修改任务内容或状态； */
@@ -95,7 +96,7 @@ public class GameGtd
 					getChildElement(task, "DoneTime").setText(localeTime);
 				}
 				System.out.println("update success：ID=" + task.attributeValue("id") + " STATUS="
-						+ task.elementText(XmlField.STATUS) + " TEXT=" + task.elementText(XmlField.TEXT));
+						+ task.elementText(XmlField.STATUS) + " TEXT=" + task.elementText(XmlField.TEXT) + "；");
 			}
 		}
 		// 将Document保存到本地XML；
@@ -135,9 +136,10 @@ public class GameGtd
 			{
 				newTasks.add(task);
 				System.out.println("[" + task.elementText(XmlField.STATUS) + "]" + task.attributeValue("id") + "、"
-						+ task.elementText(XmlField.TEXT));
+						+ task.elementText(XmlField.TEXT) + "；");
 			}
 		}
+		ConsoleHelper.printDivider();
 		System.out.println("success: " + newTasks.size() + " matched tasks!");
 	}
 

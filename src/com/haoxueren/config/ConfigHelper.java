@@ -27,10 +27,25 @@ public class ConfigHelper
 		try
 		{
 			// 读取本地的配置文件；
-			File file = new File(FileHelper.getCurrentDir(), "configure.properties");
 			// Properties extends Hashtable；
 			Properties properties = new Properties();
-			if (file.exists())
+			File file = new File(FileHelper.getCurrentDir(), "/config/configure.properties");
+			// 如果目录不存在，就创建目录；
+			File directory = file.getParentFile();
+			if (!directory.exists())
+			{
+				directory.mkdirs();
+			}
+			// 文件不存在：创建文件并写入默认数据；
+			if (!file.exists())
+			{
+				file.createNewFile();
+				properties.put(key, defaultValue);
+				Writer writer = new PrintWriter(file);
+				properties.store(writer, null);
+				writer.close();
+				return defaultValue;
+			} else
 			{
 				// 文件存在：读取文件中的数据；
 				Reader reader = new FileReader(file);
@@ -46,15 +61,6 @@ public class ConfigHelper
 				}
 				reader.close();
 				return value;
-			} else
-			{
-				// 文件不存在：创建文件并写入默认数据；
-				file.createNewFile();
-				properties.put(key, defaultValue);
-				Writer writer = new PrintWriter(file);
-				properties.store(writer, null);
-				writer.close();
-				return defaultValue;
 			}
 		} catch (Exception e)
 		{

@@ -10,7 +10,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.net.URLEncoder;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
@@ -20,15 +19,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.haoxueren.config.ConsoleHelper;
 import com.haoxueren.helper.TextHelper;
 
 public class DictHelper
 {
-	public static void main(String[] args) throws Exception
-	{
-		translate("hello");
-	}
-
 	/** 使用爱词霸翻译指定的单词； */
 	public static void translate(String word) throws Exception
 	{
@@ -54,12 +49,14 @@ public class DictHelper
 		for (Element element : voice)
 		{
 			writer.write(lowerCaseWord + "：" + element.text() + "\r\n");
+			System.out.println(lowerCaseWord + "：" + element.text() + "\r\n");
 		}
 		// 如果word-voice没有数据，从base-speak标签获取；
 		Elements speak = document.select("div.base-speak");
 		for (Element element : speak)
 		{
 			writer.write(lowerCaseWord + "：" + element.text() + "\r\n");
+			System.out.println(lowerCaseWord + "：" + element.text() + "\r\n");
 		}
 		// 解析单词的释义；
 		Element table = document.select("table").first();
@@ -67,23 +64,24 @@ public class DictHelper
 		for (Element element : select)
 		{
 			writer.write(element.text() + "\r\n");
-
+			System.out.println(element.text() + "\r\n");
 		}
 		// 解析单词的各个状态词；
 		Elements state = document.select("ul.word-state");
 		for (Element element : state)
 		{
 			writer.write(element.text() + "\r\n");
+			System.out.println(element.text() + "\r\n");
 		}
+		ConsoleHelper.printDivider();
 		writer.close();
-		Desktop.getDesktop().open(file);
 	}
 
 	/** 转换爱词霸不可识别的单词音标； */
 	public String convert(String wordVoice) throws IOException
 	{
 		// 从Properties文件中加载音标映射；
-		String path = System.getProperty("user.dir") + "/phonetic.properties";
+		String path = System.getProperty("user.dir") + "/config/phonetic.properties";
 		File propertiesFile = new File(path);
 		if (!propertiesFile.exists())
 		{

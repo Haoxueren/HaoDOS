@@ -12,6 +12,7 @@ import java.util.Properties;
 import java.util.Scanner;
 
 import com.haoxueren.config.ConfigHelper;
+import com.haoxueren.config.ConsoleHelper;
 import com.haoxueren.config.Keys;
 import com.haoxueren.config.Values;
 import com.haoxueren.dict.DictHelper;
@@ -51,8 +52,8 @@ public class DosWindow
 			}
 			// 接收用户录入的指令；
 			String input = scanner.nextLine().trim();
-			// 将GBK编码转换为UTF-8编码；
 			input = input.toUpperCase();
+			ConsoleHelper.printDivider();
 			if (input.equalsIgnoreCase("$HELP"))
 			{
 				commander.printHelpInfo();
