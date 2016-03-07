@@ -15,7 +15,6 @@ import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
-import org.junit.Test;
 
 import com.haoxueren.config.Values;
 import com.haoxueren.helper.TextHelper;
@@ -30,17 +29,17 @@ public class GameGtd
 	public static void addTask(String statusText, String eventText, String... tagArray) throws Exception
 	{
 		// 获取XML文档根节点；
-		File xmlFile = new File(Values.DATABASE, "gtd.xml");
+		File xmlFile = new File(Values.DATABASE, XmlField.GameGTD);
 		Document document = getDocument(xmlFile);
 		Element root = document.getRootElement();
 		// 添加任务节点；
 		Element task = root.addElement("task");
 		task.addAttribute("id", root.elements().size() + "");
 		// 添加任务当前状态；
-		Element status = task.addElement("status");
+		Element status = task.addElement(XmlField.STATUS);
 		status.setText(statusText.toUpperCase());
 		// 添加任务内容；
-		Element event = task.addElement("event");
+		Element event = task.addElement(XmlField.TEXT);
 		event.setText(eventText);
 		// 添加任务标签；
 		Element tags = task.addElement("tags");
@@ -48,7 +47,7 @@ public class GameGtd
 		{
 			if (TextHelper.notEmpty(tagText))
 			{
-				Element tag = tags.addElement("tag");
+				Element tag = tags.addElement(XmlField.TAG);
 				tag.setText(tagText);
 			}
 		}
@@ -57,13 +56,13 @@ public class GameGtd
 		createTime.addText(new Date().toLocaleString());
 		// 将Document保存到本地XML；
 		storeXml(document, xmlFile);
-		System.out.println("ADD SUCCESS：" + statusText + "：" + eventText + " TAGS：" + Arrays.toString(tagArray));
+		System.out.println("add success：" + statusText + "：" + eventText + " TAGS：" + Arrays.toString(tagArray));
 	}
 
 	/** 修改任务内容或状态； */
-	public static void updateTask(String id, String status, String event) throws Exception
+	public static void updateTask(String id, String status, String taskText) throws Exception
 	{
-		File xmlFile = new File(Values.DATABASE, "gtd.xml");
+		File xmlFile = new File(Values.DATABASE, XmlField.GameGTD);
 		Document document = getDocument(xmlFile);
 		Element rootElement = document.getRootElement();
 		List<Element> tasks = rootElement.elements("task");
@@ -72,31 +71,32 @@ public class GameGtd
 			if (id.equals(task.attributeValue("id")))
 			{
 				// 更新任务内容；
-				if (TextHelper.notEmpty(event))
+				if (TextHelper.notEmpty(taskText))
 				{
-					task.element("event").setText(event);
+					task.element(XmlField.TEXT).setText(taskText);
 				}
 				// 更新任务状态；
 				String localeTime = new Date().toLocaleString();
 				if ("TODO".equalsIgnoreCase(status))
 				{
-					task.element("status").setText("TODO");
+					task.element(XmlField.STATUS).setText("TODO");
 					getChildElement(task, "TodoTime").setText(localeTime);
 				} else if ("DOING".equalsIgnoreCase(status))
 				{
-					task.element("status").setText("DOING");
+					task.element(XmlField.STATUS).setText("DOING");
 					task.addElement("DoingTime").setText(localeTime);
 					getChildElement(task, "DoingTime").setText(localeTime);
 				} else if ("DONE".equalsIgnoreCase(status))
 				{
-					task.element("status").setText("DONE");
+					task.element(XmlField.STATUS).setText("DONE");
 					getChildElement(task, "DoneTime").setText(localeTime);
 				}
+				System.out.println("update success：ID=" + task.attributeValue("id") + " STATUS="
+						+ task.elementText(XmlField.STATUS) + " TEXT=" + task.elementText(XmlField.TEXT));
 			}
 		}
 		// 将Document保存到本地XML；
 		storeXml(document, xmlFile);
-		System.out.println("UPDATE SUCCESS：ID=" + id + " STATUS=" + status + " EVENT=" + event);
 	}
 
 	/** 获取对应名称的子节点，如果子节点不存在，就创建； */
@@ -117,7 +117,7 @@ public class GameGtd
 	 */
 	public static void listTask(String status, String... tags) throws Exception
 	{
-		File xmlFile = new File(Values.DATABASE, "gtd.xml");
+		File xmlFile = new File(Values.DATABASE, XmlField.GameGTD);
 		Document document = getDocument(xmlFile);
 		Element rootElement = document.getRootElement();
 		List<Element> newTasks = new ArrayList<>();
@@ -131,9 +131,11 @@ public class GameGtd
 			if (statusFlag && tagsFlag)
 			{
 				newTasks.add(task);
-				System.out.println(task.attributeValue("id") + "、" + task.elementText("event"));
+				System.out.println("[" + task.elementText(XmlField.STATUS) + "]" + task.attributeValue("id") + "、"
+						+ task.elementText(XmlField.TEXT));
 			}
 		}
+		System.out.println("success: " + newTasks.size() + " matched tasks!");
 	}
 
 	/*********************** 【以下是封装方法区】 ***********************/
@@ -148,7 +150,7 @@ public class GameGtd
 
 		if (TextHelper.notEmpty(status))
 		{
-			String taskStatus = task.element("status").getText();
+			String taskStatus = task.element(XmlField.STATUS).getText();
 			if (status.equalsIgnoreCase(taskStatus))
 			{
 				return true;
