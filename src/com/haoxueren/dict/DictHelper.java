@@ -73,6 +73,7 @@ public class DictHelper
 			writer.write(element.text() + "\r\n");
 			System.out.println(element.text() + "\r\n");
 		}
+		Desktop.getDesktop().open(file);
 		ConsoleHelper.printDivider();
 		writer.close();
 	}

@@ -111,7 +111,7 @@ public class Commander implements FileHelperListener
 			}
 		} catch (Exception e)
 		{
-			System.out.println("数据初始化成功...");
+			System.out.println("异常：" + e.getMessage());
 		}
 	}
 
@@ -172,7 +172,7 @@ public class Commander implements FileHelperListener
 	public void onFileFindOver(ArrayList<File> list)
 	{
 		fileList = list;
-		System.out.println("数据初始化成功...");
+		System.out.println("对生活充满热情，对未来充满信心。");
 	}
 
 	// 获取到桌面的路径；

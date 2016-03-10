@@ -16,6 +16,7 @@ import com.haoxueren.config.ConsoleHelper;
 import com.haoxueren.config.Keys;
 import com.haoxueren.config.Values;
 import com.haoxueren.dict.DictHelper;
+import com.haoxueren.dict.FanyiHelper;
 import com.haoxueren.gtd.GameGtd;
 import com.haoxueren.gtd.GtdHelper;
 import com.haoxueren.helper.FileHelper;
@@ -109,7 +110,6 @@ public class DosWindow
 				}
 				continue;
 			}
-			// 结束：随机单词；
 
 			// 开始：单词翻译功能；
 			if (input.startsWith("DICT "))
@@ -124,7 +124,14 @@ public class DosWindow
 				}
 				continue;
 			}
-			// 结束：单词翻译功能；
+
+			// 在线翻译[英译汉]
+			if (input.startsWith("FANYI "))
+			{
+				String words = input.replaceFirst("FANYI ", "");
+				FanyiHelper.icibaFanyi(words);
+				continue;
+			}
 
 			// 开始：发送邮件；
 

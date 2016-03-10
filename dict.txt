@@ -1,5 +1,4 @@
-hello：英 [ hə'ləʊ ] 美 [ həˈloʊ ]
-int. 哈喽，喂 你好，您好 表示问候 打招呼
-n. “喂”的招呼声或问候声
-vi. 喊“喂”
-复数: hellos
+shrink：英 [ ʃrɪŋk ] 美 [ ʃrɪŋk ]
+vt.& vi. 收缩，皱缩 （使）缩水 退缩，畏缩
+n. 收缩 畏缩 <俚>精神病学家
+复数: shrinks 过去式: shrank shrunk 过去分词: shrunk shrunken 现在分词: shrinking 第三人称单数: shrinks
