@@ -11,6 +11,11 @@ import java.io.Writer;
 import java.util.Properties;
 import java.util.Scanner;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.config.ConsoleHelper;
 import com.haoxueren.config.Keys;
@@ -19,10 +24,11 @@ import com.haoxueren.dict.DictHelper;
 import com.haoxueren.dict.FanyiHelper;
 import com.haoxueren.gtd.GameGtd;
 import com.haoxueren.gtd.GtdHelper;
-import com.haoxueren.helper.FileHelper;
-import com.haoxueren.helper.FileUtils;
-import com.haoxueren.helper.TextHelper;
+import com.haoxueren.helper.DateHelper;
 import com.haoxueren.mail.MailHelper;
+import com.haoxueren.utils.FileHelper;
+import com.haoxueren.utils.FileUtils;
+import com.haoxueren.utils.TextHelper;
 import com.haoxueren.word.WordHelper;
 
 /**
@@ -37,6 +43,8 @@ public class DosWindow
 
 	public static void main(String[] args) throws Exception
 	{
+		// 获取当前的日期；
+		DateHelper.printDate();
 		// 用来存储邮件信息的集合；
 		Properties emailInfo = new Properties();
 		Commander commander = new Commander();

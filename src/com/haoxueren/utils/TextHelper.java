@@ -1,8 +1,8 @@
-package com.haoxueren.helper;
+package com.haoxueren.utils;
 
 public class TextHelper
 {
-	/** ÅÐ¶ÏÎÄ±¾ÄÚÈÝÊÇ·ñÎª¿Õ£» */
+	/** ï¿½Ð¶ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½Îªï¿½Õ£ï¿½ */
 	public static boolean isEmpty(String text)
 	{
 		if (text == null)
@@ -16,7 +16,7 @@ public class TextHelper
 		return false;
 	}
 
-	/** ÅÐ¶ÏÎÄ±¾ÄÚÈÝÊÇ·ñ²»Îª¿Õ£» */
+	/** ï¿½Ð¶ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½Îªï¿½Õ£ï¿½ */
 	public static boolean notEmpty(String text)
 	{
 		return !isEmpty(text);

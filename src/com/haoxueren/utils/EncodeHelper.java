@@ -1,4 +1,4 @@
-package com.haoxueren.helper;
+package com.haoxueren.utils;
 
 public class EncodeHelper
 {

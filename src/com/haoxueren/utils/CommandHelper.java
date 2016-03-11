@@ -1,4 +1,4 @@
-package com.haoxueren.helper;
+package com.haoxueren.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,8 +9,8 @@ import java.util.Scanner;
 import com.haoxueren.dos.MsdosHelper;
 
 /**
- * 2015Äê10ÔÂ9ÈÕ20:40:21<br>
- * ´¦Àí²¢Ö´ÐÐÖ¸ÁîµÄ°ïÖúÀà£»<br>
+ * 2015ï¿½ï¿½10ï¿½ï¿½9ï¿½ï¿½20:40:21<br>
+ * ï¿½ï¿½ï¿½?Ö´ï¿½ï¿½Ö¸ï¿½ï¿½Ä°ï¿½ï¿½ï¿½ï¿½à£»<br>
  */
 public class CommandHelper
 {
@@ -31,10 +31,10 @@ public class CommandHelper
 	}
 
 	/**
-	 * ¼ì²âÓÃ»§ÊäÈëµÄÖ¸ÁîÊÇ·ñÎªËÑË÷Ö¸Áî£»
+	 * ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ç·ï¿½Îªï¿½ï¿½ï¿½ï¿½Ö¸ï¿½î£»
 	 * 
 	 * @param order
-	 *            ¸ñÊ½£º{S/s 1´Î»ò¶à´Î}{¿Õ°××Ö·û 1´Î»ò¶à´Î}{ÈÎÒâ×Ö·û1´Î»ò¶à´Î}
+	 *            ï¿½ï¿½Ê½ï¿½ï¿½{S/s 1ï¿½Î»ï¿½ï¿½ï¿½}{ï¿½Õ°ï¿½ï¿½Ö·ï¿½ 1ï¿½Î»ï¿½ï¿½ï¿½}{ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½1ï¿½Î»ï¿½ï¿½ï¿½}
 	 */
 	public boolean matchSearchCommand()
 	{
@@ -42,14 +42,14 @@ public class CommandHelper
 		return order.matches(regexSearchCommand);
 	}
 
-	/** ¼ì²âÓÃ»§Â¼ÈëµÄÖ¸ÁîÊÇ·ñÎªÐÂÔöµ¥´ÊÖ¸Áî£» */
+	/** ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Â¼ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ç·ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½î£» */
 	public boolean matchAddWordCommand()
 	{
 		String regexAddWord = "(ADD|add)\\s+.+";
 		return order.matches(regexAddWord);
 	}
 
-	/** ¼ì²âÓÃ»§Â¼ÈëµÄÖ¸ÁîÊÇ·ñÎª´ò¿ªµ¥´ÊÖ¸Áî£» */
+	/** ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Â¼ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ç·ï¿½Îªï¿½ò¿ªµï¿½ï¿½ï¿½Ö¸ï¿½î£» */
 	public boolean matchEditWordCommand()
 	{
 		String regexOpenWord = "(OPEN|open|EDIT|edit)\\s+.+";
@@ -62,24 +62,24 @@ public class CommandHelper
 	}
 
 	/**
-	 * ÌáÈ¡ÓÃ»§Â¼ÈëµÄ¹Ø¼ü×Ö£»
+	 * ï¿½ï¿½È¡ï¿½Ã»ï¿½Â¼ï¿½ï¿½Ä¹Ø¼ï¿½ï¿½Ö£ï¿½
 	 * 
-	 * @return ÓÃ»§Â¼ÈëµÄ¹Ø¼ü×Ö£»
+	 * @return ï¿½Ã»ï¿½Â¼ï¿½ï¿½Ä¹Ø¼ï¿½ï¿½Ö£ï¿½
 	 */
 	public String getSearchWords()
 	{
-		// È¥³ýÄÚÈÝµÄËÑË÷ÃüÁî±êÊ¶Ç°×º£»
+		// È¥ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶Ç°×ºï¿½ï¿½
 		String keyWords = order.replaceAll("[S|s]+\\s+", "");
-		// ´¦ÀíÓÃ»§ÒªËÑË÷ÄÚÈÝÖÐµÄ¿Õ¸ñ(%20)£»
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ¿Õ¸ï¿½(%20)ï¿½ï¿½
 		keyWords = keyWords.replaceAll("\\s+", "%20");
 		return keyWords;
 	}
 
 	/**
-	 * ¼ì²âÓÃ»§ÊäÈëµÄÖ¸ÁîÊÇ·ñÎª·­ÒëÖ¸Áî£»
+	 * ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ç·ï¿½Îªï¿½ï¿½ï¿½ï¿½Ö¸ï¿½î£»
 	 * 
 	 * @param order
-	 *            ¸ñÊ½£º{FY/fy 1´Î»ò¶à´Î}{¿Õ°××Ö·û 1´Î»ò¶à´Î}{ÈÎÒâ×Ö·û1´Î»ò¶à´Î}
+	 *            ï¿½ï¿½Ê½ï¿½ï¿½{FY/fy 1ï¿½Î»ï¿½ï¿½ï¿½}{ï¿½Õ°ï¿½ï¿½Ö·ï¿½ 1ï¿½Î»ï¿½ï¿½ï¿½}{ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½1ï¿½Î»ï¿½ï¿½ï¿½}
 	 */
 	public boolean matchTranslateCommand()
 	{
@@ -88,9 +88,9 @@ public class CommandHelper
 	}
 
 	/**
-	 * ÌáÈ¡ÓÃ»§Â¼ÈëµÄ¹Ø¼ü×Ö£»
+	 * ï¿½ï¿½È¡ï¿½Ã»ï¿½Â¼ï¿½ï¿½Ä¹Ø¼ï¿½ï¿½Ö£ï¿½
 	 * 
-	 * @return ÓÃ»§Â¼ÈëµÄ¹Ø¼ü×Ö£»
+	 * @return ï¿½Ã»ï¿½Â¼ï¿½ï¿½Ä¹Ø¼ï¿½ï¿½Ö£ï¿½
 	 */
 	public String getTranslateWord()
 	{
@@ -98,10 +98,10 @@ public class CommandHelper
 	}
 
 	/**
-	 * °Ù¶ÈËÑË÷£»
+	 * ï¿½Ù¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * 
 	 * @param keyWords
-	 *            ËÑË÷¹Ø¼ü×Ö£»
+	 *            ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½Ö£ï¿½
 	 * @throws IOException
 	 */
 	public void search(String keyWords) throws IOException
@@ -110,10 +110,10 @@ public class CommandHelper
 	}
 
 	/**
-	 * ÓÃ°®´Ê°Ô·­Òëµ¥´Ê£»
+	 * ï¿½Ã°ï¿½ï¿½Ê°Ô·ï¿½ï¿½ëµ¥ï¿½Ê£ï¿½
 	 * 
 	 * @param word
-	 *            Òª·­Òëµ¥´Ê£»
+	 *            Òªï¿½ï¿½ï¿½ëµ¥ï¿½Ê£ï¿½
 	 * @throws IOException
 	 */
 	public void translate(String word) throws IOException
@@ -127,20 +127,20 @@ public class CommandHelper
 		return order.matches(regexUrl);
 	}
 
-	/** ´ò¿ªÖ¸¶¨µÄÍøÖ·£» */
+	/** ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ */
 	public void openUrl(String url) throws IOException
 	{
 		Runtime.getRuntime().exec("cmd /c start " + url);
 	}
 
-	/** ÅÐ¶ÏÓÃ»§ÇëÇóÊÇ·ñÎªDOSÖ¸Áî£» */
+	/** ï¿½Ð¶ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ÎªDOSÖ¸ï¿½î£» */
 	public boolean matchDosCommand()
 	{
 		String regex_dos = "(dos|DOS)\\s+.+";
 		return order.matches(regex_dos);
 	}
 
-	/** Ö´ÐÐÓÃ»§Â¼ÈëµÄDOSÇëÇó£» */
+	/** Ö´ï¿½ï¿½ï¿½Ã»ï¿½Â¼ï¿½ï¿½ï¿½DOSï¿½ï¿½ï¿½ï¿½ */
 	public void executeDos() throws Exception
 	{
 		String dos = order.replaceAll("(dos|DOS)\\s+", "");

@@ -12,12 +12,12 @@ import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.config.Keys;
 import com.haoxueren.config.Values;
 import com.haoxueren.dos.MsdosHelper;
-import com.haoxueren.helper.CommandHelper;
-import com.haoxueren.helper.FileHelper;
-import com.haoxueren.helper.FileUtils;
-import com.haoxueren.helper.FileUtils.FileHelperListener;
-import com.haoxueren.helper.TextHelper;
+import com.haoxueren.utils.CommandHelper;
+import com.haoxueren.utils.FileHelper;
+import com.haoxueren.utils.FileUtils;
 import com.haoxueren.utils.PinYinUtils;
+import com.haoxueren.utils.TextHelper;
+import com.haoxueren.utils.FileUtils.FileHelperListener;
 import com.haoxueren.word.ClipBoardHelper;
 import com.haoxueren.word.WordHelper;
 

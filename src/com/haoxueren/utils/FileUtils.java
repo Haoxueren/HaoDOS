@@ -1,17 +1,17 @@
-package com.haoxueren.helper;
+package com.haoxueren.utils;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.haoxueren.helper.FileFinder.FileFinderListener;
+import com.haoxueren.utils.FileFinder.FileFinderListener;
 
-/** ²éÕÒ³öÖ¸¶¨Ä¿Â¼ÏÂËùÓÐÎÄ¼þ£» */
+/** ï¿½ï¿½ï¿½Ò³ï¿½Ö¸ï¿½ï¿½Ä¿Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ */
 public class FileUtils implements FileFinderListener
 {
-	/** ÓÃÀ´±£´æËùÓÐÎÄ¼þ¼¯ºÏ£» */
+	/** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Ï£ï¿½ */
 	private ArrayList<File> list;
-	/** ·µ»Ø·ûºÏÌõ¼þµÄÎÄ¼þ¼ÐµÄ¼¯ºÏ£» */
+	/** ï¿½ï¿½ï¿½Ø·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ÐµÄ¼ï¿½ï¿½Ï£ï¿½ */
 	private FileHelperListener listener;
 
 	public FileUtils(FileHelperListener listener)
@@ -19,7 +19,7 @@ public class FileUtils implements FileFinderListener
 		this.listener = listener;
 	}
 
-	/** ¸ù¾ÝÎÄ¼þÃû²éÕÒÎÄ¼þ£» */
+	/** ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ */
 	public void getFiles(File directory)
 	{
 		list = new ArrayList<File>();
@@ -39,7 +39,7 @@ public class FileUtils implements FileFinderListener
 		void onFileFindOver(ArrayList<File> list);
 	}
 
-	/** ÅÐ¶ÏÎÄ¼þÃûÊÇÖ¸¶¨µÄºó×ºÃû */
+	/** ï¿½Ð¶ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Äºï¿½×ºï¿½ï¿½ */
 	public boolean endWith(String filename, String... suffixs)
 	{
 		for (String suffix : suffixs)
@@ -53,32 +53,32 @@ public class FileUtils implements FileFinderListener
 	}
 
 	/**
-	 * ·½·¨ÃèÊö£ºgetDirsFiles ÕâÊÇÒ»¸ö»ñÈ¡Ö¸¶¨Ä¿Â¼ÏÂËùÓÐÎÄ¼þµÄ¼¯ºÏ£»
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½getDirsFiles ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½È¡Ö¸ï¿½ï¿½Ä¿Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ä¼ï¿½ï¿½Ï£ï¿½
 	 * 
 	 * @param dir
-	 *            ÕâÊÇÖ¸¶¨µÄÄ¿Â¼£¬Ö§³Ö¶à¼¶Ä¿Â¼£»
-	 * @return °üº¬¸ÃÄ¿Â¼ÏÂËùÓÐÎÄ¼þµÄArrayList<File>¼¯ºÏ£»
+	 *            ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Ä¿Â¼ï¿½ï¿½Ö§ï¿½Ö¶à¼¶Ä¿Â¼ï¿½ï¿½
+	 * @return ï¿½ï¿½ï¿½Ä¿Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ArrayList<File>ï¿½ï¿½ï¿½Ï£ï¿½
 	 */
 	public static ArrayList<File> getDirsFiles(ArrayList<File> fileList, File dir)
 	{
 		File[] files = dir.listFiles();
-		// Èç¹ûÊý×é²»Îª¿Õ£¬¾Í¶ÔÊý×é½øÐÐ²Ù×÷£»
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é²»Îªï¿½Õ£ï¿½ï¿½Í¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½ï¿½ï¿½
 		if (files != null)
 		{
 			for (File file : files)
 			{
-				// ¹æÂÉ£ºÈç¹ûÎÄ¼þÊÇÄ¿Â¼£¬¾ÍµÝ¹é£»
+				// ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Ä¿Â¼ï¿½ï¿½ï¿½ÍµÝ¹é£»
 				if (file.isDirectory())
 				{
 					getDirsFiles(fileList, file);
 				} else
 				{
-					// ³ö¿Ú£ºÌí¼ÓÖ¸¶¨ºó×ºÃûµÄÎÄ¼þµ½¼¯ºÏ£»
+					// ï¿½ï¿½ï¿½Ú£ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½×ºï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï£ï¿½
 					fileList.add(file);
 				}
 			}
 		}
-		// ·µ»ØµÃµ½µÄÎÄ¼þ¼¯ºÏ£»
+		// ï¿½ï¿½ï¿½ØµÃµï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Ï£ï¿½
 		return fileList;
 	}
 

@@ -1,21 +1,21 @@
-package com.haoxueren.helper;
+package com.haoxueren.utils;
 
 import java.io.File;
 import java.io.IOException;
 
 /**
- * File°ïÖúÀà£»
+ * Fileï¿½ï¿½ï¿½ï¿½ï¿½à£»
  */
 public class FileHelper
 {
-	/** »ñÈ¡µ±Ç°³ÌÐòËùÔÚµÄÄ¿Â¼£» */
+	/** ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½Ä¿Â¼ï¿½ï¿½ */
 	public static String getCurrentDir()
 	{
 		return System.getProperty("user.dir");
 	}
 
 	/**
-	 * ´´½¨ÎÄ¼þ£»
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
 	 */
 	public static boolean createFile(File file)
 	{
@@ -33,7 +33,7 @@ public class FileHelper
 		}
 	}
 
-	/** ´´½¨Ä¿Â¼£» */
+	/** ï¿½ï¿½ï¿½ï¿½Ä¿Â¼ï¿½ï¿½ */
 	public static boolean mkdirs(File directory)
 	{
 		if (!directory.exists())

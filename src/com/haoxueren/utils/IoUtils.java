@@ -1,4 +1,4 @@
-package com.haoxueren.helper;
+ï»¿package com.haoxueren.utils;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * InputStream/OutputStreamµÄ°ïÖúÀà£»
+ * InputStream/OutputStreamçš„å¸®åŠ©ç±»ï¼›
  */
-public class IoHelper
+public class IoUtils
 {
     /**
-     * ÕâÊÇÓÃÀ´¹Ø±ÕÊäÈëÁ÷µÄ·½·¨£»
+     * è¿™æ˜¯ç”¨æ¥å…³é—­è¾“å…¥æµçš„æ–¹æ³•ï¼›
      */
     public static void close(InputStream inputStream)
     {
@@ -28,11 +28,11 @@ public class IoHelper
     }
 
     /**
-     * ´Ë·½·¨ÓÃÓÚ°ÑÊäÈëÁ÷ÖĞµÄÊı¾İ×ª»¯ÎªÖ¸¶¨±àÂëµÄ×Ö·û´®£»
+     * æ­¤æ–¹æ³•ç”¨äºæŠŠè¾“å…¥æµä¸­çš„æ•°æ®è½¬åŒ–ä¸ºæŒ‡å®šç¼–ç çš„å­—ç¬¦ä¸²ï¼›
      *
-     * @param inputStream Òª×ª»¯µÄÊäÈëÁ÷£»
+     * @param inputStream è¦è½¬åŒ–çš„è¾“å…¥æµï¼›
      *
-     * @return ¸ÃÊäÈëÁ÷ÄÚÈİµÄ×Ö·û´®¶ÔÏó£»
+     * @return è¯¥è¾“å…¥æµå†…å®¹çš„å­—ç¬¦ä¸²å¯¹è±¡ï¼›
      */
     public static String toString(InputStream inputStream, String charset)
     {
@@ -40,16 +40,16 @@ public class IoHelper
         try
         {
             bufferedInputStream = new BufferedInputStream(inputStream);
-            // ´´½¨Ò»¸ö×Ö½ÚÊı×éÊä³öÁ÷£¬ÓÃÀ´½ÓÊÕÊäÈëÁ÷ÖĞµÄÊı¾İ£»
+            // åˆ›å»ºä¸€ä¸ªå­—èŠ‚æ•°ç»„è¾“å‡ºæµï¼Œç”¨æ¥æ¥æ”¶è¾“å…¥æµä¸­çš„æ•°æ®ï¼›
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             byte[] bys = new byte[1024];
             int len = 0;
             while ((len = bufferedInputStream.read(bys)) != -1)
             {
-                // ½«ÊäÈëÁ÷µÄµÄÊı¾İĞ´Èë×Ö½ÚÊı×éÊä³öÁ÷£»
+                // å°†è¾“å…¥æµçš„çš„æ•°æ®å†™å…¥å­—èŠ‚æ•°ç»„è¾“å‡ºæµï¼›
                 byteArrayOutputStream.write(bys, 0, len);
             }
-            // ½«×Ö½ÚÊı×éÊä³öÁ÷ÖĞµÄÊı¾İ×ª»¯ÎªÖ¸¶¨±àÂëµÄ×Ö·û´®£»
+            // å°†å­—èŠ‚æ•°ç»„è¾“å‡ºæµä¸­çš„æ•°æ®è½¬åŒ–ä¸ºæŒ‡å®šç¼–ç çš„å­—ç¬¦ä¸²ï¼›
             return byteArrayOutputStream.toString(charset);
         } catch (IOException e)
         {

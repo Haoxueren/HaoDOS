@@ -10,8 +10,8 @@ import java.util.TreeMap;
 import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.config.Keys;
 import com.haoxueren.config.Values;
-import com.haoxueren.helper.FileHelper;
-import com.haoxueren.helper.FileUtils;
+import com.haoxueren.utils.FileHelper;
+import com.haoxueren.utils.FileUtils;
 
 public class WordHelper
 {

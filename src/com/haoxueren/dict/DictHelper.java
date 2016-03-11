@@ -20,7 +20,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.haoxueren.config.ConsoleHelper;
-import com.haoxueren.helper.TextHelper;
+import com.haoxueren.utils.TextHelper;
 
 public class DictHelper
 {

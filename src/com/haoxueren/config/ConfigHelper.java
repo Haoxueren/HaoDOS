@@ -9,7 +9,7 @@ import java.util.Properties;
 
 import org.junit.Test;
 
-import com.haoxueren.helper.FileHelper;
+import com.haoxueren.utils.FileHelper;
 
 /**
  * 程序的配置文件管理类；<br>

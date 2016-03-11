@@ -3,7 +3,7 @@
 import java.util.HashMap;
 import java.util.Map;
 
-import com.haoxueren.helper.TextHelper;
+import com.haoxueren.utils.TextHelper;
 
 /** GTD指令解析器； */
 public class GtdParser

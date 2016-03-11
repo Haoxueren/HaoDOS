@@ -21,7 +21,7 @@ import org.dom4j.io.XMLWriter;
 
 import com.haoxueren.config.ConsoleHelper;
 import com.haoxueren.config.Values;
-import com.haoxueren.helper.TextHelper;
+import com.haoxueren.utils.TextHelper;
 
 /** 基于游戏原理设计的GTD系统； */
 @SuppressWarnings("unchecked")

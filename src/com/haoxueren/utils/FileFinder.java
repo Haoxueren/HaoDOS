@@ -1,8 +1,8 @@
-package com.haoxueren.helper;
+package com.haoxueren.utils;
 
 import java.io.File;
 
-/** ÓÃÀ´µİ¹é²éÕÒÎÄ¼şµÄ°ïÖúÀà£» */
+/** ï¿½ï¿½ï¿½ï¿½ï¿½İ¹ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ä°ï¿½ï¿½ï¿½ï¿½à£» */
 public class FileFinder
 {
 	private FileFinderListener listener;
@@ -12,7 +12,7 @@ public class FileFinder
 		this.listener = listener;
 	}
 
-	/** ¸ù¾İÎÄ¼şÃûµİ¹éËùÓĞÎÄ¼ş£» */
+	/** ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½İ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ */
 	public void findFile(File directory)
 	{
 		File[] files = directory.listFiles();
@@ -29,10 +29,10 @@ public class FileFinder
 		}
 	}
 
-	/** ²éÕÒÎÄ¼şÊ±µÄ¼àÌıÆ÷£» */
+	/** ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Ê±ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 	public interface FileFinderListener
 	{
-		/** ±éÀúµ½ÎÄ¼ş/ÎÄ¼ş¼ĞÊ±µ÷ÓÃ£» */
+		/** ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½/ï¿½Ä¼ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ã£ï¿½ */
 		void onFileFindOut(File directory, File file);
 	}
 }
