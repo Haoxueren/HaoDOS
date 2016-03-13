@@ -1,27 +1,36 @@
 package com.haoxueren.dict;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONTokener;
-import org.junit.Test;
+
+import com.haoxueren.main.OutputListener;
 
 /** 翻译帮助类； */
 public class FanyiHelper
 {
+	private OutputListener listener;
+
+	private FanyiHelper(OutputListener listener)
+	{
+		this.listener = listener;
+	}
+
+	public static FanyiHelper getInstance(OutputListener listener)
+	{
+		return new FanyiHelper(listener);
+	}
+
 	/**
 	 * 爱词霸翻译；<br>
 	 * 返回翻译结果(JSON)<br>
 	 */
-	public static void icibaFanyi(String words) throws Exception
+	public void icibaFanyi(String words) throws Exception
 	{
-		System.out.println("\t" + words.toLowerCase());
+		listener.output(words.toLowerCase());
 		// 要请求的地址；
 		URL url = new URL("http://fy.iciba.com/ajax.php?a=fy");
 		// 打开与服务器的连接；
@@ -56,13 +65,13 @@ public class FanyiHelper
 		if (wordMeans == null)
 		{
 			String out = content.getString("out");
-			System.out.println(out);
+			listener.output(out);
 			return;
 		}
 		// 如果word_mean不为空，遍历内容；
 		for (Object wordMean : wordMeans)
 		{
-			System.out.println(wordMean);
+			listener.output(wordMean.toString());
 		}
 		return;
 	}

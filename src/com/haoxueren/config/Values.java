@@ -2,6 +2,7 @@
 
 public interface Values
 {
+	String DIVIDER = "—————————————————————\n";
 	// 数据库路径；
 	String DATABASE = System.getProperty("user.dir") + "\\xml";
 	// 保存临时文件的目录；

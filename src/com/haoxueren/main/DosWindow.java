@@ -26,6 +26,7 @@ import com.haoxueren.gtd.GameGtd;
 import com.haoxueren.gtd.GtdHelper;
 import com.haoxueren.helper.DateHelper;
 import com.haoxueren.mail.MailHelper;
+import com.haoxueren.test.LetouLuckDraw;
 import com.haoxueren.utils.FileHelper;
 import com.haoxueren.utils.FileUtils;
 import com.haoxueren.utils.TextHelper;
@@ -43,8 +44,7 @@ public class DosWindow
 
 	public static void main(String[] args) throws Exception
 	{
-		// 获取当前的日期；
-		DateHelper.printDate();
+		ConsoleHelper.printDivider();
 		// 用来存储邮件信息的集合；
 		Properties emailInfo = new Properties();
 		Commander commander = new Commander();
@@ -116,28 +116,6 @@ public class DosWindow
 				{
 					System.err.println(e.getMessage());
 				}
-				continue;
-			}
-
-			// 开始：单词翻译功能；
-			if (input.startsWith("DICT "))
-			{
-				try
-				{
-					String word = input.replaceFirst("DICT ", "");
-					DictHelper.translate(word.trim());
-				} catch (Exception e)
-				{
-					System.err.println(e.getMessage());
-				}
-				continue;
-			}
-
-			// 在线翻译[英译汉]
-			if (input.startsWith("FANYI "))
-			{
-				String words = input.replaceFirst("FANYI ", "");
-				FanyiHelper.icibaFanyi(words);
 				continue;
 			}
 
