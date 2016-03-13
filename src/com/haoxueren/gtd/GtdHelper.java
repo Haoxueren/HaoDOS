@@ -5,28 +5,47 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.haoxueren.main.OutputListener;
+
 public class GtdHelper
 {
-	/** 执行用户录入的GTD指令； */
-	public static void execute(String input) throws Exception
+	private OutputListener listener;
+
+	private GtdHelper(OutputListener listener)
 	{
+		this.listener = listener;
+	}
+
+	public static GtdHelper getInstance(OutputListener listener)
+	{
+		return new GtdHelper(listener);
+	}
+
+	/** 执行用户录入的GTD指令； */
+	public void execute(String input) throws Exception
+	{
+		GameGtd gameGtd = GameGtd.getInstance(listener);
 		GtdParser parser = new GtdParser(input);
 		String action = parser.getAction();
 		switch (action)
 		{
-		case "gtd add task":
-			GameGtd.addTask(parser.getStatus("TODO"), parser.getEvent(), parser.getTags());
+		case "$gtd add task":
+		case "$GTD ADD TASK":
+			gameGtd.addTask(parser.getStatus("TODO"), parser.getEvent(), parser.getTags());
 			break;
-		case "gtd update task":
-			GameGtd.updateTask(parser.getId(), parser.getStatus(null), parser.getEvent());
+		case "$gtd update task":
+		case "$GTD UPDATE TASK":
+			gameGtd.updateTask(parser.getId(), parser.getStatus(null), parser.getEvent());
 			break;
-		case "gtd list task":
-			GameGtd.listTask(parser.getStatus(null), parser.getTags());
+		case "$gtd list task":
+		case "$GTD LIST TASK":
+			gameGtd.listTask(parser.getStatus(null), parser.getTags());
 			break;
-		case "gtd delete task":
+		case "$gtd delete task":
+		case "$GTD DELETE TASK":
 			break;
 		default:
-			System.out.println("无法识别的指令！");
+			listener.output("无法识别的指令！");
 			break;
 		}
 

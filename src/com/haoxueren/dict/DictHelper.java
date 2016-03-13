@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
@@ -37,7 +38,7 @@ public class DictHelper
 		}
 		// 要请求的URL路径；
 		String lowerCaseWord = word.toLowerCase().trim();
-		String url = "http://www.iciba.com/" + lowerCaseWord;
+		String url = "http://www.iciba.com/" + URLEncoder.encode(lowerCaseWord, "UTF-8");
 		// 获取见面的Document对象；
 		Document document = Jsoup.connect(url).get();
 		// 解析单词的(英/美)发音；
@@ -58,6 +59,12 @@ public class DictHelper
 		for (Element element : select)
 		{
 			listener.output(element.text());
+		}
+		// 解析单词的各个状态词；
+		Elements state = document.select("ul.word-state");
+		for (Element element : state)
+		{
+			listener.output(element.text() + "\r\n");
 		}
 	}
 

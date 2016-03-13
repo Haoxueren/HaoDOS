@@ -1,4 +1,4 @@
-﻿package com.haoxueren.dos;
+﻿package com.haoxueren.helper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,14 +6,18 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+import com.haoxueren.main.OutputListener;
+
 /** Window Dos命令的帮助类； */
 public class MsdosHelper
 {
 	private Process process;
+	private OutputListener listener;
 
-	public MsdosHelper(Process process)
+	public MsdosHelper(Process process, OutputListener listener)
 	{
 		this.process = process;
+		this.listener = listener;
 	}
 
 	/** 执行DOS命令并输出信息； */
@@ -33,7 +37,7 @@ public class MsdosHelper
 					int len = reader.read(buffer);
 					while (len != -1)
 					{
-						System.out.println(new String(buffer, 0, len));
+						listener.output(new String(buffer, 0, len));
 						len = reader.read(buffer);
 					}
 					reader.close();

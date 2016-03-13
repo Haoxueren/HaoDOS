@@ -1,12 +1,12 @@
 #Fat Jar Configuration File
-#Mon Mar 07 01:28:27 CST 2016
+#Sun Mar 13 15:36:33 CST 2016
 onejar.license.required=false
 manifest.classpath=
 manifest.removesigners=true
 onejar.checkbox=true
 jarname=C\:\\Users\\Haosir\\Desktop\\HaoDos.jar
 manifest.mergeall=true
-manifest.mainclass=com.haoxueren.main.DosWindow
+manifest.mainclass=com.haoxueren.main.DosGui
 manifest.file=<createnew>
 jarname.isextern=true
 onejar.expand=

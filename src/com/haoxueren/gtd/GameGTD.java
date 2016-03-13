@@ -21,16 +21,29 @@ import org.dom4j.io.XMLWriter;
 
 import com.haoxueren.config.ConsoleHelper;
 import com.haoxueren.config.Values;
+import com.haoxueren.main.OutputListener;
 import com.haoxueren.utils.TextHelper;
 
 /** 基于游戏原理设计的GTD系统； */
 @SuppressWarnings("unchecked")
 public class GameGtd
 {
+	private OutputListener listener;
+
+	public GameGtd(OutputListener listener)
+	{
+		this.listener = listener;
+	}
+
+	public static GameGtd getInstance(OutputListener listener)
+	{
+		return new GameGtd(listener);
+	}
+
 	/**
 	 * 添加一条待办事项；<br>
 	 */
-	public static void addTask(String statusText, String eventText, String... tagArray) throws Exception
+	public void addTask(String statusText, String eventText, String... tagArray) throws Exception
 	{
 		// 获取XML文档根节点；
 		File xmlFile = new File(Values.DATABASE, XmlField.GameGTD);
@@ -60,11 +73,11 @@ public class GameGtd
 		createTime.addText(new Date().toLocaleString());
 		// 将Document保存到本地XML；
 		storeXml(document, xmlFile);
-		System.out.println("add success：" + statusText + "；" + eventText + " TAGS=" + Arrays.toString(tagArray));
+		listener.output("add success：" + statusText + "；" + eventText + " TAGS=" + Arrays.toString(tagArray));
 	}
 
 	/** 修改任务内容或状态； */
-	public static void updateTask(String id, String status, String taskText) throws Exception
+	public void updateTask(String id, String status, String taskText) throws Exception
 	{
 		File xmlFile = new File(Values.DATABASE, XmlField.GameGTD);
 		Document document = getDocument(xmlFile);
@@ -95,7 +108,7 @@ public class GameGtd
 					task.element(XmlField.STATUS).setText("DONE");
 					getChildElement(task, "DoneTime").setText(localeTime);
 				}
-				System.out.println("update success：ID=" + task.attributeValue("id") + " STATUS="
+				listener.output("update success：ID=" + task.attributeValue("id") + " STATUS="
 						+ task.elementText(XmlField.STATUS) + " TEXT=" + task.elementText(XmlField.TEXT) + "；");
 			}
 		}
@@ -119,7 +132,7 @@ public class GameGtd
 	/**
 	 * 根据任务状态和标签查询任务；<br>
 	 */
-	public static void listTask(String status, String... tags) throws Exception
+	public void listTask(String status, String... tags) throws Exception
 	{
 		File xmlFile = new File(Values.DATABASE, XmlField.GameGTD);
 		Document document = getDocument(xmlFile);
@@ -135,12 +148,12 @@ public class GameGtd
 			if (statusFlag && tagsFlag)
 			{
 				newTasks.add(task);
-				System.out.println("[" + task.elementText(XmlField.STATUS) + "]" + task.attributeValue("id") + "、"
+				listener.output("[" + task.elementText(XmlField.STATUS) + "]" + task.attributeValue("id") + "、"
 						+ task.elementText(XmlField.TEXT) + "；");
 			}
 		}
 		ConsoleHelper.printDivider();
-		System.out.println("success: " + newTasks.size() + " matched tasks!");
+		listener.output("success: " + newTasks.size() + " matched tasks!");
 	}
 
 	/*********************** 【以下是封装方法区】 ***********************/

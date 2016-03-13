@@ -68,14 +68,6 @@ public class DosWindow
 				commander.printHelpInfo();
 				continue;
 			}
-			// 执行退出指令；
-			if (input.equalsIgnoreCase("$EXIT"))
-			{
-				scanner.close();
-				scanner = null;
-				System.out.println("程序已安全退出！");
-				break;
-			}
 			// 进入通用指令系统；
 			if (input.equalsIgnoreCase("$COMMON"))
 			{
@@ -92,19 +84,12 @@ public class DosWindow
 				continue;
 			}
 
-			// 处理GameGTD系统指令；
-			if (input.matches("^(gtd|GTD){1}\\s+.+"))
-			{
-				GtdHelper.execute(input);
-				continue;
-			}
-
 			// 开始：随机单词；
 			if ("$WORD".equalsIgnoreCase(TASK_TYPE) && TextHelper.isEmpty(input))
 			{
 				try
 				{
-					File wordFile = WordHelper.getRandomWordFile();
+					File wordFile = WordHelper.getInstance(null).getRandomWordFile();
 					if (wordFile == null)
 					{
 						System.err.println("单词目录为空！");
@@ -192,26 +177,6 @@ public class DosWindow
 			}
 
 			// 结束：发送邮件；
-
-			// 打开程序的配置文件；
-			if ("$CONFIG".equalsIgnoreCase(input))
-			{
-				try
-				{
-					File file = new File(System.getProperty("user.dir"), "configure.properties");
-					Desktop.getDesktop().open(file);
-				} catch (IOException e)
-				{
-					System.err.println(e.getMessage());
-				}
-				continue;
-			}
-			// 打开MS-DOS窗口；
-			if (input.startsWith("RUN CMD"))
-			{
-				Desktop.getDesktop().open(new File("C:/Windows/system32/cmd.exe"));
-				continue;
-			}
 
 			// 执行通用指令；
 			commander.runTask(input);

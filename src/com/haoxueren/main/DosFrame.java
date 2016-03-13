@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.TextArea;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -34,7 +36,7 @@ public class DosFrame extends Frame implements KeyListener
 		textArea.setForeground(Color.WHITE);
 		// 设置字体大小；
 		textArea.setFont(new Font(null, 0, 18));
-		// 监听回车键；
+		// 监听键盘事件；
 		textArea.addKeyListener(this);
 		// 添加部件并显示窗体；
 		this.add(textArea);
@@ -47,6 +49,9 @@ public class DosFrame extends Frame implements KeyListener
 	@Override
 	public void keyTyped(KeyEvent event)
 	{
+		// 打字时，将光标移动到最后；
+		int position = textArea.getText().length();
+		textArea.setCaretPosition(position);
 	}
 
 	@Override
@@ -75,4 +80,5 @@ public class DosFrame extends Frame implements KeyListener
 			break;
 		}
 	}
+
 }

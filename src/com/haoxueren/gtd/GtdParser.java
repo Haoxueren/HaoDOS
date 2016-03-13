@@ -13,7 +13,6 @@ public class GtdParser
 	public GtdParser(String input)
 	{
 		array = new String[2];
-		input = input.toLowerCase();
 		array[0] = input.substring(0, getHeaderDividerIndex(input));
 		array[1] = input.substring(getHeaderDividerIndex(input) + 1);
 	}
@@ -24,7 +23,10 @@ public class GtdParser
 		return array[0].trim();
 	}
 
-	/** 获取指令中的键值对信息； */
+	/**
+	 * 获取指令中的键值对信息；<br>
+	 * 键转换为小写，值保持不变；<br>
+	 */
 	private Map<String, String> getPairs()
 	{
 		Map<String, String> map = new HashMap<>();
@@ -34,7 +36,7 @@ public class GtdParser
 			for (String pairText : pairs)
 			{
 				String[] pair = pairText.split("=");
-				map.put(pair[0].trim(), pair[1].trim());
+				map.put(pair[0].toLowerCase().trim(), pair[1].trim());
 			}
 		}
 		return map;

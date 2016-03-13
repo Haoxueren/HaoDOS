@@ -10,6 +10,7 @@ import java.util.TreeMap;
 import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.config.Keys;
 import com.haoxueren.config.Values;
+import com.haoxueren.main.OutputListener;
 import com.haoxueren.utils.FileHelper;
 import com.haoxueren.utils.FileUtils;
 
@@ -18,6 +19,17 @@ public class WordHelper
 	private static String wrodsPath;
 	/** 已抽取单词的个数； */
 	private static int index, loop = 29;
+	private OutputListener listener;
+
+	private WordHelper(OutputListener listener)
+	{
+		this.listener = listener;
+	}
+
+	public static WordHelper getInstance(OutputListener listener)
+	{
+		return new WordHelper(listener);
+	}
 
 	static
 	{
@@ -48,7 +60,7 @@ public class WordHelper
 	 * 算法：为知笔记2016.02.25； 要求：index<=loop<=sum；<br>
 	 * 按就近原则(lastModifyTime)随机获取单词；<br>
 	 */
-	public static File getRandomWordFile()
+	public File getRandomWordFile()
 	{
 		Map<Long, File> map = initFileMap();
 		Object[] objects = map.keySet().toArray();
@@ -61,7 +73,7 @@ public class WordHelper
 		int random = RandomHelper.getRandomInt(start, sum);
 		Object time = objects[random];
 		File file = map.get(time);
-		System.out.println(index + "、" + getWordName(file));
+		listener.output(index + "、" + getWordName(file));
 		// 循环一圈后，初始化index；
 		index = index == loop ? 0 : index;
 		return file;
@@ -79,7 +91,7 @@ public class WordHelper
 	 * @param wordsPath
 	 *            要操作的目录路径，本程序支持多级目录；
 	 */
-	public static void addWord(String word) throws IOException
+	public void addWord(String word) throws IOException
 	{
 		String wordTrim = word.trim();
 		if (wordTrim.length() <= 1)
@@ -103,14 +115,14 @@ public class WordHelper
 			{
 				// 如果包含，打开对应的文件；
 				desktop.edit(file);
-				System.out.println("文件 " + file.getName().split("\\.")[0] + " 已打开！");
+				listener.output("文件 " + file.getName().split("\\.")[0] + " 已打开！");
 				return;
 			}
 		}
 		// 在单词图解目录下创建该文件；
 		File file = new File(word_dir, word + ".png");
 		ImageHelper.createImage(file);
-		System.out.println(wordTrim + "已添加成功 ！");
+		listener.output(wordTrim + "已添加成功 ！");
 		// 打开文件；
 		desktop.open(file);
 		desktop.edit(file);

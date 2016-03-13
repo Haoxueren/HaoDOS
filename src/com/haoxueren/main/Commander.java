@@ -11,7 +11,7 @@ import javax.swing.filechooser.FileSystemView;
 import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.config.Keys;
 import com.haoxueren.config.Values;
-import com.haoxueren.dos.MsdosHelper;
+import com.haoxueren.helper.MsdosHelper;
 import com.haoxueren.utils.CommandHelper;
 import com.haoxueren.utils.FileHelper;
 import com.haoxueren.utils.FileUtils;
@@ -22,7 +22,7 @@ import com.haoxueren.word.ClipBoardHelper;
 import com.haoxueren.word.WordHelper;
 
 /** 指挥官：负责执行具体的命令； */
-public class Commander implements FileHelperListener
+public class Commander implements FileHelperListener, OutputListener
 {
 	private File directory;
 	private String order;
@@ -58,20 +58,6 @@ public class Commander implements FileHelperListener
 		try
 		{
 			commandHelper.setCommand(order);
-			// 将剪贴版的单词添加到单词图解；
-			if (order.equalsIgnoreCase("add copy"))
-			{
-				String word = ClipBoardHelper.getClipboardText();
-				if (TextHelper.isEmpty(word))
-				{
-					System.err.println("剪切板为空！");
-				} else
-				{
-					WordHelper.addWord(word.toLowerCase());
-				}
-				return;
-			}
-
 			if (order.equalsIgnoreCase("$INIT"))
 			{
 				fileHelper.getFiles(directory);
@@ -81,29 +67,9 @@ public class Commander implements FileHelperListener
 			{
 				moveLnkFileExcept("Haoxueren.lnk");
 				fileHelper.getFiles(directory);
-			} else if (order.matches("\\s*"))
-			{
-			} else if (commandHelper.matchSearchCommand())
-			{
-				String keyWords = commandHelper.getSearchWords();
-				commandHelper.search(keyWords);
-			} else if (commandHelper.matchTranslateCommand())
-			{
-				String word = commandHelper.getTranslateWord();
-				commandHelper.translate(word);
-			} else if (commandHelper.matchUrlCommand())
-			{
-				commandHelper.openUrl(order);
 			} else if (commandHelper.matchAddWordCommand() || commandHelper.matchEditWordCommand())
 			{
-				WordHelper.addWord(commandHelper.getEnglishWord().toLowerCase());
-			} else if (commandHelper.matchDosCommand())
-			{
-				String dos = order.replaceAll("(dos|DOS)", "").trim();
-				Process process = Runtime.getRuntime().exec("cmd.exe /c " + dos);
-				MsdosHelper msdosHelper = new MsdosHelper(process);
-				msdosHelper.output();
-				msdosHelper.input("\n");
+				WordHelper.getInstance(this).addWord(commandHelper.getEnglishWord().toLowerCase());
 			} else
 			{
 				String filename = order;
@@ -144,7 +110,7 @@ public class Commander implements FileHelperListener
 			if (files.isEmpty())
 			{
 				String keyWords = filename.replaceAll("\\s+", "%20");
-				new CommandHelper().search(keyWords);
+				System.out.println(keyWords);
 				return;
 			}
 
@@ -219,5 +185,11 @@ public class Commander implements FileHelperListener
 				System.err.println("文件" + destFile.getName() + "已存在！");
 			}
 		}
+	}
+
+	@Override
+	public void output(String text)
+	{
+		System.out.println(text);
 	}
 }
