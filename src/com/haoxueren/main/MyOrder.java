@@ -15,6 +15,7 @@ import com.haoxueren.gtd.GtdHelper;
 import com.haoxueren.helper.DateHelper;
 import com.haoxueren.helper.FileManager;
 import com.haoxueren.helper.MsdosHelper;
+import com.haoxueren.qq.QQHelper;
 import com.haoxueren.test.LetouLuckDraw;
 import com.haoxueren.utils.TextHelper;
 import com.haoxueren.word.WordHelper;
@@ -62,6 +63,15 @@ public class MyOrder implements OutputListener
 				textArea.append("打开文件：" + fileName + "\n");
 				String directory = ConfigHelper.getConfig(Keys.SHORTCUTS, Values.SHORTCUTS);
 				new FileManager().openFile(directory, "JSCB");
+				return;
+			}
+
+			// 打开QQ聊天窗口；
+			if (input.matches("\\$(qq|QQ)\\s+.+"))
+			{
+				String nickname = input.replaceFirst("\\$(qq|QQ)", "").trim();
+				String qq = nickname.matches("\\d+") ? nickname : QQHelper.getQQNo(nickname);
+				QQHelper.openQQ(qq);
 				return;
 			}
 
