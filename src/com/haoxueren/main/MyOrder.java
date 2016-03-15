@@ -69,7 +69,7 @@ public class MyOrder implements OutputListener
 			// 打开QQ聊天窗口；
 			if (input.matches("\\$(qq|QQ)\\s+.+"))
 			{
-				String nickname = input.replaceFirst("\\$(qq|QQ)", "").trim();
+				String nickname = input.replaceFirst("\\$(qq|QQ)", "").trim().toUpperCase();
 				String qq = nickname.matches("\\d+") ? nickname : QQHelper.getQQNo(nickname);
 				QQHelper.openQQ(qq);
 				return;
