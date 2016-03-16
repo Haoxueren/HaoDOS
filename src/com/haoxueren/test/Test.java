@@ -1,5 +1,7 @@
 package com.haoxueren.test;
 
+import java.io.IOException;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,6 +18,11 @@ public class Test
 		Elements tdList = table.select("td");
 		System.out.println(tdList.get(1).text());
 		System.out.println(tdList.get(3).text().replaceAll("（.+）", ""));
+	}
+
+	@org.junit.Test
+	public void test01() throws IOException
+	{
 	}
 
 }

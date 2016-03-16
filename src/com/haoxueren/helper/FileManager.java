@@ -1,44 +1,60 @@
 package com.haoxueren.helper;
 
-import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.haoxueren.config.ConfigHelper;
-import com.haoxueren.config.Keys;
-import com.haoxueren.config.Values;
+import com.haoxueren.utils.PinYinUtils;
 
-/** 操作文件的帮助类； */
+/**
+ * 操作文件的帮助类； <br>
+ * 从指定目录中查找符合条件的文件；<br>
+ */
 public class FileManager
 {
+	/** 用来保存符合条件的文件的集合； */
+	private List<File> fileList;
+
 	public FileManager()
 	{
+		fileList = new ArrayList<>();
 	}
 
 	/** 根据文件名打开文件； */
-	public void openFile(String dirPath, String filename) throws IOException
+	public void fillFileList(String dirPath, String inputFilename) throws IOException
 	{
 		// 构建要操作的目录对象；
 		File directory = new File(dirPath);
 		// 遍历目录，打开符合条件的文件；
-		File[] fileList = directory.listFiles();
-		for (File file : fileList)
+		File[] files = directory.listFiles();
+		for (File file : files)
 		{
 			// 如果是文件夹，继续遍历；
 			if (file.isDirectory())
 			{
-				openFile(file.getAbsolutePath(), filename);
+				fillFileList(file.getAbsolutePath(), inputFilename);
 			}
 			// 如果是文件，判断是否符合条件；
 			else
 			{
-				System.out.println(file.getName());
-				if (file.getName().equalsIgnoreCase(filename))
+				String filename = file.getName();
+				filename = filename.substring(0, filename.lastIndexOf('.'));
+				// 将两方内容都转化成首字母缩写；
+				String shortname = PinYinUtils.getFirstLatter(filename);
+				String inputShortname = PinYinUtils.getFirstLatter(inputFilename);
+				// 如果文件名的缩写包含输入文件名的缩写，将文件加入集合；
+				if (shortname.contains(inputShortname))
 				{
-					Desktop.getDesktop().open(file);
+					fileList.add(file);
 				}
 			}
 		}
+	}
+
+	public List<File> getFileList()
+	{
+		return fileList;
 	}
 
 }

@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import com.haoxueren.config.Values;
+import com.haoxueren.helper.DesktopHelper;
 import com.haoxueren.helper.FrameHelper;
 
 public class DosFrame extends Frame implements KeyListener
@@ -27,8 +28,9 @@ public class DosFrame extends Frame implements KeyListener
 		// 创建窗体并设置窗体属性；
 		FrameHelper frameHelper = new FrameHelper(this);
 		frameHelper.enableExitButton();
-		this.setSize(400, 400);
-		this.setLocation(0, 460);
+		int frameSize = 500;
+		this.setSize(frameSize, frameSize);
+		this.setLocation(0, DesktopHelper.getDesktopHeight(this) - frameSize);
 		this.setBackground(Color.BLACK);
 		textArea = new TextArea();
 		// 设置背景色和前景色；

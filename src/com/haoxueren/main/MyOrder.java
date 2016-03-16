@@ -5,6 +5,7 @@ import java.awt.TextArea;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.List;
 
 import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.config.Keys;
@@ -60,9 +61,35 @@ public class MyOrder implements OutputListener
 			if (input.matches("\\$(open|OPEN)\\s+.+"))
 			{
 				String fileName = input.replaceFirst("\\$(open|OPEN)", "").trim();
-				textArea.append("打开文件：" + fileName + "\n");
+				// 打开自定义的路径；
+				if (fileName.equalsIgnoreCase(""))
+				{
+					
+				}
+				// 打开SHORTCUTS中的文件；
 				String directory = ConfigHelper.getConfig(Keys.SHORTCUTS, Values.SHORTCUTS);
-				new FileManager().openFile(directory, "JSCB");
+				FileManager fileManager = new FileManager();
+				fileManager.fillFileList(directory, fileName);
+				List<File> fileList = fileManager.getFileList();
+				switch (fileList.size())
+				{
+				// 未找到文件；
+				case 0:
+					textArea.append("未找到文件：" + fileName + "\n");
+					break;
+				// 直接打开文件；
+				case 1:
+					Desktop.getDesktop().open(fileList.get(0));
+					textArea.append("打开文件：" + fileList.get(0).getName() + "\n");
+					break;
+				// 多个文件，提示用户重新输入；
+				default:
+					for (int i = 0; i < fileList.size(); i++)
+					{
+						textArea.append(i + "、" + fileList.get(i).getName() + "\n");
+					}
+					break;
+				}
 				return;
 			}
 
