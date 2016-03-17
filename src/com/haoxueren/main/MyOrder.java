@@ -16,14 +16,18 @@ import com.haoxueren.gtd.GtdHelper;
 import com.haoxueren.helper.DateHelper;
 import com.haoxueren.helper.DesktopHelper;
 import com.haoxueren.helper.FileManager;
+import com.haoxueren.helper.FileTree;
 import com.haoxueren.helper.MsdosHelper;
 import com.haoxueren.qq.QQHelper;
 import com.haoxueren.test.LetouLuckDraw;
 import com.haoxueren.utils.TextHelper;
 import com.haoxueren.word.WordHelper;
+import com.hp.hpl.sparta.xpath.ThisNodeTest;
 
 public class MyOrder implements OutputListener
 {
+	/** 目录结构树对象； */
+	private FileTree fileTree;
 	private TextArea textArea;
 	private static MyOrder order;
 
@@ -58,10 +62,34 @@ public class MyOrder implements OutputListener
 	{
 		try
 		{
-			// 显示当前文件夹的目录结构图/文件结构图；
-			if (input.matches("\\$(tree|TREE)\\s+(dir|file|DIR|FILE)\\s+.+"))
+			// 显示当前文件夹的目录结构图；
+			if (input.matches("\\$(tree|TREE)\\s+(dir|DIR)\\s+.+"))
 			{
-				textArea.append("workspace目录树\n");
+				String path = input.replaceFirst("\\$(tree|TREE)\\s+(dir|DIR)", "").trim();
+				File dir = new File(path);
+				fileTree = new FileTree(dir, this);
+				fileTree.tree(dir, false);
+				HosFrame.prefix = "tree ";
+				return;
+			}
+			
+			// 显示当前文件夹的目录及文件结构图；
+			if (input.matches("\\$(tree|TREE)\\s+(file|FILE)\\s+.+"))
+			{
+				String path = input.replaceFirst("\\$(tree|TREE)\\s+(file|FILE)", "").trim();
+				File dir = new File(path);
+				fileTree = new FileTree(dir, this);
+				fileTree.tree(dir, true);
+				HosFrame.prefix = "tree id ";
+				return;
+			}
+
+			// 按编号打开目录结构树中的文件；
+			if (input.matches("\\$(tree id|TREE ID)\\s+.+"))
+			{
+				String index = input.replaceFirst("\\$(tree id|TREE ID)", "").trim();
+				int indexInt = Integer.parseInt(index);
+				fileTree.openFile(indexInt);
 				return;
 			}
 			// 为命令行添加前缀功能；
@@ -231,7 +259,7 @@ public class MyOrder implements OutputListener
 				textArea.append("异常：" + e.getMessage() + "\n");
 			} else
 			{
-				textArea.append("异常：NullPointException");
+				textArea.append("异常：NullPointException\n");
 			}
 			e.printStackTrace();
 

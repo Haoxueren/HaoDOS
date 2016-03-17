@@ -17,9 +17,10 @@ import com.haoxueren.helper.FrameHelper;
 
 public class HosFrame extends Frame implements KeyListener, FocusListener, MouseListener
 {
+	private MyOrder order;
+	private TextArea textArea;
 	/** 默认的命令前缀； */
 	public static String prefix="";
-	private TextArea textArea;
 	private static final long serialVersionUID = 1L;
 
 	public HosFrame()
@@ -51,7 +52,8 @@ public class HosFrame extends Frame implements KeyListener, FocusListener, Mouse
 		// 添加部件并显示窗体；
 		this.add(textArea);
 		this.setVisible(true);
-		MyOrder.getInstance(textArea).init();
+		order = MyOrder.getInstance(textArea);
+		order.init();
 	}
 
 	/*********************** 【接口监听区】 ***********************/
@@ -96,7 +98,7 @@ public class HosFrame extends Frame implements KeyListener, FocusListener, Mouse
 			String input = text.substring(index).trim();
 			textArea.append(Values.DIVIDER);
 			// 执行命令；
-			MyOrder.getInstance(textArea).execute(input);
+			order.execute(input);
 			// 把光标位置放到文本末尾；
 			textArea.setCaretPosition(text.length());
 			textArea.append(Values.DIVIDER + "$" + prefix);

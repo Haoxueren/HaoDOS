@@ -1,8 +1,5 @@
 package com.haoxueren.test;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -10,6 +7,21 @@ import org.jsoup.select.Elements;
 
 public class Test
 {
+
+	/**
+	 * 客户需求：切割以下文件路径："F:\乐投天下\课件与视频"；<br>
+	 * 按以下格式输出："F:/乐投天下/课件与视频"；<br>
+	 */
+	public static void main(String[] args)
+	{
+		String pathname = "F:\\乐投天下\\课件与视频";
+		// 注意：此处为4条“\”;
+		String regex = "\\\\";
+		String newPath = pathname.replaceAll(regex, "/");
+		System.out.println(pathname.split(regex).length);
+		System.out.println(newPath);
+	}
+
 	@org.junit.Test
 	public void method() throws Exception
 	{
@@ -21,35 +33,8 @@ public class Test
 		System.out.println(tdList.get(3).text().replaceAll("（.+）", ""));
 	}
 
-	@org.junit.Test
-	public void test01() throws IOException
-	{
-		File dir = new File("d:\\workspace");
-		tree(dir);
-	}
 
-	/** 列出指定目录的文件树； */
-	public void tree(File dir)
-	{
-		File[] files = dir.listFiles();
-		for (File file : files)
-		{
-			String path = file.getAbsolutePath();
-			int num = 0;
-			if (file.isDirectory())
-			{
-				System.out.println(path);
-				System.out.println(path.contains("\\"));
-				path=path.replaceAll("\\", "/");
-				num = path.split("/").length - 1;
-				System.out.println(num + "目录：" + file.getName());
-				tree(file);
-			} else
-			{
-				// num = path.split("\\").length - 1;
-				System.out.println(num + "文件：" + file.getName());
-			}
-		}
-	}
+
+
 
 }
