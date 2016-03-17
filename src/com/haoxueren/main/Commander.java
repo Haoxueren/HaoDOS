@@ -1,6 +1,5 @@
 ﻿package com.haoxueren.main;
 
-import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,15 +10,11 @@ import javax.swing.filechooser.FileSystemView;
 import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.config.Keys;
 import com.haoxueren.config.Values;
-import com.haoxueren.helper.MsdosHelper;
 import com.haoxueren.utils.CommandHelper;
 import com.haoxueren.utils.FileHelper;
 import com.haoxueren.utils.FileUtils;
-import com.haoxueren.utils.PinYinUtils;
-import com.haoxueren.utils.TextHelper;
 import com.haoxueren.utils.FileUtils.FileHelperListener;
-import com.haoxueren.word.ClipBoardHelper;
-import com.haoxueren.word.WordHelper;
+import com.haoxueren.utils.PinYinUtils;
 
 /** 指挥官：负责执行具体的命令； */
 public class Commander implements FileHelperListener, OutputListener
@@ -67,13 +62,6 @@ public class Commander implements FileHelperListener, OutputListener
 			{
 				moveLnkFileExcept("Haoxueren.lnk");
 				fileHelper.getFiles(directory);
-			} else if (commandHelper.matchAddWordCommand() || commandHelper.matchEditWordCommand())
-			{
-				WordHelper.getInstance(this).addWord(commandHelper.getEnglishWord().toLowerCase());
-			} else
-			{
-				String filename = order;
-				openFileByName(fileList, filename);
 			}
 		} catch (Exception e)
 		{
@@ -102,43 +90,10 @@ public class Commander implements FileHelperListener, OutputListener
 		return filterLlist;
 	}
 
-	private void openFileByName(List<File> fileList, String filename)
-	{
-		try
-		{
-			List<File> files = filterFile(fileList, filename);
-			if (files.isEmpty())
-			{
-				String keyWords = filename.replaceAll("\\s+", "%20");
-				System.out.println(keyWords);
-				return;
-			}
-
-			if (files.size() == 1)
-			{
-				Desktop.getDesktop().open(files.get(0));
-				return;
-			}
-
-			if (files.size() > 1)
-			{
-				for (File file : files)
-				{
-					System.out.println(file.getName());
-				}
-				return;
-			}
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
-
 	@Override
 	public void onFileFindOver(ArrayList<File> list)
 	{
 		fileList = list;
-		System.out.println("对生活充满热情，对未来充满信心。");
 	}
 
 	// 获取到桌面的路径；

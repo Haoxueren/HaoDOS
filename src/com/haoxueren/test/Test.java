@@ -1,5 +1,6 @@
 package com.haoxueren.test;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.jsoup.Jsoup;
@@ -23,6 +24,32 @@ public class Test
 	@org.junit.Test
 	public void test01() throws IOException
 	{
+		File dir = new File("d:\\workspace");
+		tree(dir);
+	}
+
+	/** 列出指定目录的文件树； */
+	public void tree(File dir)
+	{
+		File[] files = dir.listFiles();
+		for (File file : files)
+		{
+			String path = file.getAbsolutePath();
+			int num = 0;
+			if (file.isDirectory())
+			{
+				System.out.println(path);
+				System.out.println(path.contains("\\"));
+				path=path.replaceAll("\\", "/");
+				num = path.split("/").length - 1;
+				System.out.println(num + "目录：" + file.getName());
+				tree(file);
+			} else
+			{
+				// num = path.split("\\").length - 1;
+				System.out.println(num + "文件：" + file.getName());
+			}
+		}
 	}
 
 }

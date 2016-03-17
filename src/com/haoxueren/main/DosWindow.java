@@ -1,109 +1,36 @@
 ﻿package com.haoxueren.main;
 
-import java.awt.Desktop;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Properties;
 import java.util.Scanner;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import com.haoxueren.config.ConfigHelper;
-import com.haoxueren.config.ConsoleHelper;
-import com.haoxueren.config.Keys;
-import com.haoxueren.config.Values;
-import com.haoxueren.dict.DictHelper;
-import com.haoxueren.dict.FanyiHelper;
-import com.haoxueren.gtd.GameGtd;
-import com.haoxueren.gtd.GtdHelper;
-import com.haoxueren.helper.DateHelper;
 import com.haoxueren.mail.MailHelper;
-import com.haoxueren.test.LetouLuckDraw;
-import com.haoxueren.utils.FileHelper;
-import com.haoxueren.utils.FileUtils;
 import com.haoxueren.utils.TextHelper;
-import com.haoxueren.word.WordHelper;
 
 /**
  * 程序入口；
  */
 public class DosWindow
 {
-	// 进入发送邮件械的指令；
-	private static final String SEND_MAIL = "$mail";
 	/** 任务类型； */
 	private static String TASK_TYPE;
+	// 进入发送邮件械的指令；
+	private static final String SEND_MAIL = "$mail";
 
 	public static void main(String[] args) throws Exception
 	{
-		ConsoleHelper.printDivider();
 		// 用来存储邮件信息的集合；
 		Properties emailInfo = new Properties();
 		Commander commander = new Commander();
 		Scanner scanner = new Scanner(System.in);
-		String titleMotto = ConfigHelper.getConfig(Keys.TITLE_MOTTO, Values.TITLE_MOTTO);
 		while (true)
 		{
-			if ("$WORD".equalsIgnoreCase(TASK_TYPE))
-			{
-				System.out.print("\n" + titleMotto + ">Words>\n");
-			} else
-			{
-				System.out.print("\n" + titleMotto + ">\n");
-			}
 			// 接收用户录入的指令；
 			String input = scanner.nextLine().trim();
 			input = input.toUpperCase();
-			ConsoleHelper.printDivider();
-			if (input.equalsIgnoreCase("$HELP"))
-			{
-				commander.printHelpInfo();
-				continue;
-			}
-			// 进入通用指令系统；
-			if (input.equalsIgnoreCase("$COMMON"))
-			{
-				TASK_TYPE = "$COMMON";
-				System.out.println("欢迎进入通用指令系统！");
-				continue;
-			}
-			// 进入随机单词系统；
-			if (input.equalsIgnoreCase("$WORD"))
-			{
-				// 记录当前的任务类型；
-				TASK_TYPE = "$WORD";
-				System.out.println("欢迎进入随机单词系统！");
-				continue;
-			}
-
-			// 开始：随机单词；
-			if ("$WORD".equalsIgnoreCase(TASK_TYPE) && TextHelper.isEmpty(input))
-			{
-				try
-				{
-					File wordFile = WordHelper.getInstance(null).getRandomWordFile();
-					if (wordFile == null)
-					{
-						System.err.println("单词目录为空！");
-						continue;
-					}
-					Desktop.getDesktop().open(wordFile);
-					WordHelper.getWordName(wordFile);
-				} catch (IOException e)
-				{
-					System.err.println(e.getMessage());
-				}
-				continue;
-			}
-
 			// 开始：发送邮件；
 
 			if (input.equalsIgnoreCase(SEND_MAIL))
@@ -175,9 +102,6 @@ public class DosWindow
 					continue;
 				}
 			}
-
-			// 结束：发送邮件；
-
 			// 执行通用指令；
 			commander.runTask(input);
 		}

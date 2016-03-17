@@ -8,17 +8,21 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import com.haoxueren.config.Values;
 import com.haoxueren.helper.DesktopHelper;
 import com.haoxueren.helper.FrameHelper;
 
-public class DosFrame extends Frame implements KeyListener
+public class HosFrame extends Frame implements KeyListener, FocusListener, MouseListener
 {
+	/** 默认的命令前缀； */
+	public static String prefix="";
 	private TextArea textArea;
 	private static final long serialVersionUID = 1L;
 
-	public DosFrame()
+	public HosFrame()
 	{
 		super("稳扎稳打，步步为营");
 	}
@@ -40,6 +44,10 @@ public class DosFrame extends Frame implements KeyListener
 		textArea.setFont(new Font(null, 0, 18));
 		// 监听键盘事件；
 		textArea.addKeyListener(this);
+		// 监听获取焦点事件；
+		textArea.addFocusListener(this);
+		// 监听鼠标点击事件；
+		textArea.addMouseListener(this);
 		// 添加部件并显示窗体；
 		this.add(textArea);
 		this.setVisible(true);
@@ -47,6 +55,19 @@ public class DosFrame extends Frame implements KeyListener
 	}
 
 	/*********************** 【接口监听区】 ***********************/
+
+	@Override
+	public void focusGained(FocusEvent e)
+	{
+		// 获取焦点时，将光标移到最后；
+		int position = textArea.getText().length();
+		textArea.setCaretPosition(position);
+	}
+
+	@Override
+	public void focusLost(FocusEvent e)
+	{
+	}
 
 	@Override
 	public void keyTyped(KeyEvent event)
@@ -78,9 +99,40 @@ public class DosFrame extends Frame implements KeyListener
 			MyOrder.getInstance(textArea).execute(input);
 			// 把光标位置放到文本末尾；
 			textArea.setCaretPosition(text.length());
-			textArea.append(Values.DIVIDER + "$");
+			textArea.append(Values.DIVIDER + "$" + prefix);
 			break;
 		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent event)
+	{
+		// 鼠标(左键)点击，将光标移到最后；
+		if (event.getButton()==MouseEvent.BUTTON1)
+		{
+			int position = textArea.getText().length();
+			textArea.setCaretPosition(position);
+		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e)
+	{
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e)
+	{
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e)
+	{
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e)
+	{
 	}
 
 }

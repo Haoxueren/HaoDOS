@@ -1,12 +1,12 @@
 #Fat Jar Configuration File
-#Wed Mar 16 17:48:10 CST 2016
+#Thu Mar 17 11:08:05 CST 2016
 onejar.license.required=false
 manifest.classpath=
 manifest.removesigners=true
 onejar.checkbox=true
 jarname=C\:\\Users\\Haosir\\Desktop\\HosGui.jar
 manifest.mergeall=true
-manifest.mainclass=com.haoxueren.main.DosGui
+manifest.mainclass=com.haoxueren.main.HosGui
 manifest.file=<createnew>
 jarname.isextern=true
 onejar.expand=

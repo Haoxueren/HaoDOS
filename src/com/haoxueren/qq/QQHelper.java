@@ -17,7 +17,7 @@ public class QQHelper
 	public static String getQQNo(String nickname) throws Exception
 	{
 		Properties properties = new Properties();
-		Reader reader = new FileReader(System.getProperty("user.dir") + "/config/QQ.properties");
+		Reader reader = new FileReader(System.getProperty("user.dir") + "/config/qqmap.properties");
 		properties.load(reader);
 		Object QQNo = properties.get(nickname);
 		reader.close();

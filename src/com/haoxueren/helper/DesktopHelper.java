@@ -1,9 +1,12 @@
 package com.haoxueren.helper;
 
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * GUI的帮助类；<br>
@@ -11,9 +14,7 @@ import java.awt.Toolkit;
  */
 public class DesktopHelper
 {
-	/**
-	 * 获取屏幕的高度(不含任务栏高度)
-	 */
+	/** 获取屏幕的高度(不含任务栏高度) */
 	public static int getDesktopHeight(Component frame)
 	{
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -23,5 +24,13 @@ public class DesktopHelper
 		Insets insets = toolkit.getScreenInsets(frame.getGraphicsConfiguration());
 		// 屏幕的高度减去上下任务栏的高度；
 		return screenSize.height - insets.top - insets.bottom;
+	}
+
+	/** 根据文件名打开文件； */
+	public static void openFile(String path) throws IOException
+	{
+		Desktop desktop = Desktop.getDesktop();
+		File file = new File(path);
+		desktop.open(file);
 	}
 }

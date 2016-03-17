@@ -14,6 +14,7 @@ import com.haoxueren.dict.DictHelper;
 import com.haoxueren.dict.FanyiHelper;
 import com.haoxueren.gtd.GtdHelper;
 import com.haoxueren.helper.DateHelper;
+import com.haoxueren.helper.DesktopHelper;
 import com.haoxueren.helper.FileManager;
 import com.haoxueren.helper.MsdosHelper;
 import com.haoxueren.qq.QQHelper;
@@ -57,39 +58,61 @@ public class MyOrder implements OutputListener
 	{
 		try
 		{
+			// 显示当前文件夹的目录结构图/文件结构图；
+			if (input.matches("\\$(tree|TREE)\\s+(dir|file|DIR|FILE)\\s+.+"))
+			{
+				textArea.append("workspace目录树\n");
+				return;
+			}
+			// 为命令行添加前缀功能；
+			if (input.matches("\\$(set|SET)\\s+(prefix|PREFIX)\\s+.+"))
+			{
+				String prefix = input.replaceFirst("\\$(set|SET)\\s+(prefix|PREFIX)", "").trim();
+				if (prefix.equalsIgnoreCase("null"))
+				{
+					// 清除命令前缀；
+					HosFrame.prefix = "";
+					textArea.append("已清除命令前缀\n");
+					return;
+				}
+				// 设置命令前缀；
+				HosFrame.prefix = prefix + " ";
+				textArea.append("已设置命令前缀：" + prefix + "\n");
+				return;
+			}
+			// 执行随机单词命令；
+			if (input.matches("\\$(random|RANDOM)\\s+(word|WORD)\\s?"))
+			{
+				File wordFile = WordHelper.getInstance(this).getRandomWordFile();
+				if (wordFile == null)
+				{
+					textArea.append("单词目录为空！\n");
+					return;
+				}
+				// 打开单词图解；
+				Desktop.getDesktop().open(wordFile);
+				WordHelper.getWordName(wordFile);
+				return;
+			}
+
 			// 打开对应的文件；
 			if (input.matches("\\$(open|OPEN)\\s+.+"))
 			{
 				String fileName = input.replaceFirst("\\$(open|OPEN)", "").trim();
-				// 打开自定义的路径；
-				if (fileName.equalsIgnoreCase(""))
+				// 打开程序所在的目录；
+				if (fileName.equalsIgnoreCase("userdir"))
 				{
-					
+					DesktopHelper.openFile(System.getProperty("user.dir"));
+					return;
+				}
+				// 打开配置文件；
+				if (fileName.equalsIgnoreCase("config"))
+				{
+					DesktopHelper.openFile(System.getProperty("user.dir") + "/config");
+					return;
 				}
 				// 打开SHORTCUTS中的文件；
-				String directory = ConfigHelper.getConfig(Keys.SHORTCUTS, Values.SHORTCUTS);
-				FileManager fileManager = new FileManager();
-				fileManager.fillFileList(directory, fileName);
-				List<File> fileList = fileManager.getFileList();
-				switch (fileList.size())
-				{
-				// 未找到文件；
-				case 0:
-					textArea.append("未找到文件：" + fileName + "\n");
-					break;
-				// 直接打开文件；
-				case 1:
-					Desktop.getDesktop().open(fileList.get(0));
-					textArea.append("打开文件：" + fileList.get(0).getName() + "\n");
-					break;
-				// 多个文件，提示用户重新输入；
-				default:
-					for (int i = 0; i < fileList.size(); i++)
-					{
-						textArea.append(i + "、" + fileList.get(i).getName() + "\n");
-					}
-					break;
-				}
+				openShortcuts(fileName);
 				return;
 			}
 
@@ -219,6 +242,38 @@ public class MyOrder implements OutputListener
 	public void output(String text)
 	{
 		textArea.append(text + "\n");
+	}
+
+	/*********************** 【以下是封装方法区】 ***********************/
+
+	/** 打开快捷方式中的文件或快捷方式； */
+	private void openShortcuts(String fileName) throws IOException
+	{
+		String directory = ConfigHelper.getConfig(Keys.SHORTCUTS, Values.SHORTCUTS);
+		FileManager fileManager = new FileManager();
+		fileManager.fillFileList(directory, fileName);
+		List<File> fileList = fileManager.getFileList();
+		switch (fileList.size())
+		{
+		// 未找到文件；
+		case 0:
+			textArea.append("未找到文件：" + fileName + "\n");
+			break;
+		// 直接打开文件；
+		case 1:
+			Desktop.getDesktop().open(fileList.get(0));
+			textArea.append("打开文件：" + fileList.get(0).getName() + "\n");
+			break;
+		// 多个文件，提示用户重新输入；
+		default:
+			for (int i = 0; i < fileList.size(); i++)
+			{
+				// 对文件进行重命名后输出；
+				File file = fileList.get(i);
+				textArea.append((i + 1) + "、" + file.getName() + "\n");
+			}
+			break;
+		}
 	}
 
 }
