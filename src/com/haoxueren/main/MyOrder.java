@@ -70,9 +70,19 @@ public class MyOrder implements OutputListener
 		try
 		{
 			// 对用户录入的命令进行转换；
-			String key = input.substring(1, input.indexOf(' '));
-			String value = ConfigHelper.convert(key.toUpperCase());
-			input = input.replaceFirst(key, value);
+			int space = input.indexOf(' ');
+			if (space > 1)
+			{
+				String key = input.substring(1, space);
+				String value = ConfigHelper.convert(key.toLowerCase());
+				input = input.replaceFirst(key, value);
+			} else
+			{
+				String key = input.substring(1);
+				String value = ConfigHelper.convert(key.toUpperCase());
+				input = input.replaceFirst(key, value);
+			}
+			System.out.println(input);
 
 			// 分类整理桌面上的文件；
 			if (input.matches("\\$(group|GROUP)\\s+.+"))
@@ -245,10 +255,10 @@ public class MyOrder implements OutputListener
 				return;
 			}
 			// 添加单词到词库；
-			if (input.matches("\\$(ADD|add)\\s+.+"))
+			if (input.matches("\\$(ADD|add)\\s+(word|WORD)\\s+\\w+"))
 			{
-				String word = input.replaceFirst("\\$(ADD|add)\\s+", "");
-				WordHelper.getInstance(this).addWord(word.toLowerCase());
+				String word = input.replaceFirst("\\$(ADD|add)\\s+(word|WORD)", "");
+				WordHelper.getInstance(this).addWord(word.trim().toLowerCase());
 				return;
 			}
 			// 执行查询单词指令；
@@ -296,6 +306,7 @@ public class MyOrder implements OutputListener
 			{
 				String dos = input.replaceAll("\\$(dos|DOS)", "").trim();
 				Process process = Runtime.getRuntime().exec("cmd.exe /c " + dos);
+				textArea.append("正在执行：" + dos + "\n");
 				MsdosHelper msdosHelper = new MsdosHelper(process, this);
 				msdosHelper.output();
 				msdosHelper.input("\n");
