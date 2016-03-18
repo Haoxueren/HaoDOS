@@ -8,14 +8,15 @@ import java.util.Properties;
 public class FileConfig
 {
 	/** 根据文件路径的简称获取文件路径的全称； */
-	public static String getPath(String minipath) throws Exception
+	public static String getPath(String path) throws Exception
 	{
+		System.out.println("path " + path);
 		Properties properties = new Properties();
 		Reader reader = new FileReader(System.getProperty("user.dir") + "/config/filemap.properties");
 		properties.load(reader);
-		Object path = properties.get(minipath);
+		Object fullPath = properties.get(path.toUpperCase());
 		reader.close();
-		return path == null ? null : path.toString();
+		return fullPath == null ? path : fullPath.toString();
 	}
 
 	/** 根据文件路径的简称获取文件路径的全称； */

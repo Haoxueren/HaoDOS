@@ -8,6 +8,8 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.filechooser.FileSystemView;
+
 /**
  * GUI的帮助类；<br>
  * 参考资料：http://blog.csdn.net/ycb1689/article/details/7514339<br>
@@ -32,5 +34,13 @@ public class DesktopHelper
 		Desktop desktop = Desktop.getDesktop();
 		File file = new File(path);
 		desktop.open(file);
+	}
+
+	/** 获取桌面文件对象； */
+	public static File getDesktopFile()
+	{
+		FileSystemView fileView = FileSystemView.getFileSystemView();
+		System.out.println(fileView.getHomeDirectory());
+		return fileView.getHomeDirectory();
 	}
 }

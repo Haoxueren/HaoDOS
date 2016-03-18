@@ -69,12 +69,19 @@ public class MyOrder implements OutputListener
 	{
 		try
 		{
+			// 对用户录入的命令进行转换；
+			String key = input.substring(1, input.indexOf(' '));
+			String value = ConfigHelper.convert(key.toUpperCase());
+			input = input.replaceFirst(key, value);
+
 			// 分类整理桌面上的文件；
-			if (input.matches("\\$(group|GROUP)\\s+(file|File)\\s+"))
+			if (input.matches("\\$(group|GROUP)\\s+.+"))
 			{
+				String path = input.replaceFirst("\\$(group|GROUP)", "").trim();
+				FileGroup fileGroup = new FileGroup(this);
 				String[] suffixs = FileConfig.getSuffix();
-				FileGroup mover = new FileGroup(this);
-				mover.group(suffixs);
+				File dir = new File(FileConfig.getPath(path));
+				fileGroup.group(dir, suffixs);
 				return;
 			}
 
@@ -91,9 +98,7 @@ public class MyOrder implements OutputListener
 			if (input.matches("\\$(list|LIST)\\s+(dir|DIR)\\s+.+"))
 			{
 				String path = input.replaceFirst("\\$(list|LIST)\\s+(dir|DIR)", "").trim();
-				String dir = FileConfig.getPath(path.toUpperCase());
-				path = dir == null ? path : dir;
-				fileList.enterPath(path);
+				fileList.enterPath(FileConfig.getPath(path));
 				return;
 			}
 
@@ -106,13 +111,13 @@ public class MyOrder implements OutputListener
 				return;
 			}
 
-			// 根据编码打开文件；
+			// 根据编码打开文件(list open ..)；
 			if (input.matches("\\$(list|LIST)\\s+(open|OPEN)\\s+\\d+"))
 			{
 				String index = input.replaceFirst("\\$(list|LIST)\\s+(open|OPEN)", "").trim();
 				int id = Integer.parseInt(index);
 				fileList.openFile(id);
-				textArea.append("已为您打开编号" + id + "文件");
+				textArea.append("已为您打开编号" + id + "文件\n");
 				return;
 			}
 
@@ -350,7 +355,7 @@ public class MyOrder implements OutputListener
 	/*********************** 【以下是封装方法区】 ***********************/
 
 	/** 打开快捷方式中的文件或快捷方式； */
-	private void openShortcuts(String fileName) throws IOException
+	private void openShortcuts(String fileName) throws Exception
 	{
 		String directory = ConfigHelper.getConfig(Keys.SHORTCUTS, Values.SHORTCUTS);
 		FileManager fileManager = new FileManager();

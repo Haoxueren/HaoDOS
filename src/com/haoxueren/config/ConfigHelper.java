@@ -2,6 +2,7 @@
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
@@ -22,57 +23,34 @@ public class ConfigHelper
 	 * 先从本地读取，如果本地没有，则使用默认值；<br>
 	 * 从本地属性文件中读取配置数据；
 	 */
-	public static String getConfig(String key, String defaultValue)
+	public static String getConfig(String key, String defaultValue) throws Exception
 	{
-		try
-		{
-			// 读取本地的配置文件；
-			// Properties extends Hashtable；
-			Properties properties = new Properties();
-			File file = new File(FileHelper.getCurrentDir(), "/config/configure.properties");
-			// 如果目录不存在，就创建目录；
-			File directory = file.getParentFile();
-			if (!directory.exists())
-			{
-				directory.mkdirs();
-			}
-			// 文件不存在：创建文件并写入默认数据；
-			if (!file.exists())
-			{
-				file.createNewFile();
-				properties.put(key, defaultValue);
-				Writer writer = new PrintWriter(file);
-				properties.store(writer, null);
-				writer.close();
-				return defaultValue;
-			} else
-			{
-				// 文件存在：读取文件中的数据；
-				Reader reader = new FileReader(file);
-				properties.load(reader);
-				String value = (String) properties.get(key);
-				if (value == null || value.trim().length() == 0)
-				{
-					value = defaultValue;
-					properties.put(key, defaultValue);
-					Writer writer = new PrintWriter(file);
-					properties.store(writer, null);
-					writer.close();
-				}
-				reader.close();
-				return value;
-			}
-		} catch (Exception e)
-		{
-			System.err.println("异常信息：" + e.getMessage());
-			return null;
-		}
+		// 读取本地的配置文件；
+		// Properties extends Hashtable；
+		Properties properties = new Properties();
+		File file = new File(FileHelper.getCurrentDir(), "/config/config.properties");
+		// 文件存在：读取文件中的数据；
+		Reader reader = new FileReader(file);
+		properties.load(reader);
+		reader.close();
+		String value = (String) properties.get(key);
+		return value == null ? defaultValue : value;
 	}
 
-	@Test
-	public void method()
+	/**
+	 * 通过配置文件中的映射转换内容；
+	 */
+	public static String convert(String key) throws Exception
 	{
-		getConfig("words_path", Values.WORDS_PATH);
+		// 读取本地的配置文件；
+		Properties properties = new Properties();
+		File file = new File(FileHelper.getCurrentDir(), "/config/config.properties");
+		// 读取文件中的数据；
+		Reader reader = new FileReader(file);
+		properties.load(reader);
+		reader.close();
+		String value = (String) properties.get(key);
+		return value == null ? key : value;
 	}
 
 }

@@ -2,7 +2,6 @@
 
 import java.awt.Desktop;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -26,14 +25,10 @@ public class WordHelper
 		this.listener = listener;
 	}
 
-	public static WordHelper getInstance(OutputListener listener)
-	{
-		return new WordHelper(listener);
-	}
-
-	static
+	public static WordHelper getInstance(OutputListener listener) throws Exception
 	{
 		wrodsPath = ConfigHelper.getConfig(Keys.WORDS_PATH, Values.WORDS_PATH);
+		return new WordHelper(listener);
 	}
 
 	/** 初始化存储文件信息的集合； */
@@ -91,7 +86,7 @@ public class WordHelper
 	 * @param wordsPath
 	 *            要操作的目录路径，本程序支持多级目录；
 	 */
-	public void addWord(String word) throws IOException
+	public void addWord(String word) throws Exception
 	{
 		String wordTrim = word.trim();
 		if (wordTrim.length() <= 1)

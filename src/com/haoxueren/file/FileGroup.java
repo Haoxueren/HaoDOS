@@ -18,11 +18,8 @@ public class FileGroup
 	}
 
 	/** 分类整理桌面上的文件； */
-	public void group(String... suffixs) throws IOException
+	public void group(File desktop, String... suffixs) throws IOException
 	{
-		// 获取桌面文件对象；
-		FileSystemView fileView = FileSystemView.getFileSystemView();
-		File desktop = fileView.getHomeDirectory();
 		// 获取桌面上所有文件；
 		File[] files = desktop.listFiles();
 		for (File file : files)

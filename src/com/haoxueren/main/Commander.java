@@ -1,7 +1,6 @@
 ﻿package com.haoxueren.main;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class Commander implements FileHelperListener, OutputListener
 	private FileUtils fileHelper;
 	private CommandHelper commandHelper;
 
-	public Commander()
+	public Commander() throws Exception
 	{
 		commandHelper = new CommandHelper();
 		fileHelper = new FileUtils(this);
@@ -97,7 +96,7 @@ public class Commander implements FileHelperListener, OutputListener
 	}
 
 	// 获取到桌面的路径；
-	public void moveLnkFileExcept(String entrance) throws IOException
+	public void moveLnkFileExcept(String entrance) throws Exception
 	{
 		FileSystemView fileView = FileSystemView.getFileSystemView();
 		File desktop = fileView.getHomeDirectory();
