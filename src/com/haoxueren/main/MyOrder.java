@@ -79,7 +79,7 @@ public class MyOrder implements OutputListener
 			} else
 			{
 				String key = input.substring(1);
-				String value = ConfigHelper.convert(key.toUpperCase());
+				String value = ConfigHelper.convert(key.toLowerCase());
 				input = input.replaceFirst(key, value);
 			}
 			System.out.println(input);
