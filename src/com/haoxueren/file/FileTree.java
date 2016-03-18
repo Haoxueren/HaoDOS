@@ -24,7 +24,7 @@ public class FileTree
 		list = new ArrayList<>();
 		builder = new StringBuilder();
 		back = dir.getAbsolutePath().split("\\\\").length + 1;
-		skipDirRegex = FileLooker.skipRegex();
+		skipDirRegex = FileConfig.skipRegex();
 	}
 
 	/** 列出指定目录的文件树； */

@@ -39,7 +39,6 @@ public class FileUtils implements FileFinderListener
 		void onFileFindOver(ArrayList<File> list);
 	}
 
-	/** �ж��ļ�����ָ���ĺ�׺�� */
 	public boolean endWith(String filename, String... suffixs)
 	{
 		for (String suffix : suffixs)

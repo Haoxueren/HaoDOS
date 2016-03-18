@@ -13,8 +13,9 @@ import com.haoxueren.config.Values;
 import com.haoxueren.dict.DictHelper;
 import com.haoxueren.dict.FanyiHelper;
 import com.haoxueren.file.FileList;
-import com.haoxueren.file.FileLooker;
+import com.haoxueren.file.FileConfig;
 import com.haoxueren.file.FileManager;
+import com.haoxueren.file.FileGroup;
 import com.haoxueren.file.FileTree;
 import com.haoxueren.gtd.GtdHelper;
 import com.haoxueren.helper.DateHelper;
@@ -68,6 +69,15 @@ public class MyOrder implements OutputListener
 	{
 		try
 		{
+			// 分类整理桌面上的文件；
+			if (input.matches("\\$(group|GROUP)\\s+(file|File)\\s+"))
+			{
+				String[] suffixs = FileConfig.getSuffix();
+				FileGroup mover = new FileGroup(this);
+				mover.group(suffixs);
+				return;
+			}
+
 			// 获取md5加密后的密码；
 			if (input.matches("\\$(password|PASSWORD)\\s+.+"))
 			{
@@ -81,7 +91,7 @@ public class MyOrder implements OutputListener
 			if (input.matches("\\$(list|LIST)\\s+(dir|DIR)\\s+.+"))
 			{
 				String path = input.replaceFirst("\\$(list|LIST)\\s+(dir|DIR)", "").trim();
-				String dir = FileLooker.getPath(path.toUpperCase());
+				String dir = FileConfig.getPath(path.toUpperCase());
 				path = dir == null ? path : dir;
 				fileList.enterPath(path);
 				return;
@@ -110,7 +120,7 @@ public class MyOrder implements OutputListener
 			if (input.matches("\\$(tree|TREE)\\s+(dir|DIR)\\s+.+"))
 			{
 				String path = input.replaceFirst("\\$(tree|TREE)\\s+(dir|DIR)", "").trim();
-				String fullPath = FileLooker.getPath(path.toUpperCase());
+				String fullPath = FileConfig.getPath(path.toUpperCase());
 				path = fullPath == null ? path : fullPath;
 				File dir = new File(path);
 				fileTree = new FileTree(dir, this);
@@ -122,7 +132,7 @@ public class MyOrder implements OutputListener
 			if (input.matches("\\$(tree|TREE)\\s+(file|FILE)\\s+.+"))
 			{
 				String path = input.replaceFirst("\\$(tree|TREE)\\s+(file|FILE)", "").trim();
-				String fullPath = FileLooker.getPath(path.toUpperCase());
+				String fullPath = FileConfig.getPath(path.toUpperCase());
 				path = fullPath == null ? path : fullPath;
 				File dir = new File(path);
 				fileTree = new FileTree(dir, this);
@@ -254,7 +264,9 @@ public class MyOrder implements OutputListener
 			// 打开网址；
 			if (input.matches("\\$(http://|HTTP://|www\\.|WWW\\.).+"))
 			{
-				Runtime.getRuntime().exec("cmd /c start " + input.replaceFirst("\\$\\s?", ""));
+				String url = input.replaceFirst("\\$\\s?", "");
+				Runtime.getRuntime().exec("cmd /c start " + url);
+				textArea.append("正在打开网址：" + url + "\n");
 				return;
 			}
 			// 使用百度搜索关键词；
