@@ -72,9 +72,8 @@ public class MyOrder implements OutputListener
 			if (input.matches("\\$(password|PASSWORD)\\s+.+"))
 			{
 				String text = input.replaceFirst("\\$(password|PASSWORD)", "");
-				// 12F0DA8；
 				String password = Md5Helper.encode(text.trim().getBytes());
-				textArea.append(password + "\n");
+				textArea.append("您的密码为：" + password + "\n");
 				return;
 			}
 
@@ -103,6 +102,7 @@ public class MyOrder implements OutputListener
 				String index = input.replaceFirst("\\$(list|LIST)\\s+(open|OPEN)", "").trim();
 				int id = Integer.parseInt(index);
 				fileList.openFile(id);
+				textArea.append("已为您打开编号" + id + "文件");
 				return;
 			}
 

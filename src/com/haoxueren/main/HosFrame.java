@@ -85,14 +85,13 @@ public class HosFrame extends Frame implements KeyListener, FocusListener, Mouse
 	public void keyReleased(KeyEvent event)
 	{
 		// 键释放时，将光标移动到最后；
-		String text = textArea.getText();
-		textArea.setCaretPosition(text.length());
 		int keyCode = event.getKeyCode();
 		switch (keyCode)
 		{
 		// 回车键释放时执行特定的操作；
 		case KeyEvent.VK_ENTER:
 			// 获取用户输入的命令；
+			String text = textArea.getText();
 			int index = text.lastIndexOf("$");
 			String input = text.substring(index).trim();
 			textArea.append(Values.DIVIDER);

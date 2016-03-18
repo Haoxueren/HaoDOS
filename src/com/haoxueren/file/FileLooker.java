@@ -15,8 +15,9 @@ public class FileLooker
 		properties.load(reader);
 		Object path = properties.get(minipath);
 		reader.close();
-		return path.toString();
+		return path == null ? null : path.toString();
 	}
+
 	/** 根据文件路径的简称获取文件路径的全称； */
 	public static String skipRegex() throws Exception
 	{
