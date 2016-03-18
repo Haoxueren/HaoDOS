@@ -12,11 +12,13 @@ import com.haoxueren.config.Keys;
 import com.haoxueren.config.Values;
 import com.haoxueren.dict.DictHelper;
 import com.haoxueren.dict.FanyiHelper;
+import com.haoxueren.file.FileList;
+import com.haoxueren.file.FileLooker;
+import com.haoxueren.file.FileManager;
+import com.haoxueren.file.FileTree;
 import com.haoxueren.gtd.GtdHelper;
 import com.haoxueren.helper.DateHelper;
 import com.haoxueren.helper.DesktopHelper;
-import com.haoxueren.helper.FileManager;
-import com.haoxueren.helper.FileTree;
 import com.haoxueren.helper.MsdosHelper;
 import com.haoxueren.qq.QQHelper;
 import com.haoxueren.test.LetouLuckDraw;
@@ -30,6 +32,7 @@ public class MyOrder implements OutputListener
 	private FileTree fileTree;
 	private TextArea textArea;
 	private static MyOrder order;
+	private FileList fileList;
 
 	private MyOrder(TextArea textArea)
 	{
@@ -55,6 +58,7 @@ public class MyOrder implements OutputListener
 		DateHelper.printDate(this);
 		textArea.append(Values.DIVIDER + "$");
 		textArea.setCaretPosition(textArea.getText().length());
+		fileList = new FileList(this);
 	}
 
 	/** 执行用户的指令； */
@@ -62,32 +66,67 @@ public class MyOrder implements OutputListener
 	{
 		try
 		{
+			// 显示当前目录下所有文件(单级)；
+			if (input.matches("\\$(list|LIST)\\s+(path|PATH)\\s+.+"))
+			{
+				String pathname = input.replaceFirst("\\$(list|LIST)\\s+(path|PATH)", "").trim();
+				fileList.enter(pathname);
+				HosFrame.prefix = "list folder ";
+				return;
+			}
+
+			// 显示文件夹下的所有文件；
+			if (input.matches("\\$(list|LIST)\\s+(folder|FOLDER)\\s+.+"))
+			{
+				String folder = input.replaceFirst("\\$(list|LIST)\\s+(folder|FOLDER)", "").trim();
+				fileList.folder(folder);
+				return;
+			}
+
 			// 显示当前文件夹的目录结构图；
 			if (input.matches("\\$(tree|TREE)\\s+(dir|DIR)\\s+.+"))
 			{
 				String path = input.replaceFirst("\\$(tree|TREE)\\s+(dir|DIR)", "").trim();
+				String fullPath = FileLooker.getPath(path.toUpperCase());
+				path = fullPath == null ? path : fullPath;
 				File dir = new File(path);
 				fileTree = new FileTree(dir, this);
 				fileTree.tree(dir, false);
-				HosFrame.prefix = "tree ";
 				return;
 			}
-			
+
 			// 显示当前文件夹的目录及文件结构图；
 			if (input.matches("\\$(tree|TREE)\\s+(file|FILE)\\s+.+"))
 			{
 				String path = input.replaceFirst("\\$(tree|TREE)\\s+(file|FILE)", "").trim();
+				String fullPath = FileLooker.getPath(path.toUpperCase());
+				path = fullPath == null ? path : fullPath;
 				File dir = new File(path);
 				fileTree = new FileTree(dir, this);
 				fileTree.tree(dir, true);
-				HosFrame.prefix = "tree id ";
+				return;
+			}
+			// 遍历目录结构树中的子节点，结果只显示目录；
+			if (input.matches("\\$(tree dirid|TREE DIRID)\\s+.+"))
+			{
+				String index = input.replaceFirst("\\$(tree dirid|TREE DIRID)", "").trim();
+				int id = Integer.parseInt(index);
+				fileTree.treeDirId(id);
+				return;
+			}
+			// 遍历目录结构树中的子节点，结果显示目录及文件；
+			if (input.matches("\\$(tree fileid|TREE FILEID)\\s+.+"))
+			{
+				String index = input.replaceFirst("\\$(tree fileid|TREE FILEID)", "").trim();
+				int id = Integer.parseInt(index);
+				fileTree.treeDirId(id);
 				return;
 			}
 
 			// 按编号打开目录结构树中的文件；
-			if (input.matches("\\$(tree id|TREE ID)\\s+.+"))
+			if (input.matches("\\$(tree open|TREE OPEN)\\s+.+"))
 			{
-				String index = input.replaceFirst("\\$(tree id|TREE ID)", "").trim();
+				String index = input.replaceFirst("\\$(tree open|TREE OPEN)", "").trim();
 				int indexInt = Integer.parseInt(index);
 				fileTree.openFile(indexInt);
 				return;
@@ -200,7 +239,7 @@ public class MyOrder implements OutputListener
 				String keyWords = input.replaceFirst("\\$(search|SEARCH)\\s+", "").trim();
 				String encode = URLEncoder.encode(keyWords, "UTF-8");
 				Runtime.getRuntime().exec("cmd /c start http://www.baidu.com/s?wd=" + encode);
-				textArea.append("正在搜索" + keyWords + "\n");
+				textArea.append("正在搜索：" + keyWords + "\n");
 				return;
 			}
 

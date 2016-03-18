@@ -1,4 +1,4 @@
-package com.haoxueren.helper;
+package com.haoxueren.file;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -13,22 +13,35 @@ public class FileTree
 {
 	private int back;
 	private List<File> list;
+	private String skipDirRegex;
 	private StringBuilder builder;
 	private OutputListener listener;
 
 	/** 创建FileTree对象； */
-	public FileTree(File dir, OutputListener listener)
+	public FileTree(File dir, OutputListener listener) throws Exception
 	{
 		this.listener = listener;
 		list = new ArrayList<>();
 		builder = new StringBuilder();
 		back = dir.getAbsolutePath().split("\\\\").length + 1;
+		skipDirRegex = FileLooker.skipRegex();
 	}
 
 	/** 列出指定目录的文件树； */
 	public void tree(File dir, boolean showFile)
 	{
+		// 结构树要跳过的目录；
+		if (dir.getName().matches(skipDirRegex))
+		{
+			return;
+		}
+
 		File[] files = dir.listFiles();
+		if (files == null)
+		{
+			listener.output(dir.getName() + "拒绝访问");
+			return;
+		}
 		for (File file : files)
 		{
 			// 将文件添加到集合中；
@@ -64,6 +77,29 @@ public class FileTree
 	{
 		System.out.println(list.size());
 		Desktop.getDesktop().open(list.get(index - 1));
+	}
+
+	public List<File> getList()
+	{
+		return list;
+	}
+
+	/** 进一步遍历，只显示目录； */
+	public void treeDirId(int id)
+	{
+		File dir = list.get(id - 1);
+		back = dir.getAbsolutePath().split("\\\\").length + 1;
+		list.clear();
+		tree(dir, true);
+	}
+
+	/** 进一步遍历，显示目录及文件 */
+	public void treeFileId(int id)
+	{
+		File dir = list.get(id - 1);
+		back = dir.getAbsolutePath().split("\\\\").length + 1;
+		list.clear();
+		tree(dir, true);
 	}
 
 }
