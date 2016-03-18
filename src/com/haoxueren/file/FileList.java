@@ -1,6 +1,8 @@
 package com.haoxueren.file;
 
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,28 +24,47 @@ public class FileList
 	}
 
 	/** 入口：显示指定目录的文件列表； */
-	public void enter(String path)
+	public void enterPath(String path)
 	{
 		parent = new File(path);
 		list = new ArrayList<>();
 		File[] files = parent.listFiles();
-		for (int i = 0; i < files.length; i++)
+		for (File file : files)
 		{
-			list.add(files[i]);
-			listener.output(i + "、" + files[i].getName() + "\n");
+			list.add(file);
+			if (file.isFile())
+			{
+				listener.output(list.size() + "、[F]" + file.getName() + "\n");
+			} else
+			{
+				listener.output(list.size() + "、[D]" + file.getName() + "\n");
+			}
 		}
 	}
 
-	/** 显示指定子目录下的文件列表； */
-	public void folder(String folder)
+	/** 根据文件编号打开文件； */
+	public void openFile(int id) throws IOException
 	{
-		File dir = new File(parent, folder);
+		Desktop.getDesktop().open(list.get(id - 1));
+	}
+
+	/** 显示指定子目录下的文件列表； */
+	public void listDir(int id)
+	{
+		File dir = list.get(id - 1);
 		if (dir.isDirectory())
 		{
 			File[] files = dir.listFiles();
-			for (int i = 0; i < files.length; i++)
+			for (File file : files)
 			{
-				listener.output(i + "、" + files[i].getName() + "\n");
+				list.add(file);
+				if (file.isFile())
+				{
+					listener.output(list.size() + "、[F]" + file.getName() + "\n");
+				} else
+				{
+					listener.output(list.size() + "、[D]" + file.getName() + "\n");
+				}
 			}
 			parent = dir;
 		}

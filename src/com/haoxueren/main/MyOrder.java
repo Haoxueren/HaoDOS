@@ -24,15 +24,16 @@ import com.haoxueren.qq.QQHelper;
 import com.haoxueren.test.LetouLuckDraw;
 import com.haoxueren.utils.TextHelper;
 import com.haoxueren.word.WordHelper;
-import com.hp.hpl.sparta.xpath.ThisNodeTest;
 
 public class MyOrder implements OutputListener
 {
 	/** 目录结构树对象； */
 	private FileTree fileTree;
+	private FileList fileList;
 	private TextArea textArea;
 	private static MyOrder order;
-	private FileList fileList;
+	/** 默认的命令前缀； */
+	public static String prefix = "";
 
 	private MyOrder(TextArea textArea)
 	{
@@ -67,19 +68,30 @@ public class MyOrder implements OutputListener
 		try
 		{
 			// 显示当前目录下所有文件(单级)；
-			if (input.matches("\\$(list|LIST)\\s+(path|PATH)\\s+.+"))
+			if (input.matches("\\$(list|LIST)\\s+(dir|DIR)\\s+.+"))
 			{
-				String pathname = input.replaceFirst("\\$(list|LIST)\\s+(path|PATH)", "").trim();
-				fileList.enter(pathname);
-				HosFrame.prefix = "list folder ";
+				String path = input.replaceFirst("\\$(list|LIST)\\s+(dir|DIR)", "").trim();
+				String dir = FileLooker.getPath(path.toUpperCase());
+				path = dir == null ? path : dir;
+				fileList.enterPath(path);
 				return;
 			}
 
 			// 显示文件夹下的所有文件；
-			if (input.matches("\\$(list|LIST)\\s+(folder|FOLDER)\\s+.+"))
+			if (input.matches("\\$(list|LIST)\\s+(id|ID)\\s+\\d+"))
 			{
-				String folder = input.replaceFirst("\\$(list|LIST)\\s+(folder|FOLDER)", "").trim();
-				fileList.folder(folder);
+				String dir = input.replaceFirst("\\$(list|LIST)\\s+(id|ID)", "").trim();
+				int id = Integer.parseInt(dir);
+				fileList.listDir(id);
+				return;
+			}
+
+			// 根据编码打开文件；
+			if (input.matches("\\$(list|LIST)\\s+(open|OPEN)\\s+\\d+"))
+			{
+				String index = input.replaceFirst("\\$(list|LIST)\\s+(open|OPEN)", "").trim();
+				int id = Integer.parseInt(index);
+				fileList.openFile(id);
 				return;
 			}
 
@@ -138,12 +150,12 @@ public class MyOrder implements OutputListener
 				if (prefix.equalsIgnoreCase("null"))
 				{
 					// 清除命令前缀；
-					HosFrame.prefix = "";
+					prefix = "";
 					textArea.append("已清除命令前缀\n");
 					return;
 				}
 				// 设置命令前缀；
-				HosFrame.prefix = prefix + " ";
+				prefix = prefix + " ";
 				textArea.append("已设置命令前缀：" + prefix + "\n");
 				return;
 			}
@@ -188,6 +200,7 @@ public class MyOrder implements OutputListener
 			{
 				String nickname = input.replaceFirst("\\$(qq|QQ)", "").trim().toUpperCase();
 				String qq = nickname.matches("\\d+") ? nickname : QQHelper.getQQNo(nickname);
+				textArea.append("正在打开QQ(" + qq + ")聊天窗口\n");
 				QQHelper.openQQ(qq);
 				return;
 			}
@@ -279,7 +292,7 @@ public class MyOrder implements OutputListener
 			// 清除屏幕；
 			if (input.matches("\\$(CLS|cls)\\s?"))
 			{
-				textArea.setText("$\n");
+				textArea.setText("");
 				return;
 			}
 			// 保存数据并退出；

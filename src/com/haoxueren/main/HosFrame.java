@@ -10,6 +10,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.TextEvent;
+import java.awt.event.TextListener;
 
 import com.haoxueren.config.Values;
 import com.haoxueren.helper.DesktopHelper;
@@ -19,8 +21,6 @@ public class HosFrame extends Frame implements KeyListener, FocusListener, Mouse
 {
 	private MyOrder order;
 	private TextArea textArea;
-	/** 默认的命令前缀； */
-	public static String prefix="";
 	private static final long serialVersionUID = 1L;
 
 	public HosFrame()
@@ -74,9 +74,6 @@ public class HosFrame extends Frame implements KeyListener, FocusListener, Mouse
 	@Override
 	public void keyTyped(KeyEvent event)
 	{
-		// 打字时，将光标移动到最后；
-		int position = textArea.getText().length();
-		textArea.setCaretPosition(position);
 	}
 
 	@Override
@@ -87,21 +84,21 @@ public class HosFrame extends Frame implements KeyListener, FocusListener, Mouse
 	@Override
 	public void keyReleased(KeyEvent event)
 	{
+		// 键释放时，将光标移动到最后；
+		String text = textArea.getText();
+		textArea.setCaretPosition(text.length());
 		int keyCode = event.getKeyCode();
 		switch (keyCode)
 		{
 		// 回车键释放时执行特定的操作；
 		case KeyEvent.VK_ENTER:
 			// 获取用户输入的命令；
-			String text = textArea.getText();
 			int index = text.lastIndexOf("$");
 			String input = text.substring(index).trim();
 			textArea.append(Values.DIVIDER);
-			// 执行命令；
+			// 开始执行命令；
 			order.execute(input);
-			// 把光标位置放到文本末尾；
-			textArea.setCaretPosition(text.length());
-			textArea.append(Values.DIVIDER + "$" + prefix);
+			textArea.append(Values.DIVIDER + "$" + MyOrder.prefix);
 			break;
 		}
 	}
@@ -110,7 +107,7 @@ public class HosFrame extends Frame implements KeyListener, FocusListener, Mouse
 	public void mouseClicked(MouseEvent event)
 	{
 		// 鼠标(左键)点击，将光标移到最后；
-		if (event.getButton()==MouseEvent.BUTTON1)
+		if (event.getButton() == MouseEvent.BUTTON1)
 		{
 			int position = textArea.getText().length();
 			textArea.setCaretPosition(position);
