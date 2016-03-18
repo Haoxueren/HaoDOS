@@ -19,6 +19,7 @@ import com.haoxueren.file.FileTree;
 import com.haoxueren.gtd.GtdHelper;
 import com.haoxueren.helper.DateHelper;
 import com.haoxueren.helper.DesktopHelper;
+import com.haoxueren.helper.Md5Helper;
 import com.haoxueren.helper.MsdosHelper;
 import com.haoxueren.qq.QQHelper;
 import com.haoxueren.test.LetouLuckDraw;
@@ -67,6 +68,16 @@ public class MyOrder implements OutputListener
 	{
 		try
 		{
+			// 获取md5加密后的密码；
+			if (input.matches("\\$(password|PASSWORD)\\s+.+"))
+			{
+				String text = input.replaceFirst("\\$(password|PASSWORD)", "");
+				// 12F0DA8；
+				String password = Md5Helper.encode(text.trim().getBytes());
+				textArea.append(password + "\n");
+				return;
+			}
+
 			// 显示当前目录下所有文件(单级)；
 			if (input.matches("\\$(list|LIST)\\s+(dir|DIR)\\s+.+"))
 			{
