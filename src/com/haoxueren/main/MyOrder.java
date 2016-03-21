@@ -172,9 +172,9 @@ public class MyOrder implements OutputListener
 			}
 
 			// 按编号打开目录结构树中的文件；
-			if (input.matches("\\$(tree open|TREE OPEN)\\s+.+"))
+			if (input.matches("\\$(tree|TREE)\\s+(open|OPEN)\\s+\\d+"))
 			{
-				String index = input.replaceFirst("\\$(tree open|TREE OPEN)", "").trim();
+				String index = input.replaceFirst("\\$(tree|TREE)\\s+(open|OPEN)", "").trim();
 				int indexInt = Integer.parseInt(index);
 				fileTree.openFile(indexInt);
 				return;
@@ -191,7 +191,7 @@ public class MyOrder implements OutputListener
 					return;
 				}
 				// 设置命令前缀；
-				prefix = prefix + " ";
+				MyOrder.prefix = prefix + " ";
 				textArea.append("已设置命令前缀：" + prefix + "\n");
 				return;
 			}

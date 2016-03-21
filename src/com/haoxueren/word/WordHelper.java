@@ -15,7 +15,7 @@ import com.haoxueren.utils.FileUtils;
 
 public class WordHelper
 {
-	private static String wrodsPath;
+	private static String wordsPath;
 	/** 已抽取单词的个数； */
 	private static int index, loop = 29;
 	private OutputListener listener;
@@ -27,7 +27,8 @@ public class WordHelper
 
 	public static WordHelper getInstance(OutputListener listener) throws Exception
 	{
-		wrodsPath = ConfigHelper.getConfig(Keys.WORDS_PATH, Values.WORDS_PATH);
+		wordsPath = ConfigHelper.getConfig(Keys.WORDS_PATH, Values.WORDS_PATH);
+		System.out.println(wordsPath);
 		return new WordHelper(listener);
 	}
 
@@ -35,7 +36,7 @@ public class WordHelper
 	private static Map<Long, File> initFileMap()
 	{
 		Map<Long, File> fileInfoMap = new TreeMap<>();
-		File directory = new File(wrodsPath);
+		File directory = new File(wordsPath);
 		if (!directory.exists())
 		{
 			directory.mkdirs();
