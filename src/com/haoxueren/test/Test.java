@@ -33,8 +33,4 @@ public class Test
 		System.out.println(tdList.get(3).text().replaceAll("（.+）", ""));
 	}
 
-
-
-
-
 }

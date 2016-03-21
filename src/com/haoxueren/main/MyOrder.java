@@ -42,11 +42,12 @@ public class MyOrder implements OutputListener
 		this.textArea = textArea;
 	}
 
+	/** 使用单例模式； */
 	public static MyOrder getInstance(TextArea textArea)
 	{
 		if (order == null)
 		{
-			return new MyOrder(textArea);
+			order = new MyOrder(textArea);
 		}
 		return order;
 	}
@@ -186,7 +187,7 @@ public class MyOrder implements OutputListener
 				if (prefix.equalsIgnoreCase("null"))
 				{
 					// 清除命令前缀；
-					prefix = "";
+					MyOrder.prefix = "";
 					textArea.append("已清除命令前缀\n");
 					return;
 				}

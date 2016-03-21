@@ -16,20 +16,29 @@ import com.haoxueren.utils.FileUtils;
 public class WordHelper
 {
 	private static String wordsPath;
+	private static WordHelper wordHelper;
 	/** 已抽取单词的个数； */
 	private static int index, loop = 29;
+	private static Map<Long, File> map;
 	private OutputListener listener;
 
-	private WordHelper(OutputListener listener)
+	private WordHelper(OutputListener listener) throws Exception
 	{
 		this.listener = listener;
+		wordsPath = ConfigHelper.getConfig(Keys.WORDS_PATH, Values.WORDS_PATH);
+		map = initFileMap();
+		listener.output("恭喜，单词库中已有" + map.size() + "个单词啦！");
+		listener.output("—————————————————————————");
 	}
 
 	public static WordHelper getInstance(OutputListener listener) throws Exception
 	{
-		wordsPath = ConfigHelper.getConfig(Keys.WORDS_PATH, Values.WORDS_PATH);
-		System.out.println(wordsPath);
-		return new WordHelper(listener);
+		System.out.println(wordHelper);
+		if (wordHelper == null)
+		{
+			wordHelper = new WordHelper(listener);
+		}
+		return wordHelper;
 	}
 
 	/** 初始化存储文件信息的集合； */
@@ -58,7 +67,7 @@ public class WordHelper
 	 */
 	public File getRandomWordFile()
 	{
-		Map<Long, File> map = initFileMap();
+		// Map<Long, File> map = initFileMap();
 		Object[] objects = map.keySet().toArray();
 		int sum = map.size();
 		if (sum == 0)

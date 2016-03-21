@@ -19,7 +19,6 @@ import com.haoxueren.helper.FrameHelper;
 
 public class HosFrame extends Frame implements KeyListener, FocusListener, MouseListener
 {
-	private MyOrder order;
 	private TextArea textArea;
 	private static final long serialVersionUID = 1L;
 
@@ -52,7 +51,7 @@ public class HosFrame extends Frame implements KeyListener, FocusListener, Mouse
 		// 添加部件并显示窗体；
 		this.add(textArea);
 		this.setVisible(true);
-		order = MyOrder.getInstance(textArea);
+		MyOrder order = MyOrder.getInstance(textArea);
 		order.init();
 	}
 
@@ -96,7 +95,7 @@ public class HosFrame extends Frame implements KeyListener, FocusListener, Mouse
 			String input = text.substring(index).trim();
 			textArea.append(Values.DIVIDER);
 			// 开始执行命令；
-			order.execute(input);
+			MyOrder.getInstance(textArea).execute(input);
 			textArea.append(Values.DIVIDER + "$" + MyOrder.prefix);
 			break;
 		}
