@@ -22,8 +22,9 @@ import com.haoxueren.helper.DateHelper;
 import com.haoxueren.helper.DesktopHelper;
 import com.haoxueren.helper.Md5Helper;
 import com.haoxueren.helper.MsdosHelper;
+import com.haoxueren.letou.Letou360;
+import com.haoxueren.letou.LetouLuckDraw;
 import com.haoxueren.qq.QQHelper;
-import com.haoxueren.test.LetouLuckDraw;
 import com.haoxueren.utils.TextHelper;
 import com.haoxueren.word.WordHelper;
 
@@ -252,7 +253,9 @@ public class MyOrder implements OutputListener
 			// 乐投天下抽奖程序；
 			if (input.matches("\\$(LETOU|letou)\\s+(lucky draw|LUCKY DRAW)"))
 			{
-				LetouLuckDraw.luckyDraw(this);
+				String username = ConfigHelper.getConfig("letou_username", null);
+				String password = ConfigHelper.getConfig("letou_password", null);
+				new Letou360(this).luckyDraw(username, password);
 				return;
 			}
 			// 添加单词到词库；

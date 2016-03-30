@@ -1,4 +1,4 @@
-package com.haoxueren.test;
+package com.haoxueren.letou;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import com.haoxueren.helper.HttpHelper;
 import com.haoxueren.main.OutputListener;
 
-/** 乐投天下自动抽奖功能； */
+/** 测试环境：乐投天下自动抽奖功能； */
 public class LetouLuckDraw
 {
 	public static void luckyDraw(OutputListener listener) throws Exception
@@ -19,7 +19,7 @@ public class LetouLuckDraw
 		 */
 		// POST请求参数；
 		URL loginUrl = new URL("http://123.57.3.3:88/letou360/memberLogin");
-		String loginParams = "j_username=18268977847&j_password=test88&button=立即登录";
+		String loginParams = "j_username=18268977847&j_password=test998&button=立即登录";
 		HttpURLConnection connection = (HttpURLConnection) loginUrl.openConnection();
 		connection.setRequestProperty("Connection", "Keep-Alive");
 		// 重要：禁止HttpURLConnection跟随重定向；
@@ -33,6 +33,7 @@ public class LetouLuckDraw
 		outputStream.write(loginParams.getBytes());
 		// 取到所用的Cookie；
 		String cookie = connection.getHeaderField("Set-Cookie");
+		System.out.println(cookie);
 		// 获取当前会话的sessionId；
 		String sessionId = cookie.substring(0, cookie.indexOf(";"));
 		listener.output(sessionId);
@@ -65,4 +66,5 @@ public class LetouLuckDraw
 		response = response.substring(0, response.indexOf("</span"));
 		listener.output(response);
 	}
+
 }
