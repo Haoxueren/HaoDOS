@@ -18,22 +18,23 @@ public class WordHelper
 	private static String wordsPath;
 	private static WordHelper wordHelper;
 	/** 已抽取单词的个数； */
-	private static int index, loop = 29;
+	private static int index, loop;
 	private static Map<Long, File> map;
 	private OutputListener listener;
 
 	private WordHelper(OutputListener listener) throws Exception
 	{
 		this.listener = listener;
+		String loopValue = ConfigHelper.getConfig("loop", "19");
+		loop = Integer.parseInt(loopValue);
 		wordsPath = ConfigHelper.getConfig(Keys.WORDS_PATH, Values.WORDS_PATH);
 		map = initFileMap();
-		listener.output("恭喜，单词库中已有" + map.size() + "个单词啦！");
+		listener.output("\n恭喜，单词库中已有" + map.size() + "个单词啦！\n");
 		listener.output("—————————————————————————");
 	}
 
 	public static WordHelper getInstance(OutputListener listener) throws Exception
 	{
-		System.out.println(wordHelper);
 		if (wordHelper == null)
 		{
 			wordHelper = new WordHelper(listener);
@@ -78,7 +79,7 @@ public class WordHelper
 		int random = RandomHelper.getRandomInt(start, sum);
 		Object time = objects[random];
 		File file = map.get(time);
-		listener.output(index + "、" + getWordName(file));
+		listener.output("\n" + index + "/" + loop + "、" + getWordName(file) + "\n");
 		// 循环一圈后，初始化index；
 		index = index == loop ? 0 : index;
 		return file;
