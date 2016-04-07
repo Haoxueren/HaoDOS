@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.google.gson.JsonObject;
@@ -23,10 +24,12 @@ import sun.misc.BASE64Encoder;
 /** 调用TinyPng接口压缩图片； */
 public class TinyPng
 {
-	private String apiKey;
 	private MediaType mediaType;
-	private OkHttpClient okHttpClient;
 	private OutputListener listener;
+	private OkHttpClient okHttpClient;
+	private BASE64Encoder encoder;
+	private JSONArray keyArray;
+	private String apiKey;
 
 	/** 初始化数据； */
 	public TinyPng(OutputListener listener) throws Exception
@@ -34,10 +37,10 @@ public class TinyPng
 		this.listener = listener;
 		okHttpClient = new OkHttpClient();
 		mediaType = MediaType.parse("image/png,image/jpeg;");
-		// 对api:key对行Base64加密；
-		BASE64Encoder encoder = new BASE64Encoder();
-		String tinypng = ConfigHelper.getConfig("tinypngapikey", null);
-		apiKey = encoder.encode(tinypng.getBytes());
+		encoder = new BASE64Encoder();
+		String keys = ConfigHelper.getConfig("tinypngapikeys", null);
+		keyArray = new JSONArray(keys);
+		apiKey = encoder.encode(keyArray.getString(0).getBytes());
 	}
 
 	/** 遍历(不递归)压缩文件夹下的所有png和jpg图片； */
@@ -77,7 +80,15 @@ public class TinyPng
 		Request sharkRequest = new Request.Builder().url("https://api.tinify.com/shrink ")
 				.addHeader("Authorization", "Basic " + apiKey).post(body).build();
 		Response sharkResponse = okHttpClient.newCall(sharkRequest).execute();
-
+		// 已使用的次数，每月免费500次；
+		String compressionCount = sharkResponse.header("Compression-Count");
+		int compressionCountInt = Integer.parseInt(compressionCount);
+		listener.output("Compression-Count：" + compressionCount);
+		if (compressionCountInt > 498)
+		{
+			// 切换TINYPNG_API_KEY；
+			apiKey = encoder.encode(keyArray.getString(1).getBytes());
+		}
 		// 获取压缩后图片的下载地址；
 		JSONObject resultJson = new JSONObject(sharkResponse.body().string());
 		String url = resultJson.getJSONObject("output").getString("url");

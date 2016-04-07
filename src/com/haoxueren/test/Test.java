@@ -2,6 +2,7 @@ package com.haoxueren.test;
 
 import java.io.File;
 
+import org.json.JSONArray;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -9,15 +10,19 @@ import org.jsoup.select.Elements;
 
 import sun.misc.BASE64Encoder;
 
+import com.google.gson.JsonArray;
+import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.tinypng.TinyPng;
 
 public class Test
 {
 	@org.junit.Test
-	public void fileTest()
+	public void apiKeys() throws Exception
 	{
-		// File sourceFile = new File("C:\Users\Haosir\Desktop\TinyPng\媒体报道.png");
-		// System.out.println("123 "+sourceFile.getAbsolutePath());
+		String keys = ConfigHelper.getConfig("tinypngapikeys", null);
+		JSONArray jsonArray = new JSONArray(keys);
+		System.out.println(jsonArray.get(1));
+
 	}
 
 	@org.junit.Test
