@@ -10,19 +10,24 @@ import org.jsoup.select.Elements;
 
 import sun.misc.BASE64Encoder;
 
-import com.google.gson.JsonArray;
 import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.tinypng.TinyPng;
 
 public class Test
 {
 	@org.junit.Test
+	public void updateConfig() throws Exception
+	{
+		ConfigHelper.updateConfig("test", "9");
+	}
+	
+	
+	@org.junit.Test
 	public void apiKeys() throws Exception
 	{
 		String keys = ConfigHelper.getConfig("tinypngapikeys", null);
 		JSONArray jsonArray = new JSONArray(keys);
 		System.out.println(jsonArray.get(1));
-
 	}
 
 	@org.junit.Test

@@ -53,4 +53,18 @@ public class ConfigHelper
 		return value == null ? key : value;
 	}
 
+	/** 更新配置文件中的内容； */
+	public static void updateConfig(String key, String value) throws Exception
+	{
+		File file = new File(FileHelper.getCurrentDir(), "/config/config.properties");
+		Reader reader = new FileReader(file);
+		Properties properties = new Properties();
+		properties.load(reader);
+		properties.put(key, value);
+		PrintWriter writer = new PrintWriter(file);
+		properties.store(writer, "UpdateTime" + System.currentTimeMillis());
+		reader.close();
+		writer.close();
+	}
+
 }

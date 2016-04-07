@@ -28,8 +28,10 @@ public class TinyPng
 	private OutputListener listener;
 	private OkHttpClient okHttpClient;
 	private BASE64Encoder encoder;
-	private JSONArray keyArray;
 	private String apiKey;
+	private JSONArray keyArray;
+	private int keyIndex, keyNumber;
+	private JSONObject apiKeysJson;
 
 	/** 初始化数据； */
 	public TinyPng(OutputListener listener) throws Exception
@@ -38,9 +40,12 @@ public class TinyPng
 		okHttpClient = new OkHttpClient();
 		mediaType = MediaType.parse("image/png,image/jpeg;");
 		encoder = new BASE64Encoder();
-		String keys = ConfigHelper.getConfig("tinypngapikeys", null);
-		keyArray = new JSONArray(keys);
-		apiKey = encoder.encode(keyArray.getString(0).getBytes());
+		String tinyPngInfo = ConfigHelper.getConfig("TinyPngInfo", null);
+		apiKeysJson = new JSONObject(tinyPngInfo);
+		keyIndex = apiKeysJson.getInt("keyIndex");
+		keyArray = apiKeysJson.getJSONArray("keys");
+		keyNumber = keyArray.length();
+		apiKey = encoder.encode(keyArray.getString(keyIndex).getBytes());
 	}
 
 	/** 遍历(不递归)压缩文件夹下的所有png和jpg图片； */
@@ -87,7 +92,11 @@ public class TinyPng
 		if (compressionCountInt > 498)
 		{
 			// 切换TINYPNG_API_KEY；
-			apiKey = encoder.encode(keyArray.getString(1).getBytes());
+			int nextKeyIndex = (keyIndex + 1) % keyNumber;
+			apiKey = encoder.encode(keyArray.getString(nextKeyIndex).getBytes());
+			// 将nextKeyIndex更新到配置文件中；
+			apiKeysJson.put("keyIndex", nextKeyIndex);
+			ConfigHelper.updateConfig("TinyPngInfo", apiKeysJson.toString());
 		}
 		// 获取压缩后图片的下载地址；
 		JSONObject resultJson = new JSONObject(sharkResponse.body().string());
