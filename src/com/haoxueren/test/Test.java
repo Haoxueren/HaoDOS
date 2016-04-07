@@ -1,12 +1,23 @@
 package com.haoxueren.test;
 
+import java.io.File;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.haoxueren.tinypng.TinyPng;
+
 public class Test
 {
+	@org.junit.Test
+	public void tinyPng() throws Exception
+	{
+		TinyPng tinyPng = new TinyPng(null);
+		File file = new File("d:/panda.png");
+		tinyPng.shrinkImage(file);
+	}
 
 	/**
 	 * 客户需求：切割以下文件路径："F:\乐投天下\课件与视频"；<br>

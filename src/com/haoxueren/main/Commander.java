@@ -9,7 +9,7 @@ import javax.swing.filechooser.FileSystemView;
 import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.config.Keys;
 import com.haoxueren.config.Values;
-import com.haoxueren.file.FileHelper;
+import com.haoxueren.helper.FileHelper;
 import com.haoxueren.utils.CommandHelper;
 import com.haoxueren.utils.FileUtils;
 import com.haoxueren.utils.FileUtils.FileHelperListener;

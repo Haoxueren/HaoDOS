@@ -10,7 +10,7 @@ import java.util.Properties;
 
 import org.junit.Test;
 
-import com.haoxueren.file.FileHelper;
+import com.haoxueren.helper.FileHelper;
 
 /**
  * 程序的配置文件管理类；<br>

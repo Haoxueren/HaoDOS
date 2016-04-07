@@ -25,6 +25,7 @@ import com.haoxueren.helper.MsdosHelper;
 import com.haoxueren.letou.Letou360;
 import com.haoxueren.letou.LetouLuckDraw;
 import com.haoxueren.qq.QQHelper;
+import com.haoxueren.tinypng.TinyPng;
 import com.haoxueren.utils.TextHelper;
 import com.haoxueren.word.WordHelper;
 
@@ -230,6 +231,22 @@ public class MyOrder implements OutputListener
 				}
 				// 打开SHORTCUTS中的文件；
 				openShortcuts(fileName);
+				return;
+			}
+
+			// 使用TinyPng压缩图片；
+			if (input.matches("\\$(tinypng|TINYPNG)\\s+.+"))
+			{
+				String pathname = input.replaceFirst("\\$(tinypng|TINYPNG)", "").trim();
+				File sourceFile = new File(pathname);
+				TinyPng tinyPng = new TinyPng(this);
+				if (sourceFile.isFile())
+				{
+					tinyPng.shrinkImage(sourceFile);
+				} else
+				{
+					tinyPng.sharkImages(sourceFile);
+				}
 				return;
 			}
 
