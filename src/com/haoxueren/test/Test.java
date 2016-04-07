@@ -7,10 +7,27 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import sun.misc.BASE64Encoder;
+
 import com.haoxueren.tinypng.TinyPng;
 
 public class Test
 {
+	@org.junit.Test
+	public void fileTest()
+	{
+		// File sourceFile = new File("C:\Users\Haosir\Desktop\TinyPng\媒体报道.png");
+		// System.out.println("123 "+sourceFile.getAbsolutePath());
+	}
+
+	@org.junit.Test
+	public void base64()
+	{
+		BASE64Encoder encoder = new BASE64Encoder();
+		String b = encoder.encode("api:7v-DIkXh5k9n5RdWhrVCWZMOH192J4u3".getBytes());
+		System.out.println(b);
+	}
+
 	@org.junit.Test
 	public void tinyPng() throws Exception
 	{

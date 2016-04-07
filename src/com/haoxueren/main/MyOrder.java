@@ -238,14 +238,19 @@ public class MyOrder implements OutputListener
 			if (input.matches("\\$(tinypng|TINYPNG)\\s+.+"))
 			{
 				String pathname = input.replaceFirst("\\$(tinypng|TINYPNG)", "").trim();
+				/** 移除LEFT-TO-RIGHT EMBEDDING(Win8.1)； */
+				pathname = pathname.replaceAll("\\u202A", "");
 				File sourceFile = new File(pathname);
 				TinyPng tinyPng = new TinyPng(this);
 				if (sourceFile.isFile())
 				{
 					tinyPng.shrinkImage(sourceFile);
-				} else
+				} else if (sourceFile.isDirectory())
 				{
 					tinyPng.sharkImages(sourceFile);
+				} else
+				{
+					textArea.append("无法识别的文件类型：" + sourceFile.getAbsolutePath() + "\n");
 				}
 				return;
 			}

@@ -8,7 +8,9 @@ import java.io.InputStream;
 import org.json.JSONObject;
 
 import com.google.gson.JsonObject;
+import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.config.ConsoleHelper;
+import com.haoxueren.config.Values;
 import com.haoxueren.main.OutputListener;
 
 import okhttp3.MediaType;
@@ -16,20 +18,26 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import sun.misc.BASE64Encoder;
 
 /** 调用TinyPng接口压缩图片； */
 public class TinyPng
 {
+	private String apiKey;
 	private MediaType mediaType;
 	private OkHttpClient okHttpClient;
 	private OutputListener listener;
 
 	/** 初始化数据； */
-	public TinyPng(OutputListener listener)
+	public TinyPng(OutputListener listener) throws Exception
 	{
 		this.listener = listener;
 		okHttpClient = new OkHttpClient();
 		mediaType = MediaType.parse("image/png,image/jpeg;");
+		// 对api:key对行Base64加密；
+		BASE64Encoder encoder = new BASE64Encoder();
+		String tinypng = ConfigHelper.getConfig("tinypngapikey", null);
+		apiKey = encoder.encode(tinypng.getBytes());
 	}
 
 	/** 遍历(不递归)压缩文件夹下的所有png和jpg图片； */
@@ -59,8 +67,7 @@ public class TinyPng
 		listener.output("正在压缩图片：" + sourceFile.getName());
 		RequestBody body = RequestBody.create(mediaType, sourceFile);
 		Request sharkRequest = new Request.Builder().url("https://api.tinify.com/shrink ")
-				.addHeader("Authorization", "Basic YXBpOjd2LURJa1hoNWs5bjVSZFdoclZDV1pNT0gxOTJKNHUz").post(body)
-				.build();
+				.addHeader("Authorization", "Basic " + apiKey).post(body).build();
 		Response sharkResponse = okHttpClient.newCall(sharkRequest).execute();
 
 		// 获取压缩后图片的下载地址；
@@ -70,7 +77,7 @@ public class TinyPng
 		// 从指定的URL下载图片；
 		Request downloadRequest = new Request.Builder().url(url).build();
 		Response downloadResponse = okHttpClient.newCall(downloadRequest).execute();
-		InputStream byteStream = downloadResponse.body().byteStream();
+		InputStream inputStream = downloadResponse.body().byteStream();
 
 		// 将下载的图片保存到本地；
 		File sharkedFile = new File(sourceFile.getParent() + "/TinyPng", sourceFile.getName());
@@ -87,18 +94,18 @@ public class TinyPng
 			// 如果目录不存在，创建目录；
 			sharkedDirectory.mkdirs();
 		}
-		FileOutputStream fileOutputStream = new FileOutputStream(sharkedFile);
+		FileOutputStream outputStream = new FileOutputStream(sharkedFile);
 		byte[] bytes = new byte[1024];
-		int len = byteStream.read(bytes);
+		int len = inputStream.read(bytes);
 		while (len != -1)
 		{
-			fileOutputStream.write(bytes, 0, len);
-			len = byteStream.read(bytes);
+			outputStream.write(bytes, 0, len);
+			len = inputStream.read(bytes);
 		}
-		fileOutputStream.close();
-		byteStream.close();
+		outputStream.close();
+		inputStream.close();
 		listener.output("图片压缩成功：" + sharkedFile.getName());
-		listener.output("————————————————————————");
+		listener.output(Values.DIVIDER);
 	}
 
 }
