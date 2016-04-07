@@ -44,11 +44,12 @@ public class TinyPng
 	public void sharkImages(File directory) throws Exception
 	{
 		File[] files = directory.listFiles();
-		for (File file : files)
+		for (int i = 0; i < files.length; i++)
 		{
-			if (file.isFile())
+			if (files[i].isFile())
 			{
-				shrinkImage(file);
+				listener.output("正在压缩第" + (i + 1) + "张图片：" + files[i].getName());
+				shrinkImage(files[i]);
 			}
 		}
 		listener.output("恭喜，所有图片压缩完毕！");
@@ -58,13 +59,20 @@ public class TinyPng
 	/** 压缩单个图片，支持png和jpg格式； */
 	public void shrinkImage(File sourceFile) throws Exception
 	{
+		if (sourceFile.getName().endsWith(".9.png"))
+		{
+			listener.output("本图为点9图，跳过：" + sourceFile.getName());
+			listener.output(Values.DIVIDER);
+			return;
+		}
+
 		if (!(sourceFile.getName().endsWith(".png") || sourceFile.getName().endsWith(".jpg")))
 		{
 			listener.output("不支持的文件类型：" + sourceFile.getName());
+			listener.output(Values.DIVIDER);
 			return;
 		}
 		// 上传图片到服务器；
-		listener.output("正在压缩图片：" + sourceFile.getName());
 		RequestBody body = RequestBody.create(mediaType, sourceFile);
 		Request sharkRequest = new Request.Builder().url("https://api.tinify.com/shrink ")
 				.addHeader("Authorization", "Basic " + apiKey).post(body).build();
