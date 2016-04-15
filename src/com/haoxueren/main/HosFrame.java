@@ -41,7 +41,7 @@ public class HosFrame extends Frame implements KeyListener, FocusListener, Mouse
 		textArea.setBackground(Color.BLACK);
 		textArea.setForeground(Color.WHITE);
 		// 设置字体大小；
-		textArea.setFont(new Font(null, 0, 18));
+		textArea.setFont(new Font(null, Font.BOLD, 18));
 		// 监听键盘事件；
 		textArea.addKeyListener(this);
 		// 监听获取焦点事件；
@@ -83,6 +83,8 @@ public class HosFrame extends Frame implements KeyListener, FocusListener, Mouse
 	@Override
 	public void keyReleased(KeyEvent event)
 	{
+		// 更新文字颜色；
+		textArea.setForeground(Color.WHITE);
 		// 键释放时，将光标移动到最后；
 		int keyCode = event.getKeyCode();
 		switch (keyCode)
@@ -96,7 +98,7 @@ public class HosFrame extends Frame implements KeyListener, FocusListener, Mouse
 			textArea.append(Values.DIVIDER);
 			// 开始执行命令；
 			MyOrder.getInstance(textArea).execute(input);
-			textArea.append(Values.DIVIDER + "$" + MyOrder.prefix);
+			textArea.append(Values.DIVIDER + "~$" + MyOrder.prefix);
 			break;
 		}
 	}

@@ -62,7 +62,7 @@ public class MyOrder implements OutputListener
 		textArea.append(Values.DIVIDER);
 		// 获取并输出当前的日期；
 		DateHelper.printDate(this);
-		textArea.append(Values.DIVIDER + "$");
+		textArea.append(Values.DIVIDER + "~$");
 		textArea.setCaretPosition(textArea.getText().length());
 		fileList = new FileList(this);
 	}
@@ -170,7 +170,7 @@ public class MyOrder implements OutputListener
 			{
 				String index = input.replaceFirst("\\$(tree fileid|TREE FILEID)", "").trim();
 				int id = Integer.parseInt(index);
-				fileTree.treeDirId(id);
+				fileTree.treeFileId(id);
 				return;
 			}
 
