@@ -86,11 +86,37 @@ public class MyOrder implements OutputListener
 				input = input.replaceFirst(key, value);
 			}
 			System.out.println(input);
+			// 按文件名正则从指定的目录中递归搜索文件；
+			if (input.matches("\\$\\s*(find|FIND)\\s+\\S+\\s+(from|FROM)\\s+\\S+\\s*"))
+			{
+				FileFinder.getInstance(this).reset();
+				String fileInfo = input.replaceFirst("\\$\\s*(find|FIND)", "").trim();
+				String[] infoArray = fileInfo.split("\\s+(from|FROM)\\s+");
+				String fileRegex = infoArray[0];
+				if (!fileRegex.equals("*"))
+				{
+					String fullPath = FileConfig.getPath(infoArray[1]);
+					File directory = new File(fullPath);
+					fileRegex = fileRegex.replaceAll("\\*", "\\\\S*");
+					FileFinder.getInstance(this).searchFile(directory, fileRegex);
+				} else
+				{
+					textArea.append("请准确描述您的检索条件\n");
+				}
+				return;
+			}
+			if (input.matches("\\$\\s*(find|FIND)\\s+(open|OPEN)\\s+\\d+\\s*"))
+			{
+				String id = input.replaceFirst("\\$\\s*(find|FIND)\\s+(open|OPEN)", "").trim();
+				int idInt = Integer.parseInt(id);
+				FileFinder.getInstance(this).openFile(idInt);
+				return;
+			}
 
 			// 分类整理桌面上的文件；
-			if (input.matches("\\$(group|GROUP)\\s+.+"))
+			if (input.matches("\\$\\s*(group|GROUP)\\s+.+"))
 			{
-				String path = input.replaceFirst("\\$(group|GROUP)", "").trim();
+				String path = input.replaceFirst("\\$\\s*(group|GROUP)", "").trim();
 				FileGroup fileGroup = new FileGroup(this);
 				String[] suffixs = FileConfig.getSuffix();
 				File dir = new File(FileConfig.getPath(path));
@@ -99,35 +125,35 @@ public class MyOrder implements OutputListener
 			}
 
 			// 获取md5加密后的密码；
-			if (input.matches("\\$(password|PASSWORD)\\s+.+"))
+			if (input.matches("\\$\\s*(password|PASSWORD)\\s+.+"))
 			{
-				String text = input.replaceFirst("\\$(password|PASSWORD)", "");
+				String text = input.replaceFirst("\\$\\s*(password|PASSWORD)", "");
 				String password = Md5Helper.encode(text.trim().getBytes());
 				textArea.append("您的密码为：" + password + "\n");
 				return;
 			}
 
 			// 显示当前目录下所有文件(单级)；
-			if (input.matches("\\$(list|LIST)\\s+(dir|DIR)\\s+.+"))
+			if (input.matches("\\$\\s*(list|LIST)\\s+(dir|DIR)\\s+.+"))
 			{
-				String path = input.replaceFirst("\\$(list|LIST)\\s+(dir|DIR)", "").trim();
+				String path = input.replaceFirst("\\$\\s*(list|LIST)\\s+(dir|DIR)", "").trim();
 				fileList.enterPath(FileConfig.getPath(path));
 				return;
 			}
 
 			// 显示文件夹下的所有文件；
-			if (input.matches("\\$(list|LIST)\\s+(id|ID)\\s+\\d+"))
+			if (input.matches("\\$\\s*(list|LIST)\\s+(id|ID)\\s+\\d+"))
 			{
-				String dir = input.replaceFirst("\\$(list|LIST)\\s+(id|ID)", "").trim();
+				String dir = input.replaceFirst("\\$\\s*(list|LIST)\\s+(id|ID)", "").trim();
 				int id = Integer.parseInt(dir);
 				fileList.listDir(id);
 				return;
 			}
 
 			// 根据编码打开文件(list open ..)；
-			if (input.matches("\\$(list|LIST)\\s+(open|OPEN)\\s+\\d+"))
+			if (input.matches("\\$\\s*(list|LIST)\\s+(open|OPEN)\\s+\\d+"))
 			{
-				String index = input.replaceFirst("\\$(list|LIST)\\s+(open|OPEN)", "").trim();
+				String index = input.replaceFirst("\\$\\s*(list|LIST)\\s+(open|OPEN)", "").trim();
 				int id = Integer.parseInt(index);
 				fileList.openFile(id);
 				textArea.append("已为您打开编号" + id + "文件\n");
@@ -135,9 +161,9 @@ public class MyOrder implements OutputListener
 			}
 
 			// 显示当前文件夹的目录结构图；
-			if (input.matches("\\$(tree|TREE)\\s+(dir|DIR)\\s+.+"))
+			if (input.matches("\\$\\s*(tree|TREE)\\s+(dir|DIR)\\s+.+"))
 			{
-				String path = input.replaceFirst("\\$(tree|TREE)\\s+(dir|DIR)", "").trim();
+				String path = input.replaceFirst("\\$\\s*(tree|TREE)\\s+(dir|DIR)", "").trim();
 				String fullPath = FileConfig.getPath(path.toUpperCase());
 				path = fullPath == null ? path : fullPath;
 				File dir = new File(path);
@@ -147,9 +173,9 @@ public class MyOrder implements OutputListener
 			}
 
 			// 显示当前文件夹的目录及文件结构图；
-			if (input.matches("\\$(tree|TREE)\\s+(file|FILE)\\s+.+"))
+			if (input.matches("\\$\\s*(tree|TREE)\\s+(file|FILE)\\s+.+"))
 			{
-				String path = input.replaceFirst("\\$(tree|TREE)\\s+(file|FILE)", "").trim();
+				String path = input.replaceFirst("\\$\\s*(tree|TREE)\\s+(file|FILE)", "").trim();
 				String fullPath = FileConfig.getPath(path.toUpperCase());
 				path = fullPath == null ? path : fullPath;
 				File dir = new File(path);
@@ -158,34 +184,34 @@ public class MyOrder implements OutputListener
 				return;
 			}
 			// 遍历目录结构树中的子节点，结果只显示目录；
-			if (input.matches("\\$(tree dirid|TREE DIRID)\\s+.+"))
+			if (input.matches("\\$\\s*(tree dirid|TREE DIRID)\\s+.+"))
 			{
-				String index = input.replaceFirst("\\$(tree dirid|TREE DIRID)", "").trim();
+				String index = input.replaceFirst("\\$\\s*(tree dirid|TREE DIRID)", "").trim();
 				int id = Integer.parseInt(index);
 				fileTree.treeDirId(id);
 				return;
 			}
 			// 遍历目录结构树中的子节点，结果显示目录及文件；
-			if (input.matches("\\$(tree fileid|TREE FILEID)\\s+.+"))
+			if (input.matches("\\$\\s*(tree fileid|TREE FILEID)\\s+.+"))
 			{
-				String index = input.replaceFirst("\\$(tree fileid|TREE FILEID)", "").trim();
+				String index = input.replaceFirst("\\$\\s*(tree fileid|TREE FILEID)", "").trim();
 				int id = Integer.parseInt(index);
 				fileTree.treeFileId(id);
 				return;
 			}
 
 			// 按编号打开目录结构树中的文件；
-			if (input.matches("\\$(tree|TREE)\\s+(open|OPEN)\\s+\\d+"))
+			if (input.matches("\\$\\s*(tree|TREE)\\s+(open|OPEN)\\s+\\d+"))
 			{
-				String index = input.replaceFirst("\\$(tree|TREE)\\s+(open|OPEN)", "").trim();
+				String index = input.replaceFirst("\\$\\s*(tree|TREE)\\s+(open|OPEN)", "").trim();
 				int indexInt = Integer.parseInt(index);
 				fileTree.openFile(indexInt);
 				return;
 			}
 			// 为命令行添加前缀功能；
-			if (input.matches("\\$(set|SET)\\s+(prefix|PREFIX)\\s+.+"))
+			if (input.matches("\\$\\s*(set|SET)\\s+(prefix|PREFIX)\\s+.+"))
 			{
-				String prefix = input.replaceFirst("\\$(set|SET)\\s+(prefix|PREFIX)", "").trim();
+				String prefix = input.replaceFirst("\\$\\s*(set|SET)\\s+(prefix|PREFIX)", "").trim();
 				if (prefix.equalsIgnoreCase("null"))
 				{
 					// 清除命令前缀；
@@ -199,7 +225,7 @@ public class MyOrder implements OutputListener
 				return;
 			}
 			// 执行随机单词命令；
-			if (input.matches("\\$(random|RANDOM)\\s+(word|WORD)\\s?"))
+			if (input.matches("\\$\\s*(random|RANDOM)\\s+(word|WORD)\\s?"))
 			{
 				File wordFile = WordHelper.getInstance(this).getRandomWordFile();
 				if (wordFile == null)
@@ -214,9 +240,9 @@ public class MyOrder implements OutputListener
 			}
 
 			// 打开对应的文件；
-			if (input.matches("\\$(open|OPEN)\\s+.+"))
+			if (input.matches("\\$\\s*(open|OPEN)\\s+.+"))
 			{
-				String fileName = input.replaceFirst("\\$(open|OPEN)", "").trim();
+				String fileName = input.replaceFirst("\\$\\s*(open|OPEN)", "").trim();
 				// 打开程序所在的目录；
 				if (fileName.equalsIgnoreCase("userdir"))
 				{
@@ -235,9 +261,9 @@ public class MyOrder implements OutputListener
 			}
 
 			// 使用TinyPng压缩图片；
-			if (input.matches("\\$(tinypng|TINYPNG)\\s+.+"))
+			if (input.matches("\\$\\s*(tinypng|TINYPNG)\\s+.+"))
 			{
-				String pathname = input.replaceFirst("\\$(tinypng|TINYPNG)", "").trim();
+				String pathname = input.replaceFirst("\\$\\s*(tinypng|TINYPNG)", "").trim();
 				/** 移除LEFT-TO-RIGHT EMBEDDING(Win8.1)； */
 				pathname = pathname.replaceAll("\\u202A", "");
 				File sourceFile = new File(pathname);
@@ -256,9 +282,9 @@ public class MyOrder implements OutputListener
 			}
 
 			// 打开QQ聊天窗口；
-			if (input.matches("\\$(qq|QQ)\\s+.+"))
+			if (input.matches("\\$\\s*(qq|QQ)\\s+.+"))
 			{
-				String nickname = input.replaceFirst("\\$(qq|QQ)", "").trim().toUpperCase();
+				String nickname = input.replaceFirst("\\$\\s*(qq|QQ)", "").trim().toUpperCase();
 				String qq = nickname.matches("\\d+") ? nickname : QQHelper.getQQNo(nickname);
 				textArea.append("正在打开QQ(" + qq + ")聊天窗口\n");
 				QQHelper.openQQ(qq);
@@ -273,7 +299,7 @@ public class MyOrder implements OutputListener
 			}
 
 			// 乐投天下抽奖程序；
-			if (input.matches("\\$(LETOU|letou)\\s+(lucky draw|LUCKY DRAW)"))
+			if (input.matches("\\$\\s*(LETOU|letou)\\s+(lucky draw|LUCKY DRAW)"))
 			{
 				String username = ConfigHelper.getConfig("letou_username", null);
 				String password = ConfigHelper.getConfig("letou_password", null);
@@ -281,29 +307,29 @@ public class MyOrder implements OutputListener
 				return;
 			}
 			// 添加单词到词库；
-			if (input.matches("\\$(ADD|add)\\s+(word|WORD)\\s+\\w+"))
+			if (input.matches("\\$\\s*(ADD|add)\\s+(word|WORD)\\s+\\w+"))
 			{
-				String word = input.replaceFirst("\\$(ADD|add)\\s+(word|WORD)", "");
+				String word = input.replaceFirst("\\$\\s*(ADD|add)\\s+(word|WORD)", "");
 				WordHelper.getInstance(this).addWord(word.trim().toLowerCase());
 				return;
 			}
 			// 执行查询单词指令；
-			if (input.matches("\\$(DICT|dict)\\s+.+"))
+			if (input.matches("\\$\\s*(DICT|dict)\\s+.+"))
 			{
-				String word = input.replaceFirst("\\$(DICT|dict)\\s+", "");
+				String word = input.replaceFirst("\\$\\s*(DICT|dict)\\s+", "");
 				new DictHelper(this).translate(word);
 				return;
 			}
 
 			// 在线翻译[英译汉]
-			if (input.matches("\\$(FANYI|fanyi)\\s+[\\s\\S]+"))
+			if (input.matches("\\$\\s*(FANYI|fanyi)\\s+[\\s\\S]+"))
 			{
-				String content = input.replaceFirst("\\$(FANYI|fanyi)\\s+", "");
+				String content = input.replaceFirst("\\$\\s*(FANYI|fanyi)\\s+", "");
 				FanyiHelper.getInstance(this).icibaFanyi(content);
 				return;
 			}
 			// 打开网址；
-			if (input.matches("\\$(http://|HTTP://|www\\.|WWW\\.).+"))
+			if (input.matches("\\$\\s*(http://|HTTP://|www\\.|WWW\\.).+"))
 			{
 				String url = input.replaceFirst("\\$\\s?", "");
 				Runtime.getRuntime().exec("cmd /c start " + url);
@@ -311,9 +337,9 @@ public class MyOrder implements OutputListener
 				return;
 			}
 			// 使用百度搜索关键词；
-			if (input.matches("\\$(search|SEARCH)\\s+.+"))
+			if (input.matches("\\$\\s*(search|SEARCH)\\s+.+"))
 			{
-				String keyWords = input.replaceFirst("\\$(search|SEARCH)\\s+", "").trim();
+				String keyWords = input.replaceFirst("\\$\\s*(search|SEARCH)\\s+", "").trim();
 				String encode = URLEncoder.encode(keyWords, "UTF-8");
 				Runtime.getRuntime().exec("cmd /c start http://www.baidu.com/s?wd=" + encode);
 				textArea.append("正在搜索：" + keyWords + "\n");
@@ -321,16 +347,16 @@ public class MyOrder implements OutputListener
 			}
 
 			// 打开MS-DOS窗口；
-			if (input.matches("\\$(run|RUN)\\s+(cmd|CMD)\\s?"))
+			if (input.matches("\\$\\s*(run|RUN)\\s+(cmd|CMD)\\s?"))
 			{
 				Desktop.getDesktop().open(new File("C:/Windows/system32/cmd.exe"));
 				textArea.append("MS-DOS已打开！\n");
 				return;
 			}
 			// 执行DOS命令；
-			if (input.matches("\\$(dos|DOS)\\s+.+"))
+			if (input.matches("\\$\\s*(dos|DOS)\\s+.+"))
 			{
-				String dos = input.replaceAll("\\$(dos|DOS)", "").trim();
+				String dos = input.replaceAll("\\$\\s*(dos|DOS)", "").trim();
 				Process process = Runtime.getRuntime().exec("cmd.exe /c " + dos);
 				textArea.append("正在执行：" + dos + "\n");
 				MsdosHelper msdosHelper = new MsdosHelper(process, this);
@@ -355,7 +381,7 @@ public class MyOrder implements OutputListener
 			}
 
 			// 清除屏幕；
-			if (input.matches("\\$(CLS|cls)\\s?"))
+			if (input.matches("\\$\\s*(CLEAR|clear)\\s?"))
 			{
 				textArea.setText("");
 				return;

@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.haoxueren.utils.FileFinder.FileFinderListener;
+import com.haoxueren.utils.FileSeek.FileFinderListener;
 
 /** ���ҳ�ָ��Ŀ¼�������ļ��� */
 public class FileUtils implements FileFinderListener
@@ -23,7 +23,7 @@ public class FileUtils implements FileFinderListener
 	public void getFiles(File directory)
 	{
 		list = new ArrayList<File>();
-		FileFinder finder = new FileFinder(this);
+		FileSeek finder = new FileSeek(this);
 		finder.findFile(directory);
 		listener.onFileFindOver(list);
 	}

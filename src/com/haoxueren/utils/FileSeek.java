@@ -3,11 +3,11 @@ package com.haoxueren.utils;
 import java.io.File;
 
 /** �����ݹ�����ļ��İ����ࣻ */
-public class FileFinder
+public class FileSeek
 {
 	private FileFinderListener listener;
 
-	public FileFinder(FileFinderListener listener)
+	public FileSeek(FileFinderListener listener)
 	{
 		this.listener = listener;
 	}
