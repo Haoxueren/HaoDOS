@@ -18,7 +18,7 @@ public class Test
 	@org.junit.Test
 	public void updateConfig() throws Exception
 	{
-		ConfigHelper.updateConfig("test", "9");
+		ConfigHelper.setConfig("test", "9");
 	}
 	
 	

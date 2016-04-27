@@ -1,8 +1,9 @@
 package com.haoxueren.main;
 
+
 public class HosGui
 {
-	public static void main(String[] args)
+	public static void main(String[] args) throws Exception
 	{
 		// 新建一个界面；
 		HosFrame dosFrame = new HosFrame();

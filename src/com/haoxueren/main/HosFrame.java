@@ -14,6 +14,7 @@ import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
 
 import com.haoxueren.config.Values;
+import com.haoxueren.helper.DateWatcher;
 import com.haoxueren.helper.DesktopHelper;
 import com.haoxueren.helper.FrameHelper;
 
@@ -27,7 +28,7 @@ public class HosFrame extends Frame implements KeyListener, FocusListener, Mouse
 		super("稳扎稳打，步步为营");
 	}
 
-	public void init()
+	public void init() throws Exception
 	{
 		// 创建窗体并设置窗体属性；
 		FrameHelper frameHelper = new FrameHelper(this);
@@ -53,6 +54,13 @@ public class HosFrame extends Frame implements KeyListener, FocusListener, Mouse
 		this.setVisible(true);
 		MyOrder order = MyOrder.getInstance(textArea);
 		order.init();
+		// 每天第一次运行启动抽奖；
+		if (DateWatcher.isAnotherDay())
+		{
+			textArea.append("letou lucky draw\n");
+			order.execute("$letou lucky draw");
+			textArea.append(Values.DIVIDER + "~$" + MyOrder.prefix);
+		}
 	}
 
 	/*********************** 【接口监听区】 ***********************/

@@ -19,6 +19,7 @@ import com.haoxueren.file.FileGroup;
 import com.haoxueren.file.FileTree;
 import com.haoxueren.gtd.GtdHelper;
 import com.haoxueren.helper.DateHelper;
+import com.haoxueren.helper.DateWatcher;
 import com.haoxueren.helper.DesktopHelper;
 import com.haoxueren.helper.Md5Helper;
 import com.haoxueren.helper.MsdosHelper;
@@ -55,7 +56,7 @@ public class MyOrder implements OutputListener
 	}
 
 	/** 初始化一些信息； */
-	public void init()
+	public void init() throws Exception
 	{
 		// 添加我的格言；
 		textArea.setText("对生活充满热情，对未来充满信心。\n");

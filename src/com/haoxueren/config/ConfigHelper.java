@@ -23,6 +23,7 @@ public class ConfigHelper
 	 * 先从本地读取，如果本地没有，则使用默认值；<br>
 	 * 从本地属性文件中读取配置数据；
 	 */
+	@SuppressWarnings("unchecked")
 	public static String getConfig(String key, String defaultValue) throws Exception
 	{
 		// 读取本地的配置文件；
@@ -54,7 +55,7 @@ public class ConfigHelper
 	}
 
 	/** 更新配置文件中的内容； */
-	public static void updateConfig(String key, String value) throws Exception
+	public static void setConfig(String key, String value) throws Exception
 	{
 		File file = new File(FileHelper.getCurrentDir(), "/config/config.properties");
 		Reader reader = new FileReader(file);

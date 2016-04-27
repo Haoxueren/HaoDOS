@@ -96,7 +96,7 @@ public class TinyPng
 			apiKey = encoder.encode(keyArray.getString(nextKeyIndex).getBytes());
 			// 将nextKeyIndex更新到配置文件中；
 			apiKeysJson.put("keyIndex", nextKeyIndex);
-			ConfigHelper.updateConfig("TinyPngInfo", apiKeysJson.toString());
+			ConfigHelper.setConfig("TinyPngInfo", apiKeysJson.toString());
 		}
 		// 获取压缩后图片的下载地址；
 		JSONObject resultJson = new JSONObject(sharkResponse.body().string());

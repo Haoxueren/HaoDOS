@@ -28,7 +28,8 @@ public class Commander implements FileHelperListener, OutputListener
 	{
 		commandHelper = new CommandHelper();
 		fileHelper = new FileUtils(this);
-		directory = new File(ConfigHelper.getConfig(Keys.SHORTCUTS, Values.SHORTCUTS));
+		String path = ConfigHelper.getConfig(Keys.SHORTCUTS, Values.SHORTCUTS);
+		directory = new File(path);
 		FileHelper.mkdirs(directory);
 		fileHelper.getFiles(directory);
 	}
@@ -101,7 +102,7 @@ public class Commander implements FileHelperListener, OutputListener
 		FileSystemView fileView = FileSystemView.getFileSystemView();
 		File desktop = fileView.getHomeDirectory();
 		File[] files = desktop.listFiles();
-		File tempDir = new File(ConfigHelper.getConfig("temp_dir", Values.TEMP_DIR));
+		File tempDir = new File((String) ConfigHelper.getConfig("temp_dir", Values.TEMP_DIR));
 		FileHelper.mkdirs(tempDir);
 		String shortcuts = ConfigHelper.getConfig(Keys.SHORTCUTS, Values.SHORTCUTS);
 		File shortcutsDir = new File(shortcuts);
@@ -125,7 +126,7 @@ public class Commander implements FileHelperListener, OutputListener
 			if (fileHelper.endWith(file.getName(), ".lnk", ".url"))
 			{
 				System.out.println("正在移动快捷方式：" + file.getName());
-				destFile = new File(ConfigHelper.getConfig(Keys.SHORTCUTS, Values.SHORTCUTS), file.getName());
+				destFile = new File((String) ConfigHelper.getConfig(Keys.SHORTCUTS, Values.SHORTCUTS), file.getName());
 			} else
 			{
 				System.out.println("正在移动桌面文件：" + file.getName());
