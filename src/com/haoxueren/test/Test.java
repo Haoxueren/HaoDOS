@@ -11,17 +11,17 @@ import org.jsoup.select.Elements;
 import sun.misc.BASE64Encoder;
 
 import com.haoxueren.config.ConfigHelper;
+import com.haoxueren.letou.Letou360;
 import com.haoxueren.tinypng.TinyPng;
 
 public class Test
 {
 	@org.junit.Test
-	public void updateConfig() throws Exception
+	public void login() throws Exception
 	{
-		ConfigHelper.setConfig("test", "9");
+		Letou360.uploadApk(null);
 	}
-	
-	
+
 	@org.junit.Test
 	public void apiKeys() throws Exception
 	{
