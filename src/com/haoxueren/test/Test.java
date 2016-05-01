@@ -11,11 +11,18 @@ import org.jsoup.select.Elements;
 import sun.misc.BASE64Encoder;
 
 import com.haoxueren.config.ConfigHelper;
+import com.haoxueren.dict.DictHelper;
 import com.haoxueren.letou.Letou360;
 import com.haoxueren.tinypng.TinyPng;
 
 public class Test
 {
+	@org.junit.Test
+	public void jscb() throws Exception
+	{
+		new DictHelper(null).jscbApi("真好");
+	}
+
 	@org.junit.Test
 	public void login() throws Exception
 	{

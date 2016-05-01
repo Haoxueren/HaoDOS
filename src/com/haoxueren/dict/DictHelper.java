@@ -1,15 +1,11 @@
 ﻿package com.haoxueren.dict;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.URLEncoder;
-import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.Set;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -45,7 +41,7 @@ public class DictHelper
 		Elements voice = document.select("div.word-voice");
 		for (Element element : voice)
 		{
-			listener.output(lowerCaseWord + "：" + element.text());
+			listener.output(lowerCaseWord + " " + element.text());
 		}
 		// 如果word-voice没有数据，从base-speak标签获取；
 		Elements speak = document.select("div.base-speak");
@@ -68,32 +64,25 @@ public class DictHelper
 		}
 	}
 
-	/** 转换爱词霸不可识别的单词音标； */
-	public String convert(String wordVoice) throws IOException
+	/** 备用方法：调用金山词霸API查询单词； */
+	public void jscbApi(String word) throws IOException
 	{
-		// 从Properties文件中加载音标映射；
-		String path = System.getProperty("user.dir") + "/config/phonetic.properties";
-		File propertiesFile = new File(path);
-		if (!propertiesFile.exists())
+		OkHttpClient okHttpClient = new OkHttpClient();
+		Request request = new Request.Builder().url("http://www.iciba.com/" + URLEncoder.encode(word, "UTF-8")).get()
+				.build();
+		Response response = okHttpClient.newCall(request).execute();
+		Document document = Jsoup.parse(response.body().string());
+		Element inBaseDiv = document.select("div.in-base").first();
+		// 单词发音；
+		System.out.println(inBaseDiv.select("div.base-speak").first().text());
+		// 单词释义；
+		Elements means = inBaseDiv.getElementsByTag("ul").first().select("li");
+		for (Element element : means)
 		{
-			propertiesFile.createNewFile();
-			PrintWriter writer = new PrintWriter(propertiesFile);
-			writer.write("# 首先注释，防UTF-8 BOM头影响；");
-			writer.close();
+			System.out.println(element.text());
 		}
-		InputStream inputStream = new FileInputStream(propertiesFile);
-		Properties properties = new Properties();
-		// 保持编码一致；
-		properties.load(new InputStreamReader(inputStream, "UTF-8"));
-		Set<Entry<Object, Object>> entrySet = properties.entrySet();
-		// 替换音标中的特殊字符；
-		for (Entry<Object, Object> entry : entrySet)
-		{
-			String key = ((String) entry.getKey()).trim();
-			String value = ((String) entry.getValue()).trim();
-			wordVoice = wordVoice.replaceAll(key, value);
-		}
-		// 返回处理后的音标；
-		return wordVoice;
+
+		// 单词变形；
+		System.out.println(inBaseDiv.select("li.change").first().text());
 	}
 }
