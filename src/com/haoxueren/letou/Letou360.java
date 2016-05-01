@@ -1,14 +1,11 @@
 package com.haoxueren.letou;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import okhttp3.Call;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.FormBody;
@@ -106,22 +103,5 @@ public class Letou360
 		listener.output(text);
 	}
 
-	/** 登录乐投天下后台并自动上传APK； */
-	public static void uploadApk(File apk) throws IOException
-	{
-		// 创建OkHttpClient对象；
-		OkHttpClient okHttpClient = new OkHttpClient();
-		// 构建POST请求表单；
-		FormBody formBody = new FormBody.Builder().add("j_username", "manager").add("j_password", "test998").build();
-		// 构建POST请求体；
-		Request request = new Request.Builder().url("http://123.57.3.3:88/letou360/admin/mobile/appVersionList.htm")
-				.put(formBody).build();
-		// 请求服务器；
-		Response response = okHttpClient.newCall(request).execute();
-		// 获取服务器返回的Cookie；
-		String cookie = response.headers().get("Set-Cookie");
-		// 登陆成功，下面开始上传APK；
-		
 
-	}
 }

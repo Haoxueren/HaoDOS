@@ -19,7 +19,8 @@ public class Test
 	@org.junit.Test
 	public void login() throws Exception
 	{
-		Letou360.uploadApk(null);
+		JSONArray jsonArray = new JSONArray("[46d14ee1f7cf42ccabe17bec7d53bbec, c9d955952eda4afdb942cde29d1144f4]");
+		System.out.println(jsonArray);
 	}
 
 	@org.junit.Test
