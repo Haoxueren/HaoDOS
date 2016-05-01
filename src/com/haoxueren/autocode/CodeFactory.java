@@ -1,4 +1,4 @@
-﻿package com.haoxueren.layout;
+﻿package com.haoxueren.autocode;
 
 /** 生成代码的工厂； */
 public class CodeFactory implements LayoutParserListener

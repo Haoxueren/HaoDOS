@@ -1,4 +1,4 @@
-﻿package com.haoxueren.layout;
+﻿package com.haoxueren.autocode;
 
 /** 有新代码生成时调用此方法； */
 public interface CodeFactoryListener

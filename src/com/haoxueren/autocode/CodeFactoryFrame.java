@@ -1,4 +1,4 @@
-﻿package com.haoxueren.layout;
+﻿package com.haoxueren.autocode;
 
 import java.awt.Button;
 import java.awt.Choice;
@@ -38,13 +38,13 @@ public class CodeFactoryFrame extends Frame
 	public void showFrame(ActionListener actionListener)
 	{
 		// 初始化窗体属性；
-		this.setTitle("AutoCode");
+		this.setTitle("自动化与批处理");
 		this.setBounds(500, 100, 600, 600);
 		this.setLayout(new FlowLayout());
 		// 添加关闭监听；
 		initWindow(this);
 		// XML文件路径；
-		Label pathLabel = new Label("Path");
+		Label pathLabel = new Label("文件路径");
 		pathTextField = new TextField(60);
 		pathTextField.setText(letouLayout);
 		this.add(pathLabel);
@@ -55,22 +55,22 @@ public class CodeFactoryFrame extends Frame
 		textArea.setFont(font);
 		this.add(textArea);
 		// 说明文字标签；
-		Label label = new Label("Filename");
+		Label label = new Label("文件名称");
 		this.add(label);
 		// 文件名输入框；
 		fileNameTextField = new TextField(35);
 		this.add(fileNameTextField);
 		// 下拉选择框；
 		final Choice choice = new Choice();
-		choice.add("Annotation");
+		choice.add("注解模式");
 		this.add(choice);
 		// 生成代码的按钮；
-		createCodeButton = new Button("Generate");
+		createCodeButton = new Button("生成代码");
 		createCodeButton.setActionCommand(createCodeButton.getLabel());
 		createCodeButton.addActionListener(actionListener);
 		this.add(createCodeButton);
 		// 复制代码按钮 ；
-		copyCodeButton = new Button("Copy Code");
+		copyCodeButton = new Button("复制代码");
 		copyCodeButton.setActionCommand(copyCodeButton.getLabel());
 		copyCodeButton.addActionListener(actionListener);
 		this.add(copyCodeButton);
@@ -79,7 +79,7 @@ public class CodeFactoryFrame extends Frame
 	}
 
 	/** 初始化窗口属性； */
-	private void initWindow(Frame frame)
+	private void initWindow(final Frame frame)
 	{
 		// 禁止改变窗口大小；
 		this.setResizable(false);
@@ -89,7 +89,8 @@ public class CodeFactoryFrame extends Frame
 			@Override
 			public void windowClosing(WindowEvent e)
 			{
-				Runtime.getRuntime().exit(0);
+				// 仅关闭当前窗体；
+				frame.dispose();
 			}
 		});
 	}

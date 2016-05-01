@@ -1,4 +1,4 @@
-﻿package com.haoxueren.layout;
+﻿package com.haoxueren.autocode;
 
 import java.io.FileInputStream;
 import java.io.InputStream;

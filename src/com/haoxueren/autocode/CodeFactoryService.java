@@ -1,4 +1,4 @@
-﻿package com.haoxueren.layout;
+﻿package com.haoxueren.autocode;
 
 import java.awt.Dialog;
 import java.awt.Toolkit;

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
 
+import com.haoxueren.autocode.CodeFactoryService;
 import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.config.Keys;
 import com.haoxueren.config.Values;
@@ -87,6 +88,14 @@ public class MyOrder implements OutputListener
 				input = input.replaceFirst(key, value);
 			}
 			System.out.println(input);
+
+			/** 启动AutoCode窗体； */
+			if (input.matches("\\$\\s*(auto code|AUTO CODE)\\s*"))
+			{
+				new CodeFactoryService().service();
+				return;
+			}
+
 			// 按文件名正则从指定的目录中递归搜索文件；
 			if (input.matches("\\$\\s*(find|FIND)\\s+\\S+\\s+(from|FROM)\\s+\\S+\\s*"))
 			{
