@@ -9,7 +9,11 @@ import java.util.regex.Pattern;
 import com.haoxueren.helper.HttpHelper;
 import com.haoxueren.main.OutputListener;
 
-/** 测试环境：乐投天下自动抽奖功能； */
+/**
+ * 测试环境：乐投天下自动抽奖功能；<br>
+ * 代码勿删除，留任作为参考。
+ */
+@Deprecated
 public class LetouLuckDraw
 {
 	public static void luckyDraw(OutputListener listener) throws Exception
