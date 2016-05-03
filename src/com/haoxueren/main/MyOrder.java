@@ -431,6 +431,7 @@ public class MyOrder implements OutputListener
 	private void openShortcuts(String fileName) throws Exception
 	{
 		String directory = ConfigHelper.getConfig(Keys.SHORTCUTS, Values.SHORTCUTS);
+		System.out.println(directory);
 		FileManager fileManager = new FileManager();
 		fileManager.fillFileList(directory, fileName);
 		List<File> fileList = fileManager.getFileList();

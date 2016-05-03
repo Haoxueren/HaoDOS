@@ -1,13 +1,8 @@
 package com.haoxueren.letou;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.Response;
 
 import org.jsoup.Jsoup;
@@ -21,10 +16,9 @@ public class LetouManager
 	{
 		for (int i = 0; i < 1; i++)
 		{
-			String script = "<script>alert('XSS TEST')</script>";
 			String millis = System.currentTimeMillis() + "";
 			String title = "标题：" + millis.substring(10);
-			// type：activity transaction
+			// type： activity transaction
 			pushMessage(title, "transaction");
 		}
 	}
@@ -49,9 +43,9 @@ public class LetouManager
 				.add("form:j_idt188", "\u003c\u003e简介：")
 				.add("form:details",
 						"<script>alert(document.cookie)</script><p>对生活充满热情，对未来充满信心。\nPublish by Haoxueren</p>")
-				.add("form:j_idt192", "android").add("form:minInvestAmount", "").add("form:accountBalance", "")
-				.add("form:j_idt199", type).add("form:j_idt204", "").add("form:saveBtn", "")
-				.add("javax.faces.ViewState", viewState2).build();
+				.add("form:j_idt192", "android,ios").add("form:j_idt192", "ios").add("form:minInvestAmount", "")
+				.add("form:accountBalance", "").add("form:j_idt199", type).add("form:j_idt204", "")
+				.add("form:saveBtn", "").add("javax.faces.ViewState", viewState2).build();
 		LetouHelper.okHttpPost("http://123.57.3.3:88/letou360/admin/user/pushMessageEdit.htm", formBody3, cookie);
 		// 跳转到消息列表界面；
 		Response response4 = LetouHelper.okHttpGet("http://123.57.3.3:88/letou360/admin/user/pushMessageList.htm",
