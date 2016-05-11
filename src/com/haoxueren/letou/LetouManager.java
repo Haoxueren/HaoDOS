@@ -14,7 +14,7 @@ public class LetouManager
 {
 	public static void main(String[] args) throws Exception
 	{
-		for (int i = 0; i < 1; i++)
+		for (int i = 0; i < 20; i++)
 		{
 			String millis = System.currentTimeMillis() + "";
 			String title = "标题：" + millis.substring(10);
@@ -37,15 +37,11 @@ public class LetouManager
 				cookie);
 		String viewState2 = LetouHelper.getViewState(response2.body().string());
 		// 发布一条消息；transaction ios
-		FormBody formBody3 = new FormBody.Builder()
-				.add("form", "form")
-				.add("form:j_idt186", title)
-				.add("form:j_idt188", "\u003c\u003e简介：")
-				.add("form:details",
-						"<script>alert(document.cookie)</script><p>对生活充满热情，对未来充满信心。\nPublish by Haoxueren</p>")
-				.add("form:j_idt192", "android,ios").add("form:j_idt192", "ios").add("form:minInvestAmount", "")
-				.add("form:accountBalance", "").add("form:j_idt199", type).add("form:j_idt204", "")
-				.add("form:saveBtn", "").add("javax.faces.ViewState", viewState2).build();
+		FormBody formBody3 = new FormBody.Builder().add("form", "form").add("form:j_idt186", title)
+				.add("form:j_idt188", type + "消息简介。")
+				.add("form:details", "<p>对生活充满热情，对未来充满信心。\nPublish by Haoxueren</p>").add("form:j_idt192", "wechat")
+				.add("form:minInvestAmount", "").add("form:accountBalance", "").add("form:j_idt199", type)
+				.add("form:j_idt204", "").add("form:saveBtn", "").add("javax.faces.ViewState", viewState2).build();
 		LetouHelper.okHttpPost("http://123.57.3.3:88/letou360/admin/user/pushMessageEdit.htm", formBody3, cookie);
 		// 跳转到消息列表界面；
 		Response response4 = LetouHelper.okHttpGet("http://123.57.3.3:88/letou360/admin/user/pushMessageList.htm",
