@@ -10,6 +10,7 @@ import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.config.Keys;
 import com.haoxueren.config.Values;
 import com.haoxueren.helper.FileHelper;
+import com.haoxueren.main.MyOrder;
 import com.haoxueren.main.OutputListener;
 import com.haoxueren.utils.FileUtils;
 
@@ -68,7 +69,6 @@ public class WordHelper
 	 */
 	public File getRandomWordFile()
 	{
-		// Map<Long, File> map = initFileMap();
 		Object[] objects = map.keySet().toArray();
 		int sum = map.size();
 		if (sum == 0)
@@ -80,8 +80,12 @@ public class WordHelper
 		Object time = objects[random];
 		File file = map.get(time);
 		listener.output("\n" + index + "/" + loop + "、" + getWordName(file) + "\n");
-		// 循环一圈后，初始化index；
-		index = index == loop ? 0 : index;
+		// 循环一圈后，自动退出；
+		if (index == loop)
+		{
+			// 退出随机单词模式；
+			MyOrder.prefix = "";
+		}
 		return file;
 	}
 

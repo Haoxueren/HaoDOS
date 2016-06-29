@@ -1,6 +1,12 @@
-package com.haoxueren.test;
+﻿package com.haoxueren.test;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import org.json.JSONArray;
 import org.jsoup.Jsoup;
@@ -11,16 +17,47 @@ import org.jsoup.select.Elements;
 import sun.misc.BASE64Encoder;
 
 import com.haoxueren.config.ConfigHelper;
-import com.haoxueren.dict.DictHelper;
-import com.haoxueren.letou.Letou360;
 import com.haoxueren.tinypng.TinyPng;
 
 public class Test
 {
 	@org.junit.Test
-	public void jscb() throws Exception
+	public void name() throws IOException
 	{
-		new DictHelper(null).jscbApi("真好");
+		Request request = new Request.Builder().url("http://123.57.3.3:88/letou360/app/authImage").get().build();
+		OkHttpClient client = new OkHttpClient();
+		Response response = client.newCall(request).execute();
+		System.out.println(response.body().contentType());
+	}
+
+	@org.junit.Test
+	public void readMp3Info() throws Exception
+	{
+		String mp3 = "C:/Users/Haosir/Desktop/123.mp3";
+		byte[] bytes = new byte[128];// 初始化标签信息的byte数组
+		RandomAccessFile randomAccessFile = new RandomAccessFile(mp3, "r");// 随机读写方式打开MP3文件
+
+		randomAccessFile.seek(randomAccessFile.length() - 128);// 移动到文件MP3末尾
+
+		randomAccessFile.read(bytes);// 读取标签信息
+
+		randomAccessFile.close();// 关闭文件
+
+		// 获得TAG_V1中的各个内容
+		String SongName = new String(bytes, 3, 30, "utf-8").trim();// 歌曲名称
+
+		String Artist = new String(bytes, 33, 30, "utf-8").trim();// 歌手名字
+
+		String Album = new String(bytes, 63, 30, "utf-8").trim();// 专辑名称
+
+		String Year = new String(bytes, 93, 4, "utf-8").trim();// 出品年份
+
+		String Comment = new String(bytes, 97, 28, "utf-8").trim();// 备注信息
+		System.out.println(SongName);
+		System.out.println(Artist);
+		System.out.println(Album);
+		System.out.println(Year);
+		System.out.println(Comment);
 	}
 
 	@org.junit.Test

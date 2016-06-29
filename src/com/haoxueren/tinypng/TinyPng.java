@@ -5,21 +5,20 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import com.google.gson.JsonObject;
-import com.haoxueren.config.ConfigHelper;
-import com.haoxueren.config.ConsoleHelper;
-import com.haoxueren.config.Values;
-import com.haoxueren.main.OutputListener;
-
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import sun.misc.BASE64Encoder;
+
+import com.haoxueren.config.ConfigHelper;
+import com.haoxueren.config.Values;
+import com.haoxueren.main.OutputListener;
 
 /** 调用TinyPng接口压缩图片； */
 public class TinyPng
