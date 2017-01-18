@@ -25,7 +25,7 @@ public class HosFrame extends Frame implements KeyListener, FocusListener, Mouse
 
 	public HosFrame()
 	{
-		super("稳扎稳打，步步为营");
+		super("还能再简单一些吗？");
 	}
 
 	public void init() throws Exception
@@ -54,13 +54,6 @@ public class HosFrame extends Frame implements KeyListener, FocusListener, Mouse
 		this.setVisible(true);
 		MyOrder order = MyOrder.getInstance(textArea);
 		order.init();
-		// 每天第一次运行启动抽奖；
-		if (DateWatcher.isAnotherDay())
-		{
-			textArea.append("letou lucky draw\n");
-			order.execute("$letou lucky draw");
-			textArea.append(Values.DIVIDER + "~$" + MyOrder.prefix);
-		}
 	}
 
 	/*********************** 【接口监听区】 ***********************/

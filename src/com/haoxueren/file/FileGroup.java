@@ -42,16 +42,20 @@ public class FileGroup
 				if (filename.endsWith(suffix))
 				{
 					File dest = new File("D:/FileGroup/group" + suffix, filename);
+					// 判断文件是否存在；
+					if (file.exists())
+					{
+						dest = new File(dest.getParent(), System.currentTimeMillis() + filename);
+					}
 					File destDir = dest.getParentFile();
 					if (!destDir.exists())
 					{
 						destDir.mkdirs();
 					}
 					boolean success = file.renameTo(dest);
-					listener.output("移动结果[" + success + "]" + filename + "\n");
+					listener.output("移动结果[" + success + "]" + dest.getName() + "\n");
 				}
 			}
-
 		}
 	}
 }

@@ -84,6 +84,7 @@ public class WordHelper
 		if (index == loop)
 		{
 			// 退出随机单词模式；
+			index=0;
 			MyOrder.prefix = "";
 		}
 		return file;
@@ -134,7 +135,6 @@ public class WordHelper
 		ImageHelper.createImage(file);
 		listener.output(wordTrim + "已添加成功 ！");
 		// 打开文件；
-		desktop.open(file);
 		desktop.edit(file);
 	}
 

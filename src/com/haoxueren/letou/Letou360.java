@@ -89,9 +89,11 @@ public class Letou360
 		System.out.println("viewState：" + viewState);
 		// 进入投资界面开始抽奖；
 		FormBody formBody = new FormBody.Builder().add("form", "form").add("javax.faces.ViewState", viewState)
-				.add("javax.faces.source", "form:j_idt36").add("javax.faces.partial.event", "click")
-				.add("javax.faces.partial.execute", "form:j_idt36 form")
-				.add("javax.faces.partial.render", "form:drawMessage").add("javax.faces.behavior.event", "action")
+				.add("javax.faces.partial.execute", "form:j_idt32 form")
+				.add("javax.faces.source", "form:j_idt32")
+				.add("javax.faces.partial.event", "click")
+				.add("javax.faces.partial.render", "form:drawMessage")
+				.add("javax.faces.behavior.event", "action")
 				.add("javax.faces.partial.ajax", "true").build();
 		Request request3 = new Request.Builder().url(luckDrawUrlSpec).post(formBody).addHeader("Cookie", loginCookie)
 				.build();
