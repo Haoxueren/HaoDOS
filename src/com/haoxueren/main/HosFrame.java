@@ -13,6 +13,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
 
+import com.haoxueren.config.ConfigHelper;
 import com.haoxueren.config.Values;
 import com.haoxueren.helper.DateWatcher;
 import com.haoxueren.helper.DesktopHelper;
@@ -23,9 +24,9 @@ public class HosFrame extends Frame implements KeyListener, FocusListener, Mouse
 	private TextArea textArea;
 	private static final long serialVersionUID = 1L;
 
-	public HosFrame()
+	public HosFrame() throws Exception
 	{
-		super("还能再简单一些吗？");
+		super(ConfigHelper.getConfig("title", "稳扎稳打，步步为营"));
 	}
 
 	public void init() throws Exception
