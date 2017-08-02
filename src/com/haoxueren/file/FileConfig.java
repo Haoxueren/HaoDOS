@@ -10,12 +10,12 @@ public class FileConfig
 	/** 根据文件路径的简称获取文件路径的全称； */
 	public static String getPath(String path) throws Exception
 	{
-		System.out.println("path " + path);
 		Properties properties = new Properties();
 		Reader reader = new FileReader(System.getProperty("user.dir") + "/config/filemap.properties");
 		properties.load(reader);
 		Object fullPath = properties.get(path.toUpperCase());
 		reader.close();
+		System.out.println("path " + fullPath);
 		return fullPath == null ? path : fullPath.toString();
 	}
 

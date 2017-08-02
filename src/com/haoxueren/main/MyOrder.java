@@ -63,8 +63,8 @@ public class MyOrder implements OutputListener
 		textArea.setText("对生活充满热情，对未来充满信心。\n");
 		textArea.append(Values.DIVIDER);
 		// 获取并输出当前的日期；
-		DateHelper.printDate(this);
-		textArea.append(Values.DIVIDER + "~$");
+//		DateHelper.printDate(this);
+//		textArea.append(Values.DIVIDER + "~$");
 		textArea.setCaretPosition(textArea.getText().length());
 		fileList = new FileList(this);
 	}
